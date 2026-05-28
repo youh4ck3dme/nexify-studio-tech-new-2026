@@ -40,15 +40,24 @@ Nespýtaj sa na commit — už je na main. Len env, deploy, smoke, krátky repor
 
 ---
 
-## Čo už spravil agent (bez secrets)
+## Čo už spravil agent (CLI)
 
-- [ ] Commit + push PWA, testy, Serwist na `main`
-- [ ] Vercel env: `CONTACT_TO_EMAIL`, `CONTACT_COPY_EMAIL` (ak šlo cez CLI)
-- [ ] `vercel --prod` redeploy
+- [x] Commit `ac5a101` + push na `main` (PWA, Serwist, testy, ikony)
+- [x] Vercel production deploy (READY)
+- [x] Vercel env (Production): `CONTACT_FROM_EMAIL`, `CONTACT_TO_EMAIL`, `CONTACT_COPY_EMAIL`
+- [x] Produkcia: `/manifest.webmanifest` → 200, `/sw.js` → 200
+- [ ] **`RESEND_API_KEY` na Verceli** — agent k nemu nemal prístup v shelli
 
-## Čo musíš urobiť ty (1×)
+## Čo musíš urobiť ty (1 príkaz + redeploy)
 
-1. [resend.com/api-keys](https://resend.com/api-keys) → skopíruj `re_...`
-2. V Resend over doménu / sender pre `CONTACT_FROM_EMAIL`
-3. Vlož `RESEND_API_KEY` + `CONTACT_FROM_EMAIL` do Vercel (alebo daj agentovi v prompte vyššie)
-4. Spusti smoke: `SMOKE_BASE_URL=https://nexify-studio.tech pnpm test:contact:smoke`
+```bash
+cd /Users/erikbabcan/nexify-studio-tech-new-2026
+vercel env add RESEND_API_KEY production --scope h4ck3d --value "re_TVoj_KLUC" --sensitive -y
+vercel env add RESEND_API_KEY preview --scope h4ck3d --value "re_TVoj_KLUC" --sensitive -y
+vercel --prod --scope h4ck3d --yes
+SMOKE_BASE_URL=https://nexify-studio.tech pnpm test:contact:smoke
+```
+
+1. Kľúč: [resend.com/api-keys](https://resend.com/api-keys)
+2. Ak máš overený vlastný sender, uprav `CONTACT_FROM_EMAIL` vo Vercel dashboarde
+3. Po redeploy over formulár + oba inboxy
