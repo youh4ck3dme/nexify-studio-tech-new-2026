@@ -1,27 +1,15 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { sendContactEmail } from "@/lib/contact/send-email";
+import { parseContactPayload, type ContactPayload } from "@/lib/contact/validate";
 
-const resendApiKey = process.env.RESEND_API_KEY;
-
-const toEmail = process.env.CONTACT_TO_EMAIL || "magicasro@hotmail.com";
-const copyEmail = process.env.CONTACT_COPY_EMAIL || "erikbabcan@gmail.com";
-const fromEmail = process.env.CONTACT_FROM_EMAIL || "onboarding@resend.dev";
-
-type ContactPayload = {
-  name?: unknown;
-  email?: unknown;
-  phone?: unknown;
-  message?: unknown;
-};
-
-function asNonEmptyString(value: unknown) {
-  if (typeof value !== "string") return null;
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
-}
-
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+function getContactConfig() {
+  return {
+    resendApiKey: process.env.RESEND_API_KEY,
+    toEmail: process.env.CONTACT_TO_EMAIL || "magicasro@hotmail.com",
+    copyEmail: process.env.CONTACT_COPY_EMAIL || "erikbabcan@gmail.com",
+    fromEmail: process.env.CONTACT_FROM_EMAIL || "onboarding@resend.dev",
+  };
 }
 
 export async function POST(request: Request) {
@@ -32,21 +20,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON payload." }, { status: 400 });
   }
 
-  const name = asNonEmptyString(payload.name);
-  const email = asNonEmptyString(payload.email);
-  const phone = asNonEmptyString(payload.phone) || "Neuvedené";
-  const message = asNonEmptyString(payload.message);
-
-  if (!name || !email || !message) {
-    return NextResponse.json(
-      { error: "Meno, email a správa sú povinné." },
-      { status: 400 }
-    );
+  const parsed = parseContactPayload(payload);
+  if (!parsed.ok) {
+    return NextResponse.json({ error: parsed.error }, { status: parsed.status });
   }
 
-  if (!isValidEmail(email)) {
-    return NextResponse.json({ error: "Neplatný email." }, { status: 400 });
-  }
+  const { resendApiKey, fromEmail, toEmail, copyEmail } = getContactConfig();
 
   if (!resendApiKey) {
     return NextResponse.json(
@@ -56,25 +35,12 @@ export async function POST(request: Request) {
   }
 
   const resend = new Resend(resendApiKey);
-  const subject = `Nová správa z webu - ${name}`;
-  const text = [
-    "Nový kontakt z formulára",
-    `Meno: ${name}`,
-    `Email: ${email}`,
-    `Telefón: ${phone}`,
-    "",
-    "Správa:",
-    message,
-  ].join("\n");
 
   try {
-    await resend.emails.send({
-      from: fromEmail,
-      to: [toEmail],
-      cc: [copyEmail],
-      replyTo: email,
-      subject,
-      text,
+    await sendContactEmail(resend, parsed.data, {
+      fromEmail,
+      toEmail,
+      copyEmail,
     });
 
     return NextResponse.json({ ok: true });

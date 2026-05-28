@@ -37,6 +37,46 @@ Required environment variables:
 
 Important: `CONTACT_FROM_EMAIL` must be a verified sender in Resend. If you use a non-verified sender, delivery will fail.
 
+### Tests
+
+```bash
+pnpm test
+```
+
+Unit tests cover contact validation, email payload, and the `/api/contact` route (mocked Resend).
+
+### Smoke test (live email)
+
+Requires a running app and configured env (`.env.local` locally or Vercel Production env):
+
+```bash
+pnpm dev
+# in another terminal:
+RESEND_API_KEY=re_... CONTACT_FROM_EMAIL=verified@yourdomain.com pnpm test:contact:smoke
+
+# production:
+SMOKE_BASE_URL=https://nexify-studio.tech pnpm test:contact:smoke
+```
+
+Smoke sends a message prefixed with `[SMOKE]`. Check `CONTACT_TO_EMAIL` and `CONTACT_COPY_EMAIL` inboxes.
+
+### Go-live checklist
+
+- [ ] Vercel env: `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `CONTACT_TO_EMAIL`, `CONTACT_COPY_EMAIL`
+- [ ] Redeploy after env changes
+- [ ] `pnpm test` passes
+- [ ] Smoke test on production
+- [ ] Chrome DevTools → Application → Manifest (192 + 512 icons, no errors)
+- [ ] Install app from browser (desktop/mobile)
+- [ ] Offline: disconnect network, reload → `/~offline` fallback
+
+## PWA
+
+- Manifest: `public/manifest.webmanifest`
+- Service worker: generated at build to `public/sw.js` (Serwist, production only)
+- Regenerate PNG icons from `public/icon.svg`: `pnpm icons:generate`
+- Install prompt in navigation; iOS uses Share → Add to Home Screen
+
 ## Learn More
 
 To learn more, take a look at the following resources:

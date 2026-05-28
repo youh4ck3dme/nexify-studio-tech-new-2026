@@ -7,6 +7,10 @@
 /.next/
 /out/
 
+# Serwist
+public/sw.js
+public/swe-worker*
+
 # production
 /build
 
