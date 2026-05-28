@@ -7,6 +7,9 @@ import { AnimatedSphere } from "./animated-sphere";
 
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
+  const firstLine = "Zviditeľnite sa";
+  const secondLinePrefix = "a buďte";
+  const secondLineHighlight = "online";
 
   useEffect(() => {
     setIsVisible(true);
@@ -65,13 +68,11 @@ export function HeroSection() {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            <span className="block">Zviditeľnite sa</span>
+            <span className="block">{firstLine}</span>
             <span className="block">
-              a buďte{" "}
+              {secondLinePrefix}{" "}
               <span className="relative inline-block">
-                <span className="inline-block">
-                  správne nastavení online
-                </span>
+                <span className="inline-block">{secondLineHighlight}</span>
                 <span className="absolute -bottom-2 left-0 right-0 h-3 bg-foreground/10" />
               </span>
             </span>
