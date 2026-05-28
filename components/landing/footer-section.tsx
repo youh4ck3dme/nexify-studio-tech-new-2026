@@ -17,7 +17,7 @@ const footerLinks = {
     { name: "Cenník", href: "#pricing" },
   ],
   Kontakt: [
-    { name: "Email", href: "mailto:info@nexify-studio.tech" },
+    { name: "Email", href: "mailto:magicasro@hotmail.com" },
     { name: "Telefón", href: "tel:+421900123456" },
     { name: "+421 917 488 903", href: "tel:+421917488903" },
     { name: "Kontakt", href: "#contact" },

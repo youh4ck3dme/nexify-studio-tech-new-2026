@@ -80,7 +80,7 @@ export function CtaSection() {
                 </div>
 
                 <p className="text-sm text-muted-foreground mt-8 font-mono">
-                  📧 info@nexify-studio.tech | 📞 +421 900 123 456
+                  📧 magicasro@hotmail.com | 📞 +421 900 123 456
                 </p>
               </div>
 
