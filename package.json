@@ -5,10 +5,13 @@
   "scripts": {
     "build": "next build --webpack",
     "dev": "next dev",
+    "clean": "node scripts/cleanup-project.mjs",
     "icons:generate": "node scripts/generate-pwa-icons.mjs",
     "lint": "eslint .",
     "start": "next start",
     "test": "vitest run",
+    "test:pwa": "vitest run lib/pwa/pwa.test.ts",
+    "test:pwa:x10": "node scripts/run-pwa-tests-x10.mjs",
     "test:contact:smoke": "node scripts/contact-smoke.mjs"
   },
   "dependencies": {

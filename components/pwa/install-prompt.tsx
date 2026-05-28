@@ -24,12 +24,14 @@ function isStandalone() {
 }
 
 export function InstallPrompt() {
+  const [mounted, setMounted] = useState(false);
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
   const [dismissed, setDismissed] = useState(false);
   const [showIosHint, setShowIosHint] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     if (isStandalone()) return;
 
     const onBeforeInstall = (event: Event) => {
@@ -43,7 +45,7 @@ export function InstallPrompt() {
     };
   }, []);
 
-  if (isStandalone() || dismissed) return null;
+  if (!mounted || isStandalone() || dismissed) return null;
 
   const handleInstall = async () => {
     if (deferredPrompt) {
