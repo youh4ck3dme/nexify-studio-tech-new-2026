@@ -24,6 +24,12 @@ export const metadata: Metadata = {
   title: 'Optimus - Platform to Create',
   description: 'The creative platform for teams who ship. Build, deploy, and scale with unprecedented velocity.',
   generator: 'v0.app',
+  manifest: '/manifest.webmanifest',
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/favicon.ico',
+    apple: '/icon.svg',
+  },
 }
 
 export default function RootLayout({
