@@ -21,6 +21,10 @@ const footerLinks = {
     { name: "Telefón", href: "tel:+421900123456" },
     { name: "Bratislava", href: "#" },
     { name: "Konzultácia", href: "#contact" },
+    { name: "MA.GI.CA., s.r.o.", href: "#", isCompanyInfo: true },
+    { name: "Partizánska 101/45, 965 01 Žiar nad Hronom", href: "#", isCompanyInfo: true },
+    { name: "IČO: 31677517", href: "#", isCompanyInfo: true },
+    { name: "DIČ: 2020491550", href: "#", isCompanyInfo: true },
   ],
   Právne: [
     { name: "Ochrana súkromia", href: "#" },
@@ -79,17 +83,23 @@ export function FooterSection() {
                 <ul className="space-y-4">
                   {links.map((link) => (
                     <li key={link.name}>
-                      <a
-                        href={link.href}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
-                      >
-                        {link.name}
-                        {"badge" in link && link.badge && (
-                          <span className="text-xs px-2 py-0.5 bg-foreground text-background rounded-full">
-                            {link.badge}
-                          </span>
-                        )}
-                      </a>
+                      {("isCompanyInfo" in link && link.isCompanyInfo) ? (
+                        <div className="text-sm text-muted-foreground">
+                          {link.name}
+                        </div>
+                      ) : (
+                        <a
+                          href={link.href}
+                          className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
+                        >
+                          {link.name}
+                          {"badge" in link && link.badge && (
+                            <span className="text-xs px-2 py-0.5 bg-foreground text-background rounded-full">
+                              {link.badge}
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </li>
                   ))}
                 </ul>
