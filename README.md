@@ -24,6 +24,19 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+## Contact form (Resend)
+
+The contact section posts to `/api/contact` and sends emails through Resend.
+
+Required environment variables:
+
+- `RESEND_API_KEY`
+- `CONTACT_FROM_EMAIL`
+- `CONTACT_TO_EMAIL` (defaults to `magicasro@hotmail.com`)
+- `CONTACT_COPY_EMAIL` (defaults to `erikbabcan@gmail.com`)
+
+Important: `CONTACT_FROM_EMAIL` must be a verified sender in Resend. If you use a non-verified sender, delivery will fail.
+
 ## Learn More
 
 To learn more, take a look at the following resources:
