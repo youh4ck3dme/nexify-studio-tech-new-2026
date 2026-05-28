@@ -19,6 +19,7 @@ const footerLinks = {
   Kontakt: [
     { name: "Email", href: "mailto:info@nexify-studio.tech" },
     { name: "Telefón", href: "tel:+421900123456" },
+    { name: "+421 917 488 903", href: "tel:+421917488903" },
     { name: "Bratislava", href: "#" },
     { name: "Konzultácia", href: "#contact" },
     { name: "MA.GI.CA., s.r.o.", href: "#", isCompanyInfo: true },
