@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { AnimatedSphere } from "./animated-sphere";
 
-const words = ["create", "build", "scale", "ship"];
+const words = ["viditeľní", "rasteli", "konvertovali", "uspeli"];
 
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -64,7 +64,7 @@ export function HeroSection() {
         >
           <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground">
             <span className="w-8 h-px bg-foreground/30" />
-            The platform for modern teams
+            Digitálne riešenia na jeden klik
           </span>
         </div>
         
@@ -75,9 +75,9 @@ export function HeroSection() {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            <span className="block">The platform</span>
+            <span className="block">Zviditeľnite sa</span>
             <span className="block">
-              to{" "}
+              a buďte{" "}
               <span className="relative inline-block">
                 <span 
                   key={wordIndex}
@@ -108,8 +108,8 @@ export function HeroSection() {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Your toolkit to stop configuring and start innovating. 
-            Securely build, deploy, and scale the best experiences.
+            Od SEO a Google marketingu po custom weby, CMS a aplikácie – 
+            dodáme vám všetko, čo potrebujete na rast vášho businessu.
           </p>
           
           {/* CTAs */}
@@ -122,7 +122,7 @@ export function HeroSection() {
               size="lg" 
               className="bg-foreground hover:bg-foreground/90 text-background px-8 h-14 text-base rounded-full group"
             >
-              Start free trial
+              Chcem viac zákazníkov
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button 
@@ -130,7 +130,7 @@ export function HeroSection() {
               variant="outline" 
               className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
             >
-              Watch demo
+              Ako to funguje?
             </Button>
           </div>
         </div>
@@ -147,10 +147,10 @@ export function HeroSection() {
           {[...Array(2)].map((_, i) => (
             <div key={i} className="flex gap-16">
               {[
-                { value: "20 days", label: "saved on builds", company: "NETFLIX" },
-                { value: "98%", label: "faster deployment", company: "STRIPE" },
-                { value: "300%", label: "throughput increase", company: "LINEAR" },
-                { value: "6x", label: "faster to ship", company: "NOTION" },
+                { value: "+300%", label: "Zvýšenie návštevnosti", company: "Kaviareň" },
+                { value: "<1s", label: "Rýchlosť načítania", company: "E-shop" },
+                { value: "+150%", label: "Konverzný pomér", company: "Fitness" },
+                { value: "98%", label: "Spokojní klienti", company: "Nexify" },
               ].map((stat) => (
                 <div key={`${stat.company}-${i}`} className="flex items-baseline gap-4">
                   <span className="text-4xl lg:text-5xl font-display">{stat.value}</span>

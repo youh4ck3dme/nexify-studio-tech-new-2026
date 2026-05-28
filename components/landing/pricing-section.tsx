@@ -5,50 +5,50 @@ import { ArrowRight, Check } from "lucide-react";
 
 const plans = [
   {
-    name: "Starter",
-    description: "For individuals and small projects",
-    price: { monthly: 0, annual: 0 },
+    name: "Základný",
+    description: "Ideálne pre malé podnikanie",
+    price: { monthly: 299, annual: 2990 },
     features: [
-      "Up to 3 projects",
-      "1GB storage",
-      "Community support",
-      "Basic analytics",
-      "SSL certificates",
+      "SEO optimalizácia",
+      "Google Ads kredit (500€)",
+      "Základný web",
+      "Bezplatná konzultácia",
+      "SEO audit",
+      "Podpora 24/7",
     ],
-    cta: "Start free",
+    cta: "Začať teraz",
     popular: false,
   },
   {
-    name: "Pro",
-    description: "For growing teams and businesses",
-    price: { monthly: 29, annual: 24 },
+    name: "Profesionál",
+    description: "Ideálne pre stredné firmy",
+    price: { monthly: 799, annual: 7990 },
     features: [
-      "Unlimited projects",
-      "100GB storage",
-      "Priority support",
-      "Advanced analytics",
-      "Custom domains",
-      "Team collaboration",
-      "API access",
+      "Všetko z Základného",
+      "Custom web",
+      "CMS systém",
+      "Booking systém",
+      "Podrobné reporty",
+      "Mesačné konzultácie",
+      "Prioritná podpora",
     ],
-    cta: "Start trial",
+    cta: "Vyskúšať",
     popular: true,
   },
   {
     name: "Enterprise",
-    description: "For large-scale operations",
+    description: "Ideálne pre veľké spoločnosti",
     price: { monthly: null, annual: null },
     features: [
-      "Everything in Pro",
-      "Unlimited storage",
-      "24/7 dedicated support",
-      "Custom integrations",
-      "SLA guarantee",
-      "On-premise option",
-      "Security audit",
-      "Custom contracts",
+      "Všetko z Profesionála",
+      "Vlastné aplikácie",
+      "API integrácie",
+      "Dedikovaný tím",
+      "Neobmedzená podpora",
+      "Custom riešenia",
+      "Školenie klientov",
     ],
-    cta: "Contact sales",
+    cta: "Kontaktovať nás",
     popular: false,
   },
 ];
@@ -62,15 +62,15 @@ export function PricingSection() {
         {/* Header */}
         <div className="max-w-3xl mb-20">
           <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase block mb-6">
-            Pricing
+            Cenník
           </span>
           <h2 className="font-display text-5xl md:text-6xl lg:text-7xl tracking-tight text-foreground mb-6">
-            Simple, transparent
+            Jednoduché a transparentné
             <br />
-            <span className="text-stroke">pricing</span>
+            <span className="text-stroke">ceny</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-xl">
-            Start free and scale as you grow. No hidden fees, no surprises.
+            Bez skrytých poplatkov, bez prekvapení. Izba pre rast vášho businessu.
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export function PricingSection() {
               !isAnnual ? "text-foreground" : "text-muted-foreground"
             }`}
           >
-            Monthly
+            Mesačne
           </span>
           <button
             onClick={() => setIsAnnual(!isAnnual)}
@@ -98,11 +98,11 @@ export function PricingSection() {
               isAnnual ? "text-foreground" : "text-muted-foreground"
             }`}
           >
-            Annual
+            Ročne
           </span>
           {isAnnual && (
             <span className="ml-2 px-2 py-1 bg-foreground text-primary-foreground text-xs font-mono">
-              Save 17%
+              Úspora 17%
             </span>
           )}
         </div>
@@ -118,7 +118,7 @@ export function PricingSection() {
             >
               {plan.popular && (
                 <span className="absolute -top-3 left-8 px-3 py-1 bg-foreground text-primary-foreground text-xs font-mono uppercase tracking-widest">
-                  Most Popular
+                  Najobľúbenejší
                 </span>
               )}
 
@@ -136,12 +136,12 @@ export function PricingSection() {
                 {plan.price.monthly !== null ? (
                   <div className="flex items-baseline gap-2">
                     <span className="font-display text-5xl lg:text-6xl text-foreground">
-                      ${isAnnual ? plan.price.annual : plan.price.monthly}
+                      €{isAnnual ? plan.price.annual : plan.price.monthly}
                     </span>
-                    <span className="text-muted-foreground">/month</span>
+                    <span className="text-muted-foreground">/{isAnnual ? "rok" : "mesiac"}</span>
                   </div>
                 ) : (
-                  <span className="font-display text-4xl text-foreground">Custom</span>
+                  <span className="font-display text-4xl text-foreground">Na mieru</span>
                 )}
               </div>
 
@@ -172,9 +172,9 @@ export function PricingSection() {
 
         {/* Bottom Note */}
         <p className="mt-12 text-center text-sm text-muted-foreground">
-          All plans include automatic updates, HTTPS, and DDoS protection.{" "}
+          Všetky balíky obsahujú bezplatnú konzultáciu, SEO audit a podporu 24/7.{" "}
           <a href="#" className="underline underline-offset-4 hover:text-foreground transition-colors">
-            Compare all features
+            Porovnať všetky funkcie
           </a>
         </p>
       </div>

@@ -5,27 +5,33 @@ import { useEffect, useRef, useState } from "react";
 const features = [
   {
     number: "01",
-    title: "Instant Deployment",
-    description: "Push to production in seconds. Our edge network ensures your applications load instantly, anywhere in the world.",
+    title: "SEO Optimalizácia",
+    description: "Zviditeľnite sa na prvých miestach v Google. Kľúčové slová na mieru vášmu businessu, analýza konkurencie a meranie výkonu. Výsledok: +200% návštevnosť do 6 mesiacov.",
     visual: "deploy",
   },
   {
     number: "02",
-    title: "AI-Native Workflows",
-    description: "Build intelligent applications with built-in AI capabilities. From inference to training, everything scales automatically.",
+    title: "Google Marketing (PPC)",
+    description: "Získajte zákazníkov ihneď cez cielené reklamy. Platíte len za skutočných zákazníkov. Priame telefónne hovory a formuláre od zákazníkov. Výsledok: 5x viac poptávok v prvom mesiaci.",
     visual: "ai",
   },
   {
     number: "03",
-    title: "Real-time Collaboration",
-    description: "Work together seamlessly. Live preview, instant feedback, and version control that actually makes sense.",
+    title: "Custom Webové Stránky",
+    description: "Moderný, rýchly a mobilný web, ktorý zaujme a predá. Unikátny dizajn bez šablón, bleskovo rýchly (pod 1 sekundu) a SEO optimalizovaný. Výsledok: 70% nižšia odchodnosť návštevníkov.",
     visual: "collab",
   },
   {
     number: "04",
-    title: "Enterprise Security",
-    description: "Bank-grade encryption, SOC 2 compliance, and granular access controls. Your data stays yours.",
+    title: "CMS Systémy",
+    description: "Jednoduchá správa obsahu bez programátora. Editujte texty, fotky a články sami, kedykoľvek. Automatické aktualizácie a responzívny design. Výsledok: Úspora 50% nákladov na údržbu.",
     visual: "security",
+  },
+  {
+    number: "05",
+    title: "Booking Systémy & Aplikácie",
+    description: "Automatizujte váš business. Online rezervácie 24/7, synchronizácia s kalendárom, platby online. Vaši zákazníci si rezervujú sami. Výsledok: 30% viac rezervácií a bez chýb.",
+    visual: "deploy",
   },
 ];
 
@@ -314,7 +320,7 @@ export function FeaturesSection() {
 
   return (
     <section
-      id="features"
+      id="services"
       ref={sectionRef}
       className="relative py-24 lg:py-32"
     >
@@ -323,16 +329,16 @@ export function FeaturesSection() {
         <div className="mb-16 lg:mb-24">
           <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
             <span className="w-8 h-px bg-foreground/30" />
-            Capabilities
+            Naše služby
           </span>
           <h2
             className={`text-4xl lg:text-6xl font-display tracking-tight transition-all duration-700 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Everything you need.
+            Všetko, čo potrebujete na rast.
             <br />
-            <span className="text-muted-foreground">Nothing you don&apos;t.</span>
+            <span className="text-muted-foreground">Od SEO po aplikácie.</span>
           </h2>
         </div>
 

@@ -17,13 +17,9 @@ export default function Home() {
     <main className="relative min-h-screen overflow-x-hidden noise-overlay">
       <Navigation />
       <HeroSection />
+      <MetricsSection />
       <FeaturesSection />
       <HowItWorksSection />
-      <InfrastructureSection />
-      <MetricsSection />
-      <IntegrationsSection />
-      <SecuritySection />
-      <DevelopersSection />
       <TestimonialsSection />
       <PricingSection />
       <CtaSection />

@@ -4,32 +4,32 @@ import { useEffect, useState } from "react";
 
 const testimonials = [
   {
-    quote: "Optimus transformed our deployment pipeline. What used to take hours now happens in seconds.",
-    author: "Sarah Chen",
-    role: "CTO",
-    company: "Meridian Labs",
-    metric: "10x faster deployments",
+    quote: "Návštevnosť nám stúpla o 400%! Dnes máme toľko klientov, že musíme otvárať novú pobočku. Ďakujeme Nexify Studio!",
+    author: "Marek K.",
+    role: "Majiteľ",
+    company: "Fitness Centrum",
+    metric: "+400% návštevnosť",
   },
   {
-    quote: "The developer experience is unmatched. Our team's productivity has never been higher.",
-    author: "Marcus Webb",
-    role: "Engineering Lead",
-    company: "Flux Systems",
-    metric: "40% more features shipped",
+    quote: "Booking systém nám ušetril 20 hodín týždenne. Už nemusíme zvedať telefón – zákazníci si rezervujú sami.",
+    author: "Lucia P.",
+    role: "Majiteľka",
+    company: "Kaviareň",
+    metric: "20h/týždeň úspora",
   },
   {
-    quote: "Finally, infrastructure that scales with our ambition. Zero downtime since we switched.",
-    author: "Elena Rodriguez",
-    role: "VP Engineering",
-    company: "Beacon AI",
-    metric: "99.99% uptime",
+    quote: "Web nám predáva, aj keď spíme. Konverzný pomér sa zdvojnásobil!",
+    author: "Ján T.",
+    role: "Majiteľ",
+    company: "E-shop s doplnkami",
+    metric: "+200% konverzií",
   },
   {
-    quote: "The integrations are seamless. We connected our entire stack in a single afternoon.",
-    author: "James Liu",
-    role: "Founder",
-    company: "Prism Analytics",
-    metric: "50+ integrations used",
+    quote: "Tím Nexify bol profesionálny a rýchly. Web bol hotový za 7 dní a všetko funguje perfektne.",
+    author: "Anna S.",
+    role: "Majiteľka",
+    company: "Beauty Salon",
+    metric: "Hotovo za 7 dní",
   },
 ];
 
@@ -56,7 +56,7 @@ export function TestimonialsSection() {
         {/* Section Label */}
         <div className="flex items-center gap-4 mb-16">
           <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-            What people say
+            Čo hovoria naši klienti
           </span>
           <div className="flex-1 h-px bg-foreground/10" />
           <span className="font-mono text-xs text-muted-foreground">
@@ -105,7 +105,7 @@ export function TestimonialsSection() {
               }`}
             >
               <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase block mb-4">
-                Key Result
+                Výsledok
               </span>
               <p className="font-display text-3xl md:text-4xl text-foreground">
                 {activeTestimonial.metric}
@@ -138,7 +138,7 @@ export function TestimonialsSection() {
         {/* Company Logos Marquee Label */}
         <div className="mt-24 pt-12 border-t border-foreground/10">
           <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase mb-8 text-center">
-            Trusted by forward-thinking teams
+            Dôverujem nám naši klienti
           </p>
         </div>
       </div>
@@ -148,7 +148,7 @@ export function TestimonialsSection() {
         <div className="flex gap-16 items-center marquee">
           {[...Array(2)].map((_, setIdx) => (
             <div key={setIdx} className="flex gap-16 items-center shrink-0">
-              {["Meridian Labs", "Flux Systems", "Beacon AI", "Prism Analytics", "Nova Tech", "Quantum Corp", "Atlas Digital", "Vertex Labs"].map(
+              {["Fitness Centrum", "Kaviareň", "E-shop", "Beauty Salon", "Kancelária", "Kostolná", "Reštaurácia", "Lekáreň"].map(
                 (company) => (
                   <span
                     key={`${setIdx}-${company}`}
