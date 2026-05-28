@@ -5,38 +5,46 @@ import { useEffect, useRef, useState } from "react";
 const steps = [
   {
     number: "I",
-    title: "Connect your tools",
-    description: "Integrate with your existing stack in minutes. We support 200+ data sources out of the box.",
-    code: `import { optimus } from '@optimus/core'
+    title: "Konzultácia (Zadarmo)",
+    description: "Popíšete nám váš business a cieľ. My analyzujeme váš súčasný stav a navrhneme riešenie na mieru.",
+    code: `// Vaša situácia
+business: 'Máte web?'
+visitors: 'Koľko mesiacne?'
+goal: 'Čo chcete dosiahnuť?'
 
-optimus.connect({
-  source: 'your-database',
-  sync: true
-})`,
+// Náš návrh:
+solution: 'SEO + Web + CMS'
+timeline: '7 dní'
+investment: 'Od 299€/mes'`,
   },
   {
     number: "II",
-    title: "Build your workflow",
-    description: "Design powerful automations with our visual builder or write code directly.",
-    code: `optimus.workflow('process', {
-  trigger: 'event',
-  actions: [
-    'validate',
-    'transform', 
-    'deliver'
-  ]
-})`,
+    title: "Návrh & Schvaľovanie",
+    description: "Vytvoríme prototyp (wireframe). Upravíme podľa vašich požiadaviek. Schváliť pred spustením.",
+    code: `// Čo vám ukážeme:
+design: 'Vizuálny návrh'
+features: 'Funkcie webu'
+timeline: 'Harmonogram'
+budget: 'Presný rozpočet'
+
+// Vašej feedback:
+approval: 'Schválite'
+changes: 'Upravy'
+start: 'Ideme do výroby'`,
   },
   {
     number: "III",
-    title: "Ship to production",
-    description: "Deploy globally with zero configuration. Your app goes live in under 30 seconds.",
-    code: `optimus.deploy({
-  target: 'production',
-  regions: 'auto'
-})
+    title: "Implementácia & Spustenie",
+    description: "Vyvinieme a otestujeme. Spustíme a optimalizujeme. Školíme vás, ako to používať.",
+    code: `// Vývoj & testovanie
+development: '7-14 dní'
+testing: 'QA & optimalizácia'
+optimization: 'SEO + Performance'
 
-// Deployed to 12 regions`,
+// Spustenie & podpora
+launch: 'Na predaj!'
+support: '24/7 podpora'
+training: 'Ako to používať'`,
   },
 ];
 
@@ -88,16 +96,16 @@ export function HowItWorksSection() {
         <div className="mb-16 lg:mb-24">
           <span className="inline-flex items-center gap-3 text-sm font-mono text-background/50 mb-6">
             <span className="w-8 h-px bg-background/30" />
-            Process
+            Proces
           </span>
           <h2
             className={`text-4xl lg:text-6xl font-display tracking-tight transition-all duration-700 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Three steps.
+            Tri kroky.
             <br />
-            <span className="text-background/50">Infinite possibilities.</span>
+            <span className="text-background/50">Od nápadu k realite.</span>
           </h2>
         </div>
 

@@ -46,28 +46,28 @@ function AnimatedCounter({ end, suffix = "", prefix = "" }: { end: number; suffi
 
 const metrics = [
   { 
-    value: 2847392, 
-    suffix: "", 
-    prefix: "",
-    label: "API requests today",
+    value: 300, 
+    suffix: "%", 
+    prefix: "+",
+    label: "Zvýšenie návštevnosti",
   },
   { 
-    value: 99, 
-    suffix: ".99%", 
-    prefix: "",
-    label: "Uptime this quarter",
+    value: 1, 
+    suffix: "s", 
+    prefix: "<",
+    label: "Rýchlosť načítania webu",
   },
   { 
-    value: 23, 
-    suffix: "ms", 
+    value: 98, 
+    suffix: "%", 
     prefix: "",
-    label: "Average response time",
+    label: "Spokojnosť klientov",
   },
   { 
-    value: 184, 
-    suffix: "", 
+    value: 7, 
+    suffix: "dní", 
     prefix: "",
-    label: "Countries served",
+    label: "Čas na spustenie webu",
   },
 ];
 
@@ -101,25 +101,25 @@ export function MetricsSection() {
           <div>
             <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
               <span className="w-8 h-px bg-foreground/30" />
-              Live metrics
+              Výsledky našich klientov
             </span>
             <h2
               className={`text-4xl lg:text-6xl font-display tracking-tight transition-all duration-700 ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
             >
-              Performance you
+              Výsledky, ktoré
               <br />
-              can measure.
+              môžete merať.
             </h2>
           </div>
           <div className="flex items-center gap-4 font-mono text-sm text-muted-foreground">
             <span className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              Live
+              Overené
             </span>
             <span className="text-foreground/30">|</span>
-            <span>{time.toLocaleTimeString()}</span>
+            <span>Reálne dáta</span>
           </div>
         </div>
         
