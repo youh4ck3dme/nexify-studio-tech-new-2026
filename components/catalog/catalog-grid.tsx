@@ -1,15 +1,23 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { allProducts, type CatalogCategoryId } from "@/lib/catalog";
 import { CatalogHero } from "@/components/catalog/catalog-hero";
 import { CategoryFilter } from "@/components/catalog/category-filter";
 import { ProductCard } from "@/components/catalog/product-card";
 
-export function CatalogGrid() {
+type CatalogGridProps = {
+  initialCategory?: CatalogCategoryId | "all";
+};
+
+export function CatalogGrid({ initialCategory = "all" }: CatalogGridProps) {
   const [activeCategory, setActiveCategory] = useState<CatalogCategoryId | "all">(
-    "all"
+    initialCategory
   );
+
+  useEffect(() => {
+    setActiveCategory(initialCategory);
+  }, [initialCategory]);
 
   const filteredProducts = useMemo(() => {
     if (activeCategory === "all") return allProducts;

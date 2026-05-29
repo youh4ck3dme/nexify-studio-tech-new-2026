@@ -21,6 +21,10 @@ test.describe("Homepage", () => {
   test("4/30 has pricing section", async ({ page }) => {
     await page.goto("/#pricing");
     await expect(page.locator("#pricing")).toBeVisible();
+    await expect(page.locator("#produkty")).toBeVisible();
+    await expect(
+      page.locator("#produkty").getByRole("heading", { name: /ceny/i })
+    ).toBeVisible();
   });
 
   test("5/30 has contact section with form", async ({ page }) => {

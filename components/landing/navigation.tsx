@@ -9,7 +9,7 @@ import { InstallPrompt } from "@/components/pwa/install-prompt";
 const navLinks = [
   { name: "Domov", href: "/" },
   { name: "Služby", href: "/#services" },
-  { name: "Produkty", href: "/produkty" },
+  { name: "Produkty", href: "/#produkty" },
   { name: "Ako to funguje", href: "/#how-it-works" },
   { name: "Referencie", href: "/#testimonials" },
   { name: "Cenník", href: "/#pricing" },

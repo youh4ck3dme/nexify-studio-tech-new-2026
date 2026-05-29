@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { TechProvidersMarquee } from "@/components/landing/tech-providers-marquee";
 
 const testimonials = [
   {
@@ -135,32 +136,7 @@ export function TestimonialsSection() {
           </div>
         </div>
 
-        {/* Company Logos Marquee Label */}
-        <div className="mt-24 pt-12 border-t border-foreground/10">
-          <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase mb-8 text-center">
-            Dôverujem nám naši klienti
-          </p>
-        </div>
-      </div>
-      
-      {/* Full-width marquee outside container */}
-      <div className="w-full">
-        <div className="flex gap-16 items-center marquee">
-          {[...Array(2)].map((_, setIdx) => (
-            <div key={setIdx} className="flex gap-16 items-center shrink-0">
-              {["Fitness Centrum", "Kaviareň", "E-shop", "Beauty Salon", "Kancelária", "Kostolná", "Reštaurácia", "Lekáreň"].map(
-                (company) => (
-                  <span
-                    key={`${setIdx}-${company}`}
-                    className="font-display text-xl md:text-2xl text-foreground/30 whitespace-nowrap hover:text-foreground transition-colors duration-300"
-                  >
-                    {company}
-                  </span>
-                )
-              )}
-            </div>
-          ))}
-        </div>
+        <TechProvidersMarquee />
       </div>
     </section>
   );

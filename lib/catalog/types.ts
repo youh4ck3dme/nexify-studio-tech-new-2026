@@ -12,6 +12,26 @@ export type CatalogCategory = {
   description: string;
 };
 
+export type HomepageCategoryIcon =
+  | "Globe"
+  | "ShoppingCart"
+  | "Smartphone"
+  | "Bot"
+  | "Shield"
+  | "TrendingUp";
+
+export type HomepageCategory = {
+  id: string;
+  name: string;
+  shortLabel: string;
+  description: string;
+  priceFrom: number;
+  pricePeriod: BillingPeriod;
+  href: string;
+  icon: HomepageCategoryIcon;
+  marqueeRow: 1 | 2;
+};
+
 export type PricingTier = {
   id: string;
   name: string;

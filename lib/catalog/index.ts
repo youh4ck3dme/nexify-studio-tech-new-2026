@@ -1,4 +1,4 @@
-import { catalogCategories } from "./categories";
+import { catalogCategories, getHomepageMarqueeRow, homepageCategories } from "./categories";
 import { aiChatbot } from "./products/ai-chatbot";
 import { aiContentGenerator } from "./products/ai-content-generator";
 import { corporateWebsite } from "./products/corporate-website";
@@ -52,5 +52,30 @@ export function formatPrice(
   return `€${price.toLocaleString("sk-SK")}${suffix}`;
 }
 
-export { catalogCategories };
-export type { CatalogCategoryId, CatalogProduct, PricingTier } from "./types";
+export {
+  catalogCategories,
+  getHomepageMarqueeRow,
+  homepageCategories,
+};
+export type {
+  CatalogCategoryId,
+  CatalogProduct,
+  HomepageCategory,
+  PricingTier,
+} from "./types";
+
+const VALID_CATEGORY_IDS = new Set<CatalogCategoryId>([
+  "web-development",
+  "mobile-apps",
+  "ai-solutions",
+  "security",
+]);
+
+export function parseCatalogCategoryParam(
+  value: string | undefined
+): CatalogCategoryId | "all" {
+  if (!value || !VALID_CATEGORY_IDS.has(value as CatalogCategoryId)) {
+    return "all";
+  }
+  return value as CatalogCategoryId;
+}

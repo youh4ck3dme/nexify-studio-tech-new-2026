@@ -10,7 +10,8 @@ test.describe("Navigation", () => {
   test("22/30 produkty nav link works", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("navigation").getByRole("link", { name: "Produkty" }).click();
-    await expect(page).toHaveURL(/\/produkty$/);
+    await expect(page).toHaveURL(/\/#produkty$/);
+    await expect(page.locator("#produkty")).toBeVisible();
   });
 
   test("23/30 breadcrumb on product detail", async ({ page }) => {
@@ -37,6 +38,7 @@ test.describe("Navigation", () => {
     await page.goto("/");
     await page.getByRole("button", { name: "Toggle menu" }).click();
     await page.getByRole("link", { name: "Produkty" }).click();
-    await expect(page).toHaveURL(/\/produkty$/);
+    await expect(page).toHaveURL(/\/#produkty$/);
+    await expect(page.locator("#produkty")).toBeVisible();
   });
 });

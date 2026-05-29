@@ -46,9 +46,13 @@ test.describe("Catalog", () => {
     await expect(page.getByRole("link", { name: "Detail produktu" })).toHaveCount(7);
   });
 
-  test("13/30 homepage catalog preview links to catalog", async ({ page }) => {
+  test("13/30 homepage category marquee links to catalog", async ({ page }) => {
     await page.goto("/#produkty");
     await expect(page.locator("#produkty")).toBeVisible();
+    await expect(
+      page.locator("#produkty").getByRole("heading", { name: /Jednoduché a transparentné/i })
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "Kategória: Firemné weby" }).first()).toBeVisible();
     await page.getByRole("link", { name: "Zobraziť celý katalóg" }).click();
     await expect(page).toHaveURL(/\/produkty$/);
   });

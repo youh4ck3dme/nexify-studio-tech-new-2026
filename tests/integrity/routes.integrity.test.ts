@@ -31,17 +31,17 @@ describe("integrity: routes and pages", () => {
     expect(page).toContain("ProductDetail");
   });
 
-  it("34/40 navigation links to /produkty", () => {
+  it("34/40 navigation links to produkty section", () => {
     const nav = readFileSync(
       path.join(root, "components/landing/navigation.tsx"),
       "utf-8"
     );
-    expect(nav).toContain('href: "/produkty"');
+    expect(nav).toContain('href: "/#produkty"');
   });
 
-  it("35/40 homepage includes catalog preview section", () => {
+  it("35/40 homepage includes category marquee section", () => {
     const page = readFileSync(path.join(root, "app/page.tsx"), "utf-8");
-    expect(page).toContain("CatalogPreviewSection");
+    expect(page).toContain("CategoryMarqueeSection");
   });
 
   it("36/40 offline page exists with Slovak copy", () => {
