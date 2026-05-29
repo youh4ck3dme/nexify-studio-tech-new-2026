@@ -58,12 +58,12 @@ export const homepageCategories: HomepageCategory[] = [
   },
   {
     id: "digital-growth",
-    name: "Digitálny rast",
-    shortLabel: "Rast",
-    description: "SEO, analytika a konverzie",
-    priceFrom: 299,
+    name: "SEO balíky",
+    shortLabel: "SEO",
+    description: "Lokálne SEO, obsah a AI dominancia",
+    priceFrom: 250,
     pricePeriod: "monthly",
-    href: "/#contact",
+    href: "/produkty/seo-baliky",
     icon: "TrendingUp",
     marqueeRow: 2,
   },
@@ -93,5 +93,10 @@ export const catalogCategories: CatalogCategory[] = [
     id: "security",
     name: "Bezpečnostné služby",
     description: "Penetračné testy, audit a nápravné plány.",
+  },
+  {
+    id: "seo-marketing",
+    name: "SEO a digitálny marketing",
+    description: "Mesačné SEO balíky, lokálna viditeľnosť a organický rast.",
   },
 ];

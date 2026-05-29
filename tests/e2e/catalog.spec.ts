@@ -11,7 +11,7 @@ test.describe("Catalog", () => {
   test("7/30 shows all product cards by default", async ({ page }) => {
     await page.goto("/produkty");
     await expect(page.getByRole("link", { name: "Detail produktu" })).toHaveCount(
-      7
+      8
     );
   });
 
@@ -39,6 +39,12 @@ test.describe("Catalog", () => {
     await expect(page.getByRole("link", { name: "Detail produktu" })).toHaveCount(1);
   });
 
+  test("11b/30 filters seo-marketing category", async ({ page }) => {
+    await page.goto("/produkty");
+    await page.getByRole("button", { name: "SEO a digitálny marketing" }).click();
+    await expect(page.getByRole("heading", { name: "SEO balíky" })).toBeVisible();
+  });
+
   test("12/30 reset filter shows all products", async ({ page }) => {
     await page.addInitScript(() => {
       localStorage.setItem("nexify-cookie-consent-v1", "all");
@@ -46,7 +52,7 @@ test.describe("Catalog", () => {
     await page.goto("/produkty");
     await page.getByRole("button", { name: "Bezpečnostné služby" }).click();
     await page.getByRole("button", { name: "Všetko", exact: true }).click();
-    await expect(page.getByRole("link", { name: "Detail produktu" })).toHaveCount(7);
+    await expect(page.getByRole("link", { name: "Detail produktu" })).toHaveCount(8);
   });
 
   test("13/30 homepage category marquee links to catalog", async ({ page }) => {
@@ -61,6 +67,7 @@ test.describe("Catalog", () => {
     await expect(
       page.getByRole("link", { name: "Kategória: Firemné weby" }).first()
     ).toHaveAttribute("href", "/sluzby/firemne-weby");
+    await page.locator("#produkty").getByRole("link", { name: "Zobraziť celý katalóg" }).scrollIntoViewIfNeeded();
     await page.locator("#produkty").getByRole("link", { name: "Zobraziť celý katalóg" }).click();
     await expect(page).toHaveURL(/\/produkty$/);
   });

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Download, Share, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
@@ -29,6 +30,7 @@ export function InstallPrompt() {
     useState<BeforeInstallPromptEvent | null>(null);
   const [dismissed, setDismissed] = useState(false);
   const [showIosHint, setShowIosHint] = useState(false);
+  const [isInstalling, setIsInstalling] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -49,10 +51,15 @@ export function InstallPrompt() {
 
   const handleInstall = async () => {
     if (deferredPrompt) {
-      await deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      setDeferredPrompt(null);
-      setDismissed(true);
+      setIsInstalling(true);
+      try {
+        await deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        setDeferredPrompt(null);
+        setDismissed(true);
+      } finally {
+        setIsInstalling(false);
+      }
       return;
     }
 
@@ -74,10 +81,17 @@ export function InstallPrompt() {
           type="button"
           variant="outline"
           size="sm"
-          className="rounded-full gap-2 h-8 text-xs"
+          className="rounded-full gap-2 h-9 min-h-[44px] text-xs btn-micro"
           onClick={handleInstall}
+          disabled={isInstalling}
+          aria-busy={isInstalling}
         >
-          {deferredPrompt ? (
+          {isInstalling ? (
+            <>
+              <Spinner className="w-3.5 h-3.5" />
+              Načítavam…
+            </>
+          ) : deferredPrompt ? (
             <>
               <Download className="w-3.5 h-3.5" />
               Nainštalovať

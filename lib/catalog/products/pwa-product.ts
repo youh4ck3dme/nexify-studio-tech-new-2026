@@ -2,22 +2,22 @@ import type { CatalogProduct } from "../types";
 
 export const pwaProduct: CatalogProduct = {
   id: "mobile-pwa-001",
-  name: "Progressive Web Aplikácia",
+  name: "Progressive webová aplikácia",
   slug: "pwa-aplikacia",
   category: "mobile-apps",
   featured: true,
   shortDescription:
-    "Aplikácia fungujúca ako native app bez nutnosti sťahovania z obchodu",
+    "Aplikácia s UX podobným natívnej aplikácii bez nutnosti sťahovania z obchodu",
   features: [
-    "Pracuje offline bez internetu",
+    "Funguje offline bez pripojenia k internetu",
     "Push notifikácie",
     "Bleskovo rýchla",
     "Automatické uloženie do domovskej obrazovky",
     "Funguje na iOS, Android aj Desktop",
     "Automatické aktualizácie",
-    "Krížplatformová kompatibilita",
+    "Viacplatformová kompatibilita",
     "Offline-first architektúra",
-    "App-like skúsenosť bez App Store",
+    "Skúsenosť podobná natívnej aplikácii bez App Store",
   ],
   idealFor: [
     "Novinky a médiá",

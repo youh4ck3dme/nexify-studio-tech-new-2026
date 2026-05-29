@@ -19,7 +19,7 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
       {/* Animated sphere background */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] lg:w-[800px] lg:h-[800px] opacity-40 pointer-events-none">
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[280px] h-[280px] sm:w-[400px] sm:h-[400px] lg:w-[800px] lg:h-[800px] opacity-30 sm:opacity-40 pointer-events-none hidden sm:block">
         <AnimatedSphere />
       </div>
       
@@ -88,7 +88,7 @@ export function HeroSection() {
             }`}
           >
             Od SEO a Google marketingu po custom weby, CMS a aplikácie – 
-            dodáme vám všetko, čo potrebujete na rast vášho businessu.
+            dodáme vám všetko, čo potrebujete na rast vášho biznisu.
           </p>
           
           {/* CTAs */}
@@ -132,8 +132,8 @@ export function HeroSection() {
               {[
                 { value: "+300%", label: "Zvýšenie návštevnosti", company: "Kaviareň" },
                 { value: "<1s", label: "Rýchlosť načítania", company: "E-shop" },
-                { value: "+150%", label: "Konverzný pomér", company: "Fitness" },
-                { value: "98%", label: "Spokojní klienti", company: "Nexify" },
+                { value: "+150%", label: "Miera konverzie", company: "Fitness" },
+                { value: "98%", label: "Spokojnosť klientov", company: "Nexify" },
               ].map((stat) => (
                 <div key={`${stat.company}-${i}`} className="flex items-baseline gap-4">
                   <span className="text-4xl lg:text-5xl font-display">{stat.value}</span>

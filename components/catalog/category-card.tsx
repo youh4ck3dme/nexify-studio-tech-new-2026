@@ -32,7 +32,7 @@ export function CategoryCard({ category, index }: CategoryCardProps) {
     <Link
       href={category.href}
       aria-label={`Kategória: ${category.name}`}
-      className="group shrink-0 min-w-[280px] md:min-w-[320px] h-[280px] border border-foreground/10 bg-background p-8 flex flex-col justify-between hover:border-foreground/30 hover:bg-foreground/2sition-all duration-300 hover:-translate-y-1"
+      className="group shrink-0 min-w-[260px] sm:min-w-[280px] md:min-w-[320px] h-[280px] border border-foreground/10 bg-background p-6 sm:p-8 flex flex-col justify-between hover:border-foreground/30 hover:bg-foreground/2 transition-all duration-300 card-lift focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
     >
       <div>
         <div className="flex items-start justify-between mb-6">

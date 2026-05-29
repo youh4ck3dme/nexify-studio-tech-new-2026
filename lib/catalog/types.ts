@@ -2,7 +2,8 @@ export type CatalogCategoryId =
   | "web-development"
   | "mobile-apps"
   | "ai-solutions"
-  | "security";
+  | "security"
+  | "seo-marketing";
 
 export type BillingPeriod = "one-time" | "monthly";
 
@@ -41,6 +42,7 @@ export type PricingTier = {
   description?: string;
   isPopular?: boolean;
   features: string[];
+  ctaText?: string;
 };
 
 export type CatalogProduct = {
@@ -60,4 +62,5 @@ export type CatalogProduct = {
   contentTypes?: string[];
   deliverables?: string[];
   owasp?: string;
+  faq?: Array<{ q: string; a: string }>;
 };

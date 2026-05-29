@@ -11,12 +11,12 @@ import {
 } from "@/lib/catalog";
 
 describe("integrity: catalog core", () => {
-  it("1/40 has exactly 7 products", () => {
-    expect(allProducts).toHaveLength(7);
+  it("1/40 has exactly 8 products", () => {
+    expect(allProducts).toHaveLength(8);
   });
 
-  it("2/40 has 4 categories", () => {
-    expect(catalogCategories).toHaveLength(4);
+  it("2/40 has 5 categories", () => {
+    expect(catalogCategories).toHaveLength(5);
   });
 
   it("3/40 all slugs are kebab-case", () => {
@@ -36,6 +36,7 @@ describe("integrity: catalog core", () => {
     expect(getProductsByCategory("mobile-apps")).toHaveLength(2);
     expect(getProductsByCategory("ai-solutions")).toHaveLength(2);
     expect(getProductsByCategory("security")).toHaveLength(1);
+    expect(getProductsByCategory("seo-marketing")).toHaveLength(1);
   });
 
   it("6/40 featured products count is 4", () => {

@@ -3,14 +3,14 @@ import type { CatalogProduct } from "../types";
 // Pentest pricing tiers completed from brief pattern — adjust amounts if needed.
 export const penetrationTesting: CatalogProduct = {
   id: "sec-pentest-001",
-  name: "Penetračné Testovanie",
+  name: "Penetračné testovanie",
   slug: "penetracne-testovanie",
   category: "security",
   shortDescription: "Komplexný bezpečnostný audit vašich systémov",
   features: [
     "Testovanie webových aplikácií",
     "Bezpečnostný audit siete",
-    "Recenzia konfigurácií servera",
+    "Revízia konfigurácie servera",
     "SQL Injection testovanie",
     "XSS zraniteľnosť",
     "CSRF ochrana",
@@ -26,7 +26,7 @@ export const penetrationTesting: CatalogProduct = {
     "Databáza zraniteľností",
     "Risk assessment matica",
     "Plán nápravy",
-    "Re-test po oprávach",
+    "Re-test po opravách",
   ],
   pricing: [
     {

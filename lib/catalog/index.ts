@@ -6,6 +6,7 @@ import { ecommercePlatform } from "./products/ecommerce-platform";
 import { nativeMobileApp } from "./products/native-mobile-app";
 import { penetrationTesting } from "./products/penetration-testing";
 import { pwaProduct } from "./products/pwa-product";
+import { seoPackages } from "./products/seo-packages";
 import type { CatalogCategoryId, CatalogProduct } from "./types";
 
 export const allProducts: CatalogProduct[] = [
@@ -16,6 +17,7 @@ export const allProducts: CatalogProduct[] = [
   aiChatbot,
   aiContentGenerator,
   penetrationTesting,
+  seoPackages,
 ];
 
 export function getProductBySlug(slug: string): CatalogProduct | undefined {
@@ -69,6 +71,7 @@ const VALID_CATEGORY_IDS = new Set<CatalogCategoryId>([
   "mobile-apps",
   "ai-solutions",
   "security",
+  "seo-marketing",
 ]);
 
 export function parseCatalogCategoryParam(

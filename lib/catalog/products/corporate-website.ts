@@ -2,7 +2,7 @@ import type { CatalogProduct } from "../types";
 
 export const corporateWebsite: CatalogProduct = {
   id: "web-corp-001",
-  name: "Firemná Webová Stránka",
+  name: "Firemná webová stránka",
   slug: "firemna-webova-stranka",
   category: "web-development",
   featured: true,
@@ -12,6 +12,7 @@ export const corporateWebsite: CatalogProduct = {
     "Moderný a responzívny dizajn",
     "Bleskovo rýchly loading (LCP < 2.5s)",
     "SEO optimalizácia a Google Rankings",
+    "Odporúčaná kombinácia s mesačnými SEO balíkmi",
     "Mobile-first prístup",
     "Tmavý/svetlý režim",
     "Integrácia Google Analytics 4",
@@ -23,7 +24,7 @@ export const corporateWebsite: CatalogProduct = {
   pricing: [
     {
       id: "basic",
-      name: "Základný Balík",
+      name: "Základný balík",
       price: 1500,
       currency: "EUR",
       billingPeriod: "one-time",
@@ -39,7 +40,7 @@ export const corporateWebsite: CatalogProduct = {
     },
     {
       id: "professional",
-      name: "Profesionálny Balík",
+      name: "Profesionálny balík",
       price: 2500,
       currency: "EUR",
       billingPeriod: "one-time",
@@ -71,7 +72,7 @@ export const corporateWebsite: CatalogProduct = {
         "Pokročilá analytika",
         "Multi-jazyčnosť (5+ jazykov)",
         "Unlimited revízie",
-        "E-mailová podpora priorita",
+        "Prioritná e-mailová podpora",
         "12 mesiacov technickej podpory",
       ],
     },

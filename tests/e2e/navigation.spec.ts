@@ -8,8 +8,17 @@ test.describe("Navigation", () => {
   });
 
   test("22/30 produkty nav link works", async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("nexify-cookie-consent-v1", "all");
+    });
     await page.goto("/");
-    await page.getByRole("navigation").getByRole("link", { name: "Produkty" }).click();
+    const desktopLink = page.getByRole("navigation").getByRole("link", { name: "Produkty" });
+    if (await desktopLink.isVisible()) {
+      await desktopLink.click();
+    } else {
+      await page.getByRole("button", { name: "Otvoriť menu" }).click();
+      await page.getByRole("link", { name: "Produkty" }).click();
+    }
     await expect(page).toHaveURL(/\/#produkty$/);
     await expect(page.locator("#produkty")).toBeVisible();
   });
@@ -20,7 +29,7 @@ test.describe("Navigation", () => {
       page.locator("main section nav").getByRole("link", { name: "Produkty" })
     ).toBeVisible();
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
-      "Progressive Web Aplikácia"
+      "Progressive webová aplikácia"
     );
   });
 
@@ -34,9 +43,12 @@ test.describe("Navigation", () => {
   });
 
   test("25/30 mobile menu opens and navigates", async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("nexify-cookie-consent-v1", "all");
+    });
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
-    await page.getByRole("button", { name: "Toggle menu" }).click();
+    await page.getByRole("button", { name: "Otvoriť menu" }).click();
     await page.getByRole("link", { name: "Produkty" }).click();
     await expect(page).toHaveURL(/\/#produkty$/);
     await expect(page.locator("#produkty")).toBeVisible();

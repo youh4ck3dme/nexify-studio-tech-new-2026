@@ -11,9 +11,11 @@ const footerLinks = {
     { name: "eCommerce", href: "/sluzby/ecommerce" },
     { name: "Mobilné aplikácie", href: "/sluzby/mobilne-aplikacie" },
     { name: "AI riešenia", href: "/sluzby/ai-riesenia" },
+    { name: "SEO balíky", href: "/sluzby/seo" },
   ],
   Produkty: [
     { name: "Celý katalóg", href: "/produkty" },
+    { name: "SEO balíky", href: "/produkty/seo-baliky" },
     { name: "Firemná webová stránka", href: "/produkty/firemna-webova-stranka" },
     { name: "eCommerce platforma", href: "/produkty/ecommerce-platforma" },
     { name: "PWA aplikácia", href: "/produkty/pwa-aplikacia" },
@@ -35,7 +37,7 @@ const footerLinks = {
   Právne: [
     { name: "Ochrana súkromia", href: legalRoutes.privacy },
     { name: "Podmienky", href: legalRoutes.terms },
-    { name: "Cookie Policy", href: legalRoutes.cookies },
+    { name: "Zásady cookies", href: legalRoutes.cookies },
   ],
 };
 
@@ -65,7 +67,7 @@ export function FooterSection() {
               </Link>
 
               <p className="text-muted-foreground leading-relaxed mb-8 max-w-xs">
-                Vaše digitálne partnerstvo. Pomáhame malým a stredným podnikom rastieť cez digital
+                Vaše digitálne partnerstvo. Pomáhame malým a stredným podnikom rastieť cez digitálny
                 marketing, SEO a custom weby.
               </p>
 

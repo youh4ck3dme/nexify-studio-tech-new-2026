@@ -17,7 +17,7 @@ export const servicePages: ServicePage[] = [
       "Profesionálne firemné webové stránky s moderným dizajnom, rýchlym načítaním a SEO optimalizáciou.",
     category: "web-development",
     highlights: [
-      "Responzívny dizajn pre mobile aj desktop",
+      "Responzívny dizajn pre mobily aj desktop",
       "SEO a Core Web Vitals optimalizácia",
       "Kontaktný formulár a integrácie",
       "Statická generácia cez Next.js pre rýchlosť",
@@ -55,7 +55,7 @@ export const servicePages: ServicePage[] = [
   {
     slug: "mobilne-aplikacie",
     title: "Mobilné aplikácie",
-    description: "PWA aj natívne riešenia pre iOS a Android s app-like skúsenosťou.",
+    description: "PWA aj natívne riešenia pre iOS a Android so skúsenosťou podobnou natívnej aplikácii.",
     category: "mobile-apps",
     highlights: [
       "Progressive Web Apps bez App Store",
@@ -65,7 +65,7 @@ export const servicePages: ServicePage[] = [
     ],
     faq: [
       {
-        q: "PWA alebo natívna appka?",
+        q: "PWA alebo natívna aplikácia?",
         a: "PWA pre rýchle spustenie a nižšiu cenu, natívna app pre plný prístup k zariadeniu.",
       },
     ],
@@ -103,6 +103,29 @@ export const servicePages: ServicePage[] = [
       {
         q: "Pre koho je audit vhodný?",
         a: "Pre weby, interné nástroje a aplikácie spracúvajúce citlivé údaje.",
+      },
+    ],
+  },
+  {
+    slug: "seo",
+    title: "SEO balíky",
+    description:
+      "Mesačné SEO balíky od lokálnej dominancie po AI-driven expanziu — audit, obsah, linkbuilding a reporty.",
+    category: "seo-marketing",
+    highlights: [
+      "Local Authority Kit od €250/mesiac",
+      "Growth Engine s obsahom a linkbuildingom",
+      "AI SEO Dominance pre trhových lídrov",
+      "Google Mapy, GA4 a Core Web Vitals",
+    ],
+    faq: [
+      {
+        q: "Prečo je potrebná mesačná platba za SEO?",
+        a: "SEO je kontinuálny proces — algoritmy sa menia, konkurencia rastie a autorita domény sa buduje pravidelnou prácou.",
+      },
+      {
+        q: "Kedy uvidím prvé výsledky?",
+        a: "Lokálne SEO často do 30 dní, organický rast zvyčajne medzi 3. a 6. mesiacom aktívnej správy.",
       },
     ],
   },

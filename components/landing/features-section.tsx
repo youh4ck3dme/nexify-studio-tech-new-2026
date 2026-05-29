@@ -6,7 +6,7 @@ const features = [
   {
     number: "01",
     title: "SEO Optimalizácia",
-    description: "Zviditeľnite sa na prvých miestach v Google. Kľúčové slová na mieru vášmu businessu, analýza konkurencie a meranie výkonu. Výsledok: +200% návštevnosť do 6 mesiacov.",
+    description: "Zviditeľnite sa na prvých miestach v Google. Mesačné balíky od €250 — lokálne SEO, obsah, linkbuilding a AI expanzia. Výsledok: +200% nárast návštevnosti do 6 mesiacov.",
     visual: "deploy",
   },
   {
@@ -18,13 +18,13 @@ const features = [
   {
     number: "03",
     title: "Custom Webové Stránky",
-    description: "Moderný, rýchly a mobilný web, ktorý zaujme a predá. Unikátny dizajn bez šablón, bleskovo rýchly (pod 1 sekundu) a SEO optimalizovaný. Výsledok: 70% nižšia odchodnosť návštevníkov.",
+    description: "Moderný, rýchly a mobilný web, ktorý zaujme a predá. Unikátny dizajn bez šablón, bleskovo rýchly (pod 1 sekundu) a SEO optimalizovaný. Výsledok: 70% nižšia miera okamžitého opustenia stránky.",
     visual: "collab",
   },
   {
     number: "04",
     title: "CMS Systémy",
-    description: "Jednoduchá správa obsahu bez programátora. Editujte texty, fotky a články sami, kedykoľvek. Automatické aktualizácie a responzívny design. Výsledok: Úspora 50% nákladov na údržbu.",
+    description: "Jednoduchá správa obsahu bez programátora. Editujte texty, fotky a články sami, kedykoľvek. Automatické aktualizácie a responzívny dizajn. Výsledok: Úspora 50% nákladov na údržbu.",
     visual: "security",
   },
   {

@@ -89,7 +89,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
           {product.deliverables && (
             <div>
-              <h2 className="font-display text-2xl mb-4">Deliverables</h2>
+              <h2 className="font-display text-2xl mb-4">Výstupy projektu</h2>
               <ul className="space-y-2">
                 {product.deliverables.map((item) => (
                   <li key={item} className="text-muted-foreground">
@@ -143,6 +143,20 @@ export function ProductDetail({ product }: ProductDetailProps) {
         <h2 className="font-display text-3xl md:text-4xl mb-10">Balíky a ceny</h2>
         <PricingTiers product={product} />
       </div>
+
+      {product.faq && product.faq.length > 0 && (
+        <div className="border-t border-foreground/10 pt-16">
+          <h2 className="font-display text-3xl md:text-4xl mb-10">Často kladené otázky</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            {product.faq.map((item) => (
+              <div key={item.q} className="space-y-3">
+                <h3 className="font-display text-xl text-foreground">{item.q}</h3>
+                <p className="text-muted-foreground leading-relaxed">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

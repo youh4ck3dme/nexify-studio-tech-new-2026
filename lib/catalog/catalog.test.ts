@@ -26,8 +26,9 @@ describe("catalog", () => {
 
   it("resolves products by slug", () => {
     expect(getProductBySlug("firemna-webova-stranka")?.name).toBe(
-      "Firemná Webová Stránka"
+      "Firemná webová stránka"
     );
+    expect(getProductBySlug("seo-baliky")?.pricing[0]?.price).toBe(250);
     expect(getProductBySlug("missing-slug")).toBeUndefined();
   });
 

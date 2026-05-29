@@ -5,10 +5,6 @@ import { describe, expect, it } from "vitest";
 const root = path.resolve(__dirname, "../..");
 const publicDir = path.join(root, "public");
 
-function readPublic(relative: string) {
-  return readFileSync(path.join(publicDir, relative.replace(/^\//, "")), "utf-8");
-}
-
 function publicExists(relative: string) {
   const filePath = path.join(publicDir, relative.replace(/^\//, ""));
   return existsSync(filePath) && statSync(filePath).size > 0;

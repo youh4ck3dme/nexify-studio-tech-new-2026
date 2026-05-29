@@ -91,7 +91,7 @@ export function CategoryMarqueeSection() {
               <span className="text-stroke">ceny</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-xl">
-              Bez skrytých poplatkov, bez prekvapení. Izba pre rast vášho businessu.
+              Bez skrytých poplatkov, bez prekvapení. Istota pre rast vášho biznisu.
             </p>
           </div>
           <Link

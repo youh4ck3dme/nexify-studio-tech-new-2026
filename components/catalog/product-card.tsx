@@ -18,7 +18,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const popularTier = product.pricing.find((tier) => tier.isPopular);
 
   return (
-    <article className="group border border-foreground/10 bg-background p-8 flex flex-col h-full hover:border-foreground/30 transition-colors">
+    <article className="group border border-foreground/10 bg-background p-6 sm:p-8 flex flex-col h-full hover:border-foreground/30 card-lift">
       <div className="mb-6">
         <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest">
           {category?.name}

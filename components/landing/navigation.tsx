@@ -30,7 +30,7 @@ export function Navigation() {
 
   return (
     <header
-      className={`fixed z-50 transition-all duration-500 ${
+      className={`fixed z-50 transition-all duration-500 safe-top safe-x ${
         isScrolled 
           ? "top-4 left-4 right-4" 
           : "top-0 left-0 right-0"
@@ -60,7 +60,7 @@ export function Navigation() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 relative group"
+                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 relative group link-underline"
               >
                 {link.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-foreground transition-all duration-300 group-hover:w-full" />
@@ -73,7 +73,7 @@ export function Navigation() {
             <InstallPrompt />
             <Button
               size="sm"
-              className={`bg-foreground hover:bg-foreground/90 text-background rounded-full transition-all duration-500 ${isScrolled ? "px-4 h-8 text-xs" : "px-6"}`}
+              className={`bg-foreground hover:bg-foreground/90 text-background rounded-full transition-all duration-500 btn-micro ${isScrolled ? "px-4 h-8 text-xs" : "px-6"}`}
               asChild
             >
               <Link href="/#contact">Kontakt</Link>
@@ -82,9 +82,11 @@ export function Navigation() {
 
           {/* Mobile Menu Button */}
           <button
+            type="button"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2"
-            aria-label="Toggle menu"
+            className="md:hidden p-3 min-h-[44px] min-w-[44px] flex items-center justify-center"
+            aria-label={isMobileMenuOpen ? "Zavrieť menu" : "Otvoriť menu"}
+            aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? (
               <X className="w-6 h-6" />
@@ -98,14 +100,14 @@ export function Navigation() {
       
       {/* Mobile Menu - Full Screen Overlay */}
       <div
-        className={`md:hidden fixed inset-0 bg-background z-40 transition-all duration-500 ${
+        className={`md:hidden fixed inset-0 bg-background z-40 transition-all duration-500 safe-top safe-bottom ${
           isMobileMenuOpen 
             ? "opacity-100 pointer-events-auto" 
             : "opacity-0 pointer-events-none"
         }`}
         style={{ top: 0 }}
       >
-        <div className="flex flex-col h-full px-8 pt-28 pb-8">
+        <div className="flex flex-col h-full px-6 sm:px-8 pt-28 pb-8 safe-bottom">
           {/* Navigation Links */}
           <div className="flex-1 flex flex-col justify-center gap-8">
             {navLinks.map((link, i) => (
@@ -113,7 +115,7 @@ export function Navigation() {
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`text-5xl font-display text-foreground hover:text-muted-foreground transition-all duration-500 ${
+                className={`text-4xl sm:text-5xl font-display text-foreground hover:text-muted-foreground transition-all duration-500 min-h-[44px] flex items-center ${
                   isMobileMenuOpen 
                     ? "opacity-100 translate-y-0" 
                     : "opacity-0 translate-y-4"

@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+import { companyLegal } from "@/lib/legal/company";
 import { ArrowRight } from "lucide-react";
 import { AnimatedTetrahedron } from "./animated-tetrahedron";
 
@@ -111,14 +113,19 @@ export function CtaSection() {
                   Bez povinnosti, bez skrytých poplatkov.
                 </p>
 
-                <form onSubmit={handleSubmit} className="w-full max-w-xl space-y-4">
+                <form
+                  onSubmit={handleSubmit}
+                  className="w-full max-w-xl space-y-4"
+                  aria-busy={isSubmitting}
+                >
                   <div className="grid sm:grid-cols-2 gap-4">
                     <input
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="Meno"
-                      className="h-12 px-4 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none focus:border-foreground"
+                      autoComplete="name"
+                      className="h-12 min-h-[44px] px-4 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none focus:border-foreground input-glow"
                     />
                     <input
                       name="email"
@@ -126,15 +133,18 @@ export function CtaSection() {
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="Email"
-                      className="h-12 px-4 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none focus:border-foreground"
+                      autoComplete="email"
+                      className="h-12 min-h-[44px] px-4 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none focus:border-foreground input-glow"
                     />
                   </div>
                   <input
                     name="phone"
+                    type="tel"
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="Telefón (voliteľné)"
-                    className="w-full h-12 px-4 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none focus:border-foreground"
+                    autoComplete="tel"
+                    className="w-full h-12 min-h-[44px] px-4 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none focus:border-foreground input-glow"
                   />
                   <textarea
                     name="message"
@@ -142,7 +152,7 @@ export function CtaSection() {
                     onChange={handleInputChange}
                     placeholder="Vaša správa"
                     rows={5}
-                    className="w-full px-4 py-3 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none resize-none focus:border-foreground"
+                    className="w-full px-4 py-3 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none resize-none focus:border-foreground input-glow"
                   />
 
                   <div className="flex flex-col sm:flex-row items-start gap-4">
@@ -150,10 +160,19 @@ export function CtaSection() {
                       type="submit"
                       size="lg"
                       disabled={isSubmitting}
-                      className="bg-foreground hover:bg-foreground/90 text-background px-8 h-14 text-base rounded-full group disabled:opacity-60"
+                      className="bg-foreground hover:bg-foreground/90 text-background px-8 h-14 min-h-[44px] text-base rounded-full group disabled:opacity-60 btn-micro"
                     >
-                      {isSubmitting ? "Odosielam..." : "Kontaktujte nás"}
-                      <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                      {isSubmitting ? (
+                        <>
+                          <Spinner className="size-4 mr-2" />
+                          Odosielam…
+                        </>
+                      ) : (
+                        <>
+                          Kontaktujte nás
+                          <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                        </>
+                      )}
                     </Button>
                     <Button
                       type="button"
@@ -167,14 +186,18 @@ export function CtaSection() {
                 </form>
 
                 {submitError && (
-                  <p className="text-sm text-red-500 mt-4">{submitError}</p>
+                  <p className="text-sm text-red-500 mt-4" role="alert" aria-live="polite">
+                    {submitError}
+                  </p>
                 )}
                 {submitSuccess && (
-                  <p className="text-sm text-green-600 mt-4">{submitSuccess}</p>
+                  <p className="text-sm text-green-600 mt-4" role="status" aria-live="polite">
+                    {submitSuccess}
+                  </p>
                 )}
 
                 <p className="text-sm text-muted-foreground mt-8 font-mono">
-                  📧 magicasro@hotmail.com | 📞 +421 900 123 456
+                  📧 {companyLegal.email} | 📞 {companyLegal.phoneDisplay}
                 </p>
               </div>
 

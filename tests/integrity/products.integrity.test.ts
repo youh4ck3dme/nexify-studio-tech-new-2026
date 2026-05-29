@@ -6,6 +6,7 @@ import { nativeMobileApp } from "@/lib/catalog/products/native-mobile-app";
 import { aiChatbot } from "@/lib/catalog/products/ai-chatbot";
 import { aiContentGenerator } from "@/lib/catalog/products/ai-content-generator";
 import { penetrationTesting } from "@/lib/catalog/products/penetration-testing";
+import { seoPackages } from "@/lib/catalog/products/seo-packages";
 
 describe("integrity: product payloads", () => {
   it("13/40 corporate website has technicalDetails", () => {
@@ -47,5 +48,16 @@ describe("integrity: product payloads", () => {
 
   it("22/40 penetration testing documents OWASP methodology", () => {
     expect(penetrationTesting.owasp).toContain("OWASP");
+  });
+
+  it("23/40 seo packages has three monthly tiers", () => {
+    expect(seoPackages.pricing).toHaveLength(3);
+    expect(seoPackages.pricing.every((tier) => tier.billingPeriod === "monthly")).toBe(true);
+  });
+
+  it("24/40 seo packages includes faq and custom cta labels", () => {
+    expect(seoPackages.faq?.length).toBeGreaterThanOrEqual(2);
+    expect(seoPackages.pricing[1]?.isPopular).toBe(true);
+    expect(seoPackages.pricing[0]?.ctaText).toContain("lokálnu");
   });
 });

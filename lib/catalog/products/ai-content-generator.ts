@@ -2,7 +2,7 @@ import type { CatalogProduct } from "../types";
 
 export const aiContentGenerator: CatalogProduct = {
   id: "ai-content-001",
-  name: "AI Generátor Obsahu",
+  name: "AI generátor obsahu",
   slug: "ai-generator-obsahu",
   category: "ai-solutions",
   shortDescription:
@@ -10,7 +10,7 @@ export const aiContentGenerator: CatalogProduct = {
   contentTypes: [
     "Blog články (500-2000 slov)",
     "Popisy produktov",
-    "Sociálne médiá príspevky",
+    "Príspevky na sociálne siete",
     "Email kampane",
     "Copywriting pre reklamy",
     "Landing page obsah",

@@ -2,7 +2,7 @@ import type { CatalogProduct } from "../types";
 
 export const nativeMobileApp: CatalogProduct = {
   id: "mobile-native-001",
-  name: "Natívna Mobilná Aplikácia",
+  name: "Natívna mobilná aplikácia",
   slug: "nativna-mobilna-aplikacia",
   category: "mobile-apps",
   shortDescription:

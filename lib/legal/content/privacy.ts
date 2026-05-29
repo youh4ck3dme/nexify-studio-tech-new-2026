@@ -27,7 +27,7 @@ export const privacyDocument: LegalDocument = {
       paragraphs: [
         "Kontaktný formulár: meno, e-mail, telefón (voliteľný) a text správy, ktoré dobrovoľne zadáte pri dopyte.",
         "Technické údaje: IP adresa, typ prehliadača, čas požiadavky a podobné logy generované pri návšteve webu a pri volaní API.",
-        "Analytika: agregované údaje o návštevnosti cez Vercel Analytics (bez profilovania jednotlivých návštěvníkov cookies na strane analytiky).",
+        "Analytika: agregované údaje o návštevnosti cez Vercel Analytics (bez profilovania jednotlivých návštevníkov cookies na strane analytiky).",
         "PWA a service worker: ukladanie statických súborov do cache prehliadača na účely offline prístupu a rýchlejšieho načítania.",
       ],
     },

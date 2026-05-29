@@ -9,7 +9,7 @@ const steps = [
     description: "Popíšete nám váš business a cieľ. My analyzujeme váš súčasný stav a navrhneme riešenie na mieru.",
     code: `// Vaša situácia
 business: 'Máte web?'
-visitors: 'Koľko mesiacne?'
+visitors: 'Koľko mesačne?'
 goal: 'Čo chcete dosiahnuť?'
 
 // Náš návrh:
@@ -20,16 +20,16 @@ investment: 'Od 299€/mes'`,
   {
     number: "II",
     title: "Návrh & Schvaľovanie",
-    description: "Vytvoríme prototyp (wireframe). Upravíme podľa vašich požiadaviek. Schváliť pred spustením.",
+    description: "Vytvoríme prototyp (wireframe). Upravíme podľa vašich požiadaviek. Schválite pred spustením.",
     code: `// Čo vám ukážeme:
 design: 'Vizuálny návrh'
 features: 'Funkcie webu'
 timeline: 'Harmonogram'
 budget: 'Presný rozpočet'
 
-// Vašej feedback:
+// Váš feedback:
 approval: 'Schválite'
-changes: 'Upravy'
+changes: 'Úpravy'
 start: 'Ideme do výroby'`,
   },
   {

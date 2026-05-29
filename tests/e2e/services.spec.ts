@@ -6,6 +6,7 @@ const services = [
   "mobilne-aplikacie",
   "ai-riesenia",
   "bezpecnost",
+  "seo",
 ] as const;
 
 for (const slug of services) {
