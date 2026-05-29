@@ -1,26 +1,33 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { AnimatedWave } from "./animated-wave";
 
 const footerLinks = {
   Služby: [
-    { name: "SEO Optimalizácia", href: "#services" },
-    { name: "Google Marketing", href: "#services" },
-    { name: "Custom Weby", href: "#services" },
-    { name: "Booking Systémy", href: "#services" },
+    { name: "SEO Optimalizácia", href: "/#services" },
+    { name: "Google Marketing", href: "/#services" },
+    { name: "Custom Weby", href: "/#services" },
+    { name: "Booking Systémy", href: "/#services" },
+  ],
+  Produkty: [
+    { name: "Celý katalóg", href: "/produkty" },
+    { name: "Firemná webová stránka", href: "/produkty/firemna-webova-stranka" },
+    { name: "eCommerce platforma", href: "/produkty/ecommerce-platforma" },
+    { name: "PWA aplikácia", href: "/produkty/pwa-aplikacia" },
   ],
   Spoločnosť: [
-    { name: "O nás", href: "#" },
-    { name: "Ako to funguje", href: "#how-it-works" },
-    { name: "Referencie", href: "#testimonials" },
-    { name: "Cenník", href: "#pricing" },
+    { name: "O nás", href: "/#" },
+    { name: "Ako to funguje", href: "/#how-it-works" },
+    { name: "Referencie", href: "/#testimonials" },
+    { name: "Cenník", href: "/#pricing" },
   ],
   Kontakt: [
     { name: "Email", href: "mailto:magicasro@hotmail.com" },
     { name: "Telefón", href: "tel:+421900123456" },
     { name: "+421 917 488 903", href: "tel:+421917488903" },
-    { name: "Kontakt", href: "#contact" },
+    { name: "Kontakt", href: "/#contact" },
     { name: "MA.GI.CA., s.r.o.", href: "#", isCompanyInfo: true },
     { name: "Partizánska 101/45, 965 01 Žiar nad Hronom", href: "#", isCompanyInfo: true },
     { name: "IČO: 31677517", href: "#", isCompanyInfo: true },
@@ -50,12 +57,12 @@ export function FooterSection() {
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Main Footer */}
         <div className="py-16 lg:py-24">
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-12 lg:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-7 gap-12 lg:gap-8">
             {/* Brand Column */}
             <div className="col-span-2">
-              <a href="#" className="inline-flex items-center gap-2 mb-6">
+              <Link href="/" className="inline-flex items-center gap-2 mb-6">
                 <span className="text-2xl font-display">Nexify Studio</span>
-              </a>
+              </Link>
 
               <p className="text-muted-foreground leading-relaxed mb-8 max-w-xs">
                 Vaše digitálne partnerstvo. Pomáhame malým a stredným podnikom rastieť cez digital marketing, SEO a custom weby.

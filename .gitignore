@@ -34,3 +34,8 @@ next-env.d.ts
 # local editor scratch
 Untitled
 docs/*.code-workspace
+
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/

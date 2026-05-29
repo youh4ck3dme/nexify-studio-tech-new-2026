@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 
 const plans = [
@@ -173,9 +174,9 @@ export function PricingSection() {
         {/* Bottom Note */}
         <p className="mt-12 text-center text-sm text-muted-foreground">
           Všetky balíky obsahujú bezplatnú konzultáciu, SEO audit a podporu 24/7.{" "}
-          <a href="#" className="underline underline-offset-4 hover:text-foreground transition-colors">
-            Porovnať všetky funkcie
-          </a>
+          <Link href="/produkty" className="underline underline-offset-4 hover:text-foreground transition-colors">
+            Pozrieť celý produktový katalóg
+          </Link>
         </p>
       </div>
     </section>

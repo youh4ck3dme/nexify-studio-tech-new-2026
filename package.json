@@ -10,6 +10,11 @@
     "lint": "eslint .",
     "start": "next start",
     "test": "vitest run",
+    "test:integrity": "vitest run tests/integrity",
+    "test:unit": "vitest run --exclude tests/integrity/** --exclude tests/e2e/**",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install chromium",
+    "test:all": "pnpm test:unit && pnpm test:integrity && pnpm test:e2e",
     "test:pwa": "vitest run lib/pwa/pwa.test.ts",
     "test:pwa:x10": "node scripts/run-pwa-tests-x10.mjs",
     "test:contact:smoke": "node scripts/contact-smoke.mjs"
@@ -77,6 +82,7 @@
     "zod": "3.25.76"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^22",
     "@types/react": "^19",

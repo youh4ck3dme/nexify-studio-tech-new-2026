@@ -14,5 +14,5 @@ export default defineConfig([
       "prefer-const": "warn",
     },
   },
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", "public/sw.js", "tests/e2e/**"]),
 ]);
