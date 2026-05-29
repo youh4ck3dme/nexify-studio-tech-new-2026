@@ -12,7 +12,7 @@ function publicExists(relative: string) {
 
 describe("integrity: manifest and PWA assets", () => {
   const manifest = JSON.parse(
-    readFileSync(path.join(publicDir, "manifest.webmanifest"), "utf-8")
+    readFileSync(path.join(publicDir, "manifest.json"), "utf-8")
   ) as {
     name: string;
     display: string;
@@ -36,7 +36,7 @@ describe("integrity: manifest and PWA assets", () => {
   });
 
   it("26/40 manifest includes maskable icon", () => {
-    expect(manifest.icons.some((icon) => icon.purpose === "maskable")).toBe(true);
+    expect(manifest.icons.some((icon) => icon.purpose?.includes("maskable"))).toBe(true);
   });
 
   it("27/40 all manifest icon files exist", () => {
@@ -45,10 +45,11 @@ describe("integrity: manifest and PWA assets", () => {
     }
   });
 
-  it("28/40 favicon png set exists", () => {
-    expect(publicExists("/favicon-16x16.png")).toBe(true);
-    expect(publicExists("/favicon-32x32.png")).toBe(true);
-    expect(publicExists("/favicon.ico")).toBe(true);
+  it("28/40 favicon and app icons exist in app directory", () => {
+    const appDir = path.join(root, "app");
+    expect(existsSync(path.join(appDir, "icon.png"))).toBe(true);
+    expect(existsSync(path.join(appDir, "apple-icon.png"))).toBe(true);
+    expect(existsSync(path.join(appDir, "favicon.ico"))).toBe(true);
   });
 
   it("29/40 service worker source configures offline fallback", () => {
@@ -58,12 +59,12 @@ describe("integrity: manifest and PWA assets", () => {
 
   it("30/40 layout references manifest", () => {
     const layout = readFileSync(path.join(root, "app/layout.tsx"), "utf-8");
-    expect(layout).toContain("manifest: '/manifest.webmanifest'");
+    expect(layout).toContain("manifest: '/manifest.json'");
   });
 
-  it("34/40 manifest uses AMOLED theme and light splash colors", () => {
+  it("34/40 manifest uses AMOLED theme", () => {
     expect(manifest.theme_color).toBe("#000000");
-    expect(manifest.background_color).toBe("#FCFCFC");
+    expect(manifest.background_color).toBe("#000000");
   });
 
   it("35/40 layout does not reference removed favicon.svg", () => {

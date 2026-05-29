@@ -15,7 +15,7 @@ export type WebManifest = {
 
 export function loadManifest(): WebManifest {
   const raw = readFileSync(
-    path.join(publicDir, "manifest.webmanifest"),
+    path.join(publicDir, "manifest.json"),
     "utf-8"
   );
   return JSON.parse(raw) as WebManifest;

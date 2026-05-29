@@ -3,6 +3,7 @@
   "short_name": "Nexify",
   "description": "Digitálne riešenia pre rast podnikania. Weby, značka a online prítomnosť.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",

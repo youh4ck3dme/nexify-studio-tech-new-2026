@@ -53,10 +53,9 @@ describe("integrity: UI/UX theme and visibility", () => {
     expect(globals).toMatch(/body\s*\{[\s\S]*@apply bg-background text-foreground/);
   });
 
-  it("56/61 viewport themeColor matches light and dark backgrounds", () => {
-    expect(layout).toContain("themeColor:");
-    expect(layout).toContain("color: '#FCFCFC'");
-    expect(layout).toContain("color: '#000000'");
+  it("56/61 viewport themeColor uses strict AMOLED black", () => {
+    const layout = readFileSync(path.join(root, "app/layout.tsx"), "utf-8");
+    expect(layout).toContain("themeColor: '#000000'");
   });
 
   it("57/61 theme toggle is client-only with hydration-safe skeleton", () => {

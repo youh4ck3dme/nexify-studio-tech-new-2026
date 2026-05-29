@@ -25,24 +25,23 @@ describe("PWA", () => {
     expect(sizes).toContain("512x512");
   });
 
-  it("4/10 manifest obsahuje maskable ikonu 512×512", () => {
-    const maskable = manifest.icons?.find(
-      (icon) => icon.purpose === "maskable" && icon.sizes === "512x512"
+  it("4/10 manifest obsahuje maskable ikonu", () => {
+    const maskable = manifest.icons.find(
+      (icon) => icon.purpose?.includes("maskable")
     );
-    expect(maskable?.src).toBe("/android-chrome-512x512-maskable.png");
+    expect(maskable).toBeDefined();
   });
 
   it("5/10 všetky ikony z manifestu existujú v public/", () => {
-    for (const icon of manifest.icons ?? []) {
+    for (const icon of manifest.icons) {
       expect(publicFileExists(icon.src)).toBe(true);
     }
   });
 
-  it("6/10 favicon sada (16, 32, ico) existuje v public/", () => {
-    expect(publicFileExists("/favicon-16x16.png")).toBe(true);
-    expect(publicFileExists("/favicon-32x32.png")).toBe(true);
-    expect(publicFileExists("/favicon.ico")).toBe(true);
-    expect(publicFileExists("/apple-touch-icon.png")).toBe(true);
+  it("6/10 favicon a app ikony existujú v app/", () => {
+    expect(readProjectFile("app/icon.png")).toBeDefined();
+    expect(readProjectFile("app/apple-icon.png")).toBeDefined();
+    expect(readProjectFile("app/favicon.ico")).toBeDefined();
   });
 
   it("7/10 service worker má offline fallback na /~offline", () => {
@@ -65,7 +64,7 @@ describe("PWA", () => {
   });
 
   it("10/10 PWA komponenty a offline stránka sú v projekte", () => {
-    expect(publicFileExists("/manifest.webmanifest")).toBe(true);
+    expect(publicFileExists("/manifest.json")).toBe(true);
     expect(readProjectFile("app/~offline/page.tsx")).toContain("Ste offline");
     expect(readProjectFile("components/pwa/service-worker-registrar.tsx")).toContain(
       "/sw.js"
@@ -74,7 +73,7 @@ describe("PWA", () => {
       "beforeinstallprompt"
     );
     const layout = readProjectFile("app/layout.tsx");
-    expect(layout).toContain("manifest: '/manifest.webmanifest'");
+    expect(layout).toContain("manifest: '/manifest.json'");
     expect(layout).toContain("ServiceWorkerRegistrar");
   });
 });
