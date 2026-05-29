@@ -9,6 +9,7 @@ const withSerwist = withSerwistInit({
   additionalPrecacheEntries: [{ url: "/~offline", revision }],
   swSrc: "app/sw.ts",
   swDest: "public/sw.js",
+  // Ošetrenie výnimky pre Next.js dev prostredie, aby Service Worker neblokoval Hot Module Replacement (HMR)
   disable: process.env.NODE_ENV === "development",
 });
 

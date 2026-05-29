@@ -16,6 +16,8 @@ describe("integrity: manifest and PWA assets", () => {
   ) as {
     name: string;
     display: string;
+    background_color: string;
+    theme_color: string;
     icons: Array<{ src: string; sizes: string; purpose?: string }>;
   };
 
@@ -57,5 +59,19 @@ describe("integrity: manifest and PWA assets", () => {
   it("30/40 layout references manifest", () => {
     const layout = readFileSync(path.join(root, "app/layout.tsx"), "utf-8");
     expect(layout).toContain("manifest: '/manifest.webmanifest'");
+  });
+
+  it("34/40 manifest uses AMOLED theme and light splash colors", () => {
+    expect(manifest.theme_color).toBe("#000000");
+    expect(manifest.background_color).toBe("#FCFCFC");
+  });
+
+  it("35/40 layout does not reference removed favicon.svg", () => {
+    const layout = readFileSync(path.join(root, "app/layout.tsx"), "utf-8");
+    expect(layout).not.toContain("favicon.svg");
+  });
+
+  it("36/40 og-image exists for social previews", () => {
+    expect(publicExists("/og-image.png")).toBe(true);
   });
 });

@@ -70,12 +70,46 @@ Smoke sends a message prefixed with `[SMOKE]`. Check `CONTACT_TO_EMAIL` and `CON
 - [ ] Install app from browser (desktop/mobile)
 - [ ] Offline: disconnect network, reload → `/~offline` fallback
 
-## PWA
+## PWA a ikony
 
-- Manifest: `public/manifest.webmanifest`
-- Service worker: generated at build to `public/sw.js` (Serwist, production only)
-- Regenerate PNG icons from `public/icon.svg`: `pnpm icons:generate`
-- Install prompt in navigation; iOS uses Share → Add to Home Screen
+Podrobná dokumentácia: [`docs/PWA-ASSETS.md`](docs/PWA-ASSETS.md).
+
+Statické assety v [`public/`](public/):
+
+| Súbor | Účel |
+|-------|------|
+| `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png` | Favicon v prehliadači |
+| `apple-touch-icon.png` | iOS „Pridať na plochu“ |
+| `android-chrome-192x192.png`, `android-chrome-512x512.png` | PWA / Android |
+| `android-chrome-512x512-maskable.png` | Maskable ikona (AMOLED safe zone) |
+| `manifest.webmanifest` | Web App Manifest (Nexify branding) |
+| `og-image.png` | Open Graph náhľad (1200×630) |
+
+**Manifest:** [`public/manifest.webmanifest`](public/manifest.webmanifest) — `theme_color: #000000` (AMOLED), `background_color: #FCFCFC`.
+
+**Service worker:** generovaný pri `pnpm build` do `public/sw.js` (Serwist, len produkcia).
+
+### Aktualizácia ikon (favicon.io)
+
+1. Export z [favicon.io](https://favicon.io) do priečinka (napr. `favicon_nexify/`).
+2. Skopíruj do `public/`: `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`, `android-chrome-192x192.png`, `android-chrome-512x512.png`.
+3. Spusti regeneráciu odvodených assetov:
+
+```bash
+pnpm icons:generate   # maskable + resize z android-chrome-512x512.png
+pnpm og:generate      # OG obrázok s logom
+```
+
+4. Overenie:
+
+```bash
+pnpm test:pwa
+pnpm test:integrity
+```
+
+5. Hard refresh v prehliadači (Cmd+Shift+R) kvôli cache favicon.
+
+- Install prompt v navigácii; iOS: Zdieľať → Pridať na plochu
 
 ## Learn More
 

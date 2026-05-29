@@ -3,7 +3,7 @@ import type { ParsedContact } from "./validate";
 export type ContactEmailConfig = {
   fromEmail: string;
   toEmail: string;
-  copyEmail: string;
+  copyEmail?: string;
 };
 
 export type ContactEmailClient = {
@@ -44,7 +44,7 @@ export async function sendContactEmail(
   return client.emails.send({
     from: config.fromEmail,
     to: [config.toEmail],
-    cc: [config.copyEmail],
+    ...(config.copyEmail ? { cc: [config.copyEmail] } : {}),
     replyTo: data.email,
     subject,
     text,

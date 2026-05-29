@@ -33,7 +33,11 @@ Dokonči produkčné nastavenie cez CLI:
    - Chrome DevTools → Application → Manifest + Service Worker
    - Odoslať reálny formulár na webe, skontrolovať magicasro@hotmail.com + CC erikbabcan@gmail.com
 
-4. Ak favicon.io ZIP mám v Downloads, nahraď PNG v public/ a spusti pnpm icons:generate, commitni.
+4. Nová favicon sada (favicon.io):
+   - Skopíruj PNG/ICO z exportu do `public/` (pozri `docs/PWA-ASSETS.md`)
+   - `pnpm icons:generate && pnpm og:generate`
+   - `pnpm test:pwa && pnpm test:integrity`
+   - Commitni a redeploy
 
 Nespýtaj sa na commit — už je na main. Len env, deploy, smoke, krátky report čo je zelené/červené.
 ```

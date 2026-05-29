@@ -5,7 +5,7 @@ import sharp from "sharp";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.join(__dirname, "..", "public");
-const sourceSvg = path.join(publicDir, "icon.svg");
+const sourcePng = path.join(publicDir, "android-chrome-512x512.png");
 
 const sizes = [
   { name: "favicon-16x16.png", size: 16 },
@@ -42,14 +42,14 @@ async function writeMaskable(name, size, buffer) {
 
 async function main() {
   await mkdir(publicDir, { recursive: true });
-  const svgBuffer = await sharp(sourceSvg).png().toBuffer();
+  const sourceBuffer = await sharp(sourcePng).png().toBuffer();
 
   for (const { name, size } of sizes) {
-    await writePng(name, size, svgBuffer);
+    await writePng(name, size, sourceBuffer);
   }
 
-  await writeMaskable("android-chrome-512x512-maskable.png", 512, svgBuffer);
-  console.log("favicon.ico: ponechaný existujúci súbor v public/");
+  await writeMaskable("android-chrome-512x512-maskable.png", 512, sourceBuffer);
+  console.log("favicon.ico: replace manually from favicon.io export when updating branding");
 }
 
 main().catch((error) => {

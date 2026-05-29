@@ -6,9 +6,9 @@ import { parseContactPayload, type ContactPayload } from "@/lib/contact/validate
 function getContactConfig() {
   return {
     resendApiKey: process.env.RESEND_API_KEY,
-    toEmail: process.env.CONTACT_TO_EMAIL || "magicasro@hotmail.com",
-    copyEmail: process.env.CONTACT_COPY_EMAIL || "erikbabcan@gmail.com",
-    fromEmail: process.env.CONTACT_FROM_EMAIL || "onboarding@resend.dev",
+    toEmail: process.env.CONTACT_TO_EMAIL,
+    copyEmail: process.env.CONTACT_COPY_EMAIL,
+    fromEmail: process.env.CONTACT_FROM_EMAIL,
   };
 }
 
@@ -27,9 +27,9 @@ export async function POST(request: Request) {
 
   const { resendApiKey, fromEmail, toEmail, copyEmail } = getContactConfig();
 
-  if (!resendApiKey) {
+  if (!resendApiKey || !fromEmail || !toEmail) {
     return NextResponse.json(
-      { error: "Server is missing RESEND_API_KEY configuration." },
+      { error: "Server is missing email configuration." },
       { status: 500 }
     );
   }

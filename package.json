@@ -1,10 +1,10 @@
 {
-  "name": "my-v0-project",
+  "name": "nexify-studio-tech",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "build": "next build --webpack",
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "clean": "node scripts/cleanup-project.mjs",
     "icons:generate": "node scripts/generate-pwa-icons.mjs",
     "og:generate": "node scripts/generate-og-image.mjs",

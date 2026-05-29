@@ -31,7 +31,7 @@ describe("integrity: routes and pages", () => {
     expect(page).toContain("ProductDetail");
   });
 
-  it("34/40 navigation links to produkty section", () => {
+  it("37/40 navigation links to produkty section", () => {
     const nav = readFileSync(
       path.join(root, "components/landing/navigation.tsx"),
       "utf-8"
@@ -39,12 +39,12 @@ describe("integrity: routes and pages", () => {
     expect(nav).toContain('href: "/#produkty"');
   });
 
-  it("35/40 homepage includes category marquee section", () => {
+  it("38/40 homepage includes category marquee section", () => {
     const page = readFileSync(path.join(root, "app/page.tsx"), "utf-8");
     expect(page).toContain("CategoryMarqueeSection");
   });
 
-  it("36/40 offline page exists with Slovak copy", () => {
+  it("39/40 offline page exists with Slovak copy", () => {
     const offline = readFileSync(
       path.join(root, "app/~offline/page.tsx"),
       "utf-8"

@@ -15,7 +15,12 @@ vi.mock("resend", () => ({
 
 import { POST } from "./route";
 
-const originalApiKey = process.env.RESEND_API_KEY;
+const originalEnv = {
+  RESEND_API_KEY: process.env.RESEND_API_KEY,
+  CONTACT_TO_EMAIL: process.env.CONTACT_TO_EMAIL,
+  CONTACT_FROM_EMAIL: process.env.CONTACT_FROM_EMAIL,
+  CONTACT_COPY_EMAIL: process.env.CONTACT_COPY_EMAIL,
+};
 
 function createRequest(body: unknown) {
   return new Request("http://localhost/api/contact", {
@@ -28,13 +33,18 @@ function createRequest(body: unknown) {
 describe("POST /api/contact", () => {
   beforeEach(() => {
     mockSend.mockReset();
+    process.env.CONTACT_TO_EMAIL = "to@example.com";
+    process.env.CONTACT_FROM_EMAIL = "from@example.com";
+    process.env.CONTACT_COPY_EMAIL = "copy@example.com";
   });
 
   afterEach(() => {
-    if (originalApiKey === undefined) {
-      delete process.env.RESEND_API_KEY;
-    } else {
-      process.env.RESEND_API_KEY = originalApiKey;
+    for (const [key, val] of Object.entries(originalEnv)) {
+      if (val === undefined) {
+        delete process.env[key];
+      } else {
+        process.env[key] = val;
+      }
     }
   });
 

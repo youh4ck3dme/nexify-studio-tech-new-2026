@@ -35,6 +35,16 @@ const features = [
   },
 ];
 
+/** Precomputed orbit nodes — avoids SSR/client Math.sin/cos floating-point drift */
+const AI_ORBIT_NODES = [
+  { x: 150, y: 80 },
+  { x: 125, y: 123.301 },
+  { x: 75, y: 123.301 },
+  { x: 50, y: 80 },
+  { x: 75, y: 36.699 },
+  { x: 125, y: 36.699 },
+] as const;
+
 function DeployVisual() {
   return (
     <svg viewBox="0 0 200 160" className="w-full h-full">
@@ -95,17 +105,14 @@ function AIVisual() {
       </circle>
       
       {/* Orbiting nodes */}
-      {[0, 1, 2, 3, 4, 5].map((i) => {
-        const angle = (i * 60) * (Math.PI / 180);
-        const radius = 50;
-        return (
+      {AI_ORBIT_NODES.map((node, i) => (
           <g key={i}>
             {/* Connection line */}
             <line
               x1="100"
               y1="80"
-              x2={100 + Math.cos(angle) * radius}
-              y2={80 + Math.sin(angle) * radius}
+              x2={node.x}
+              y2={node.y}
               stroke="currentColor"
               strokeWidth="1"
               opacity="0.3"
@@ -121,8 +128,8 @@ function AIVisual() {
             
             {/* Outer node */}
             <circle
-              cx={100 + Math.cos(angle) * radius}
-              cy={80 + Math.sin(angle) * radius}
+              cx={node.x}
+              cy={node.y}
               r="6"
               fill="none"
               stroke="currentColor"
@@ -137,8 +144,7 @@ function AIVisual() {
               />
             </circle>
           </g>
-        );
-      })}
+      ))}
       
       {/* Pulse rings */}
       <circle cx="100" cy="80" r="30" fill="none" stroke="currentColor" strokeWidth="1" opacity="0">

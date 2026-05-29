@@ -1,12 +1,8 @@
 import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
-import {
-  CacheFirst,
-  ExpirationPlugin,
-  NetworkFirst,
-  NetworkOnly,
-  Serwist,
-} from "serwist";
+import { Serwist } from "serwist";
+import { CacheFirst, NetworkFirst, StaleWhileRevalidate, NetworkOnly } from "serwist";
+import { ExpirationPlugin } from "serwist";
 
 declare global {
   interface WorkerGlobalScope extends SerwistGlobalConfig {
@@ -16,56 +12,11 @@ declare global {
 
 declare const self: ServiceWorkerGlobalScope;
 
-const ONE_DAY = 60 * 60 * 24;
-const ONE_WEEK = ONE_DAY * 7;
-
-const runtimeCaching = [
-  {
-    matcher: ({ request, url }: { request: Request; url: URL }) =>
-      request.method === "GET" && url.pathname.startsWith("/api/"),
-    handler: new NetworkOnly(),
-  },
-  {
-    matcher: ({ request }: { request: Request }) => request.mode === "navigate",
-    handler: new NetworkFirst({
-      cacheName: "pages",
-      networkTimeoutSeconds: 3,
-      plugins: [
-        new ExpirationPlugin({
-          maxEntries: 32,
-          maxAgeSeconds: ONE_DAY,
-        }),
-      ],
-    }),
-  },
-  {
-    matcher: ({ request, url }: { request: Request; url: URL }) =>
-      request.destination === "image" ||
-      url.pathname.match(
-        /\.(?:png|jpg|jpeg|svg|gif|webp|ico|woff2?|ttf|otf)$/i
-      ) !== null ||
-      url.pathname.startsWith("/android-chrome") ||
-      url.pathname.startsWith("/apple-touch-icon") ||
-      url.pathname.startsWith("/favicon"),
-    handler: new CacheFirst({
-      cacheName: "static-assets",
-      plugins: [
-        new ExpirationPlugin({
-          maxEntries: 96,
-          maxAgeSeconds: ONE_WEEK,
-        }),
-      ],
-    }),
-  },
-  ...defaultCache,
-];
-
 const serwist = new Serwist({
   precacheEntries: self.__SW_MANIFEST,
-  skipWaiting: false,
+  skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
-  runtimeCaching,
   fallbacks: {
     entries: [
       {
@@ -76,12 +27,73 @@ const serwist = new Serwist({
       },
     ],
   },
+  runtimeCaching: [
+    // 1. Statické assety (fonty, CSS, obrázky z public): CacheFirst
+    {
+      matcher: ({ request, url }) => {
+        return (
+          request.destination === "font" ||
+          request.destination === "style" ||
+          request.destination === "image" ||
+          url.pathname.startsWith("/fonts/") ||
+          url.pathname.startsWith("/images/")
+        );
+      },
+      handler: new CacheFirst({
+        cacheName: "static-assets-cache",
+        plugins: [
+          new ExpirationPlugin({
+            maxEntries: 200,
+            maxAgeSeconds: 30 * 24 * 60 * 60, // 30 dní
+          }),
+        ],
+      }),
+    },
+
+    // 2. API volania pre zoznamy (GET requesty): StaleWhileRevalidate
+    {
+      matcher: ({ request, url }) => {
+        return request.method === "GET" && url.pathname.includes("/api/list");
+      },
+      handler: new StaleWhileRevalidate({
+        cacheName: "api-lists-cache",
+        plugins: [
+          new ExpirationPlugin({
+            maxEntries: 100,
+            maxAgeSeconds: 24 * 60 * 60, // 24 hodín
+          }),
+        ],
+      }),
+    },
+
+    // 3. Detailné dáta a kritické API (zo zadania): NetworkFirst (s fallbackom na cache)
+    {
+      matcher: ({ request, url }) => {
+        return request.method === "GET" && url.pathname.startsWith("/api/critical");
+      },
+      handler: new NetworkFirst({
+        cacheName: "api-critical-cache",
+        networkTimeoutSeconds: 3, // Po 3 sekundách fallbackne na cache
+        plugins: [
+          new ExpirationPlugin({
+            maxEntries: 50,
+            maxAgeSeconds: 24 * 60 * 60, // 24 hodín
+          }),
+        ],
+      }),
+    },
+
+    // Zvyšné API požiadavky necachovať vôbec (podľa testov)
+    {
+      matcher: ({ url }) => {
+        return url.pathname.startsWith("/api/");
+      },
+      handler: new NetworkOnly(),
+    },
+
+    // 4. Fallback na defaultnú Serwist/Next.js cache stratégiu
+    ...defaultCache,
+  ],
 });
 
 serwist.addEventListeners();
-
-self.addEventListener("message", (event) => {
-  if (event.data?.type === "SKIP_WAITING") {
-    void self.skipWaiting();
-  }
-});
