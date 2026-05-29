@@ -12,7 +12,7 @@ export async function loginAction(prevState: any, formData: FormData) {
     return { error: "Nesprávny bezpečnostný kód" };
   }
 
-  const secretString = process.env.SUPABASE_JWT_SECRET;
+  const secretString = process.env.JWT_SECRET;
   if (!secretString) {
     return { error: "Systémová chyba: Chýba podpisový kľúč." };
   }

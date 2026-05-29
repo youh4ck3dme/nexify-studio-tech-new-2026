@@ -95,11 +95,11 @@ export async function proxy(request: NextRequest) {
 
     try {
       // Pre produkciu vložte skutočný JWT Secret do ENV.
-      const secretString = process.env.SUPABASE_JWT_SECRET;
+      const secretString = process.env.JWT_SECRET;
       
       // Ak nemáme JWT_SECRET, nemôžeme bezpečne overiť podpis, presmerujeme
       if (!secretString) {
-        console.warn("Chýba SUPABASE_JWT_SECRET v prostredí.");
+        console.warn("Chýba JWT_SECRET v prostredí.");
         throw new Error("Missing JWT Secret");
       }
 

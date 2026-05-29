@@ -48,12 +48,10 @@ CONTACT_FROM_EMAIL=support@nexify-studio.tech
 CONTACT_TO_EMAIL=magicasro@hotmail.com
 CONTACT_COPY_EMAIL=erikbabcan@gmail.com
 
-# Supabase a Autentifikácia (Pre prístup do CRM)
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_JWT_SECRET=vaše_veľmi_tajné_jwt_heslo
+# Bezpečnostné prostredie
+JWT_SECRET=vaše_veľmi_tajné_jwt_heslo
 ```
-*(Poznámka: Ak chýba `SUPABASE_JWT_SECRET`, Sentinel Engine vás nepustí do `/crm` ani na lokálnom prostredí!)*
+*(Poznámka: Ak chýba `JWT_SECRET`, Sentinel Engine vás nepustí do `/crm` ani na lokálnom prostredí!)*
 
 ### Spustenie aplikácie:
 ```bash

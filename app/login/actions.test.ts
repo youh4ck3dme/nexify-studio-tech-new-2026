@@ -33,7 +33,7 @@ describe("Login Action (Bypass)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Nasimulujeme, že máme ENV premennú
-    process.env.SUPABASE_JWT_SECRET = "test_secret_key_1234567890_test";
+    process.env.JWT_SECRET = "test_secret_key_1234567890_test";
   });
 
   it("by mal odmietnuť nesprávne heslo", async () => {
@@ -48,7 +48,7 @@ describe("Login Action (Bypass)", () => {
   });
 
   it("by mal vrátiť chybu, ak chýba JWT secret", async () => {
-    delete process.env.SUPABASE_JWT_SECRET;
+    delete process.env.JWT_SECRET;
     
     const formData = new FormData();
     formData.append("password", "23513900");
