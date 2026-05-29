@@ -1,120 +1,87 @@
-# nexify-studio-tech-new-2026
+# Nexify Studio - Private Repository 🔒
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+> **DÔVERNÉ / CONFIDENTIAL**  
+> Tento repozitár obsahuje privátny zdrojový kód spoločnosti MA.GI.CA., s.r.o. (Nexify Studio). Neoprávnené šírenie, kopírovanie alebo poskytovanie prístupu tretím stranám je prísne zakázané.
 
-## Built with v0
+## 🚀 Architektúra a Tech Stack (Next.js 16)
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+Projekt Nexify Studio je postavený na najnovších štandardoch pre maximálny výkon, bezpečnosť a dokonalý "Industrial Luxury" používateľský zážitok.
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_gYDH8GzRCv5BIfKlfFJieMBYFEMI)
+- **Framework:** Next.js 16 (App Router)
+- **Design System:** Tailwind v4 (AMOLED Black, Glassmorphism, plynulé animácie)
+- **PWA & Offline:** Serwist (Service Worker), plnohodnotná inštalácia na plochu iOS/Android s natívnym "black-translucent" stavovým riadkom.
+- **Bezpečnosť:** Vlastný **Sentinel Engine** bežiaci na úrovni Edge Proxy.
+- **Databáza / CRM:** Dexie.js (IndexedDB) pre Local-First/Offline spracovanie dát a Supabase pre backend.
+- **Testovanie:** Vitest s masívnou sadou Unit a Integrity testov (100+ testov).
 
-## Getting Started
+---
 
-First, run the development server:
+## 🛡️ Sentinel Engine (Edge Proxy / Middleware)
 
+Aplikácia je chránená naším vlastným bezpečnostným štítom, ktorý beží priamo na Vercel Edge Runtime (v súbore `proxy.ts`). 
+Tento štít zachytáva requesty ešte pred vstupom do aplikácie a zabezpečuje:
+1. **Anti-Scraping:** Blokovanie známych botov (`curl`, `python-requests`, atď.) a requestov bez User-Agenta.
+2. **Rate Limiting:** Ochrana API endpointov (max. 20 requestov / 10s per IP) proti DDoS.
+3. **Edge JWT Validácia:** Extrémne rýchle overovanie prístupu (cez `jose`) do `/crm` a `/dashboard`. Neoverení používatelia sú okamžite presmerovaní na `/login`.
+4. **Security Headers:** Automatická injekcia Strict-Transport-Security, X-Frame-Options (Clickjacking ochrana) a pod.
+
+---
+
+## 💼 Interné CRM (Offline-First)
+
+CRM modul je navrhnutý v štýle **Local-First**.
+- Ak je obchodník v teréne bez signálu, stále môže zadávať nových klientov.
+- Dáta sa okamžite uložia do lokálnej IndexedDB databázy prehliadača (tabuľky `clients` a `offlineQueue`).
+- Komponent `<SyncManager />` ticho na pozadí čaká na obnovenie pripojenia. Akonáhle telefón/PC získa internet, CRM odošle celú offline frontu do hlavnej databázy na serveri.
+
+---
+
+## ⚙️ Lokálny Vývoj a Premenné Prostredia
+
+Na spustenie aplikácie v plnom režime je potrebné mať nastavený súbor `.env.local` v koreňovom adresári.
+
+**Potrebné premenné:**
+```env
+# Kontakt a odosielanie emailov (Resend)
+RESEND_API_KEY=re_your_api_key
+CONTACT_FROM_EMAIL=support@nexify-studio.tech
+CONTACT_TO_EMAIL=magicasro@hotmail.com
+CONTACT_COPY_EMAIL=erikbabcan@gmail.com
+
+# Supabase a Autentifikácia (Pre prístup do CRM)
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_JWT_SECRET=vaše_veľmi_tajné_jwt_heslo
+```
+*(Poznámka: Ak chýba `SUPABASE_JWT_SECRET`, Sentinel Engine vás nepustí do `/crm` ani na lokálnom prostredí!)*
+
+### Spustenie aplikácie:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧪 Testovanie (Vitest)
 
-## Contact form (Resend)
-
-The contact section posts to `/api/contact` and sends emails through Resend.
-
-Required environment variables:
-
-- `RESEND_API_KEY`
-- `CONTACT_FROM_EMAIL`
-- `CONTACT_TO_EMAIL` (defaults to `magicasro@hotmail.com`)
-- `CONTACT_COPY_EMAIL` (defaults to `erikbabcan@gmail.com`)
-
-Important: `CONTACT_FROM_EMAIL` must be a verified sender in Resend. If you use a non-verified sender, delivery will fail.
-
-### Tests
+Projekt si zakladá na obrovskej odolnosti voči chybám. Pred každým nasadením spúšťame Unit aj Integrity testy.
 
 ```bash
-pnpm test
-```
+# Spustenie kompletne všetkých testov
+pnpm test:all
 
-Unit tests cover contact validation, email payload, and the `/api/contact` route (mocked Resend).
-
-### Smoke test (live email)
-
-Requires a running app and configured env (`.env.local` locally or Vercel Production env):
-
-```bash
-pnpm dev
-# in another terminal:
-RESEND_API_KEY=re_... CONTACT_FROM_EMAIL=verified@yourdomain.com pnpm test:contact:smoke
-
-# production:
-SMOKE_BASE_URL=https://nexify-studio.tech pnpm test:contact:smoke
-```
-
-Smoke sends a message prefixed with `[SMOKE]`. Check `CONTACT_TO_EMAIL` and `CONTACT_COPY_EMAIL` inboxes.
-
-### Go-live checklist
-
-- [ ] Vercel env: `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `CONTACT_TO_EMAIL`, `CONTACT_COPY_EMAIL`
-- [ ] Redeploy after env changes
-- [ ] `pnpm test` passes
-- [ ] Smoke test on production
-- [ ] Chrome DevTools → Application → Manifest (192 + 512 icons, no errors)
-- [ ] Install app from browser (desktop/mobile)
-- [ ] Offline: disconnect network, reload → `/~offline` fallback
-
-## PWA a ikony
-
-Podrobná dokumentácia: [`docs/PWA-ASSETS.md`](docs/PWA-ASSETS.md).
-
-Statické assety v [`public/`](public/):
-
-| Súbor | Účel |
-|-------|------|
-| `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png` | Favicon v prehliadači |
-| `apple-touch-icon.png` | iOS „Pridať na plochu“ |
-| `android-chrome-192x192.png`, `android-chrome-512x512.png` | PWA / Android |
-| `android-chrome-512x512-maskable.png` | Maskable ikona (AMOLED safe zone) |
-| `manifest.webmanifest` | Web App Manifest (Nexify branding) |
-| `og-image.png` | Open Graph náhľad (1200×630) |
-
-**Manifest:** [`public/manifest.webmanifest`](public/manifest.webmanifest) — `theme_color: #000000` (AMOLED), `background_color: #FCFCFC`.
-
-**Service worker:** generovaný pri `pnpm build` do `public/sw.js` (Serwist, len produkcia).
-
-### Aktualizácia ikon (favicon.io)
-
-1. Export z [favicon.io](https://favicon.io) do priečinka (napr. `favicon_nexify/`).
-2. Skopíruj do `public/`: `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`, `android-chrome-192x192.png`, `android-chrome-512x512.png`.
-3. Spusti regeneráciu odvodených assetov:
-
-```bash
-pnpm icons:generate   # maskable + resize z android-chrome-512x512.png
-pnpm og:generate      # OG obrázok s logom
-```
-
-4. Overenie:
-
-```bash
-pnpm test:pwa
+# Len Integrity testy (kontrolujú čistotu PWA, UI/UX, Assetov a Routeru)
 pnpm test:integrity
+
+# Len modulárne Unit testy
+pnpm test:unit
 ```
 
-5. Hard refresh v prehliadači (Cmd+Shift+R) kvôli cache favicon.
+---
 
-- Install prompt v navigácii; iOS: Zdieľať → Pridať na plochu
+## 📱 PWA (Progressive Web App) Zásady
 
-## Learn More
-
-To learn more, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+1. **Ikony a Manifest:** Všetky ikony pre Apple a štandardný web sídlia priamo v `app/` (`icon.png`, `apple-icon.png`, `favicon.ico`). Ostatné maskable ikony pre Android sú v `public/icons/`.
+2. **AMOLED Strict:** V `app/layout.tsx` nesmie byť iný `themeColor` ako `#000000`, aby PWA splynula s výrezom telefónu (Notch / Dynamic Island).
+3. **Install Prompt:** Nepoužívame defaultný prehliadačový banner, ale náš vlastný nadizajnovaný `<CustomInstallPrompt />` so skleneným Glassmorphism efektom.
