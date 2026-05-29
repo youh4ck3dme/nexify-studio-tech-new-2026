@@ -5,6 +5,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { InstallPrompt } from "@/components/pwa/install-prompt";
+import { ThemeToggle } from "@/components/theme-toggle";
+
+const DEVELOPER_PORTAL_URL = "https://d3v3loper.lovable.app";
 
 const navLinks = [
   { name: "Domov", href: "/" },
@@ -13,8 +16,53 @@ const navLinks = [
   { name: "Ako to funguje", href: "/#how-it-works" },
   { name: "Referencie", href: "/#testimonials" },
   { name: "Cenník", href: "/#pricing" },
+  { name: "Developer", href: DEVELOPER_PORTAL_URL, external: true },
   { name: "Kontakt", href: "/#contact" },
-];
+] as const;
+
+const navLinkClassName =
+  "text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 relative group link-underline";
+
+function NavLinkItem({
+  link,
+  className,
+  onClick,
+  style,
+  showUnderline = false,
+}: {
+  link: (typeof navLinks)[number];
+  className: string;
+  onClick?: () => void;
+  style?: React.CSSProperties;
+  showUnderline?: boolean;
+}) {
+  const underline = showUnderline ? (
+    <span className="absolute -bottom-1 left-0 w-0 h-px bg-foreground transition-all duration-300 group-hover:w-full" />
+  ) : null;
+
+  if ("external" in link && link.external) {
+    return (
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+        onClick={onClick}
+        style={style}
+      >
+        {link.name}
+        {underline}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={link.href} className={className} onClick={onClick} style={style}>
+      {link.name}
+      {underline}
+    </Link>
+  );
+}
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -57,19 +105,18 @@ export function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-12">
             {navLinks.map((link) => (
-              <Link
+              <NavLinkItem
                 key={link.name}
-                href={link.href}
-                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 relative group link-underline"
-              >
-                {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-foreground transition-all duration-300 group-hover:w-full" />
-              </Link>
+                link={link}
+                className={navLinkClassName}
+                showUnderline
+              />
             ))}
           </div>
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
+            <ThemeToggle />
             <InstallPrompt />
             <Button
               size="sm"
@@ -111,25 +158,24 @@ export function Navigation() {
           {/* Navigation Links */}
           <div className="flex-1 flex flex-col justify-center gap-8">
             {navLinks.map((link, i) => (
-              <Link
+              <NavLinkItem
                 key={link.name}
-                href={link.href}
+                link={link}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`text-4xl sm:text-5xl font-display text-foreground hover:text-muted-foreground transition-all duration-500 min-h-[44px] flex items-center ${
-                  isMobileMenuOpen 
-                    ? "opacity-100 translate-y-0" 
+                  isMobileMenuOpen
+                    ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-4"
                 }`}
                 style={{ transitionDelay: isMobileMenuOpen ? `${i * 75}ms` : "0ms" }}
-              >
-                {link.name}
-              </Link>
+              />
             ))}
           </div>
           
           {/* Bottom CTAs */}
-          <div className="pb-6 md:hidden">
+          <div className="pb-6 md:hidden flex items-center justify-between gap-4">
             <InstallPrompt />
+            <ThemeToggle />
           </div>
           <div className={`flex gap-4 pt-8 border-t border-foreground/10 transition-all duration-500 ${
             isMobileMenuOpen 

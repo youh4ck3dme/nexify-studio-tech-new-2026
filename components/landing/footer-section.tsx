@@ -26,6 +26,7 @@ const footerLinks = {
     { name: "Cenník", href: "/#pricing" },
     { name: "Kontakt", href: "/#contact" },
   ],
+  Developer: [{ name: "d3v3loper", href: "https://d3v3loper.lovable.app" }],
   Kontakt: [
     { name: companyLegal.email, href: `mailto:${companyLegal.email}` },
     { name: companyLegal.phoneDisplay, href: `tel:${companyLegal.phone}` },
@@ -60,7 +61,7 @@ export function FooterSection() {
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="py-16 lg:py-24">
-          <div className="grid grid-cols-2 md:grid-cols-7 gap-12 lg:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-8 gap-12 lg:gap-8">
             <div className="col-span-2">
               <Link href="/" className="inline-flex items-center gap-2 mb-6">
                 <span className="text-2xl font-display">{companyLegal.brandName}</span>
@@ -95,21 +96,28 @@ export function FooterSection() {
                     <li key={link.name}>
                       {link.isCompanyInfo ? (
                         <div className="text-sm text-muted-foreground">{link.name}</div>
-                      ) : link.href?.startsWith("/") ? (
-                        <Link
-                          href={link.href}
-                          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          {link.name}
-                        </Link>
-                      ) : (
-                        <a
-                          href={link.href}
-                          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          {link.name}
-                        </a>
-                      )}
+                      ) : link.href ? (
+                        link.href.startsWith("/") ? (
+                          <Link
+                            href={link.href}
+                            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                          >
+                            {link.name}
+                          </Link>
+                        ) : (
+                          <a
+                            href={link.href}
+                            target={link.href.startsWith("http") ? "_blank" : undefined}
+                            rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                            className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1 group"
+                          >
+                            {link.name}
+                            {link.href.startsWith("http") ? (
+                              <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                            ) : null}
+                          </a>
+                        )
+                      ) : null}
                     </li>
                   ))}
                 </ul>
