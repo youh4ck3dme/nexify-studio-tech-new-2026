@@ -40,20 +40,28 @@ test.describe("Catalog", () => {
   });
 
   test("12/30 reset filter shows all products", async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("nexify-cookie-consent-v1", "all");
+    });
     await page.goto("/produkty");
     await page.getByRole("button", { name: "Bezpečnostné služby" }).click();
-    await page.getByRole("button", { name: "Všetko" }).click();
+    await page.getByRole("button", { name: "Všetko", exact: true }).click();
     await expect(page.getByRole("link", { name: "Detail produktu" })).toHaveCount(7);
   });
 
   test("13/30 homepage category marquee links to catalog", async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("nexify-cookie-consent-v1", "all");
+    });
     await page.goto("/#produkty");
     await expect(page.locator("#produkty")).toBeVisible();
     await expect(
       page.locator("#produkty").getByRole("heading", { name: /Jednoduché a transparentné/i })
     ).toBeVisible();
-    await expect(page.getByRole("link", { name: "Kategória: Firemné weby" }).first()).toBeVisible();
-    await page.getByRole("link", { name: "Zobraziť celý katalóg" }).click();
+    await expect(
+      page.getByRole("link", { name: "Kategória: Firemné weby" }).first()
+    ).toHaveAttribute("href", "/sluzby/firemne-weby");
+    await page.locator("#produkty").getByRole("link", { name: "Zobraziť celý katalóg" }).click();
     await expect(page).toHaveURL(/\/produkty$/);
   });
 });

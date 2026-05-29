@@ -2,6 +2,7 @@ import React from "react"
 import type { Metadata, Viewport } from 'next'
 import { Instrument_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { CookieConsent } from '@/components/legal/cookie-consent'
 import { AppToaster } from '@/components/pwa/app-toaster'
 import { ServiceWorkerRegistrar } from '@/components/pwa/service-worker-registrar'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -35,7 +36,6 @@ export const metadata: Metadata = {
     template: `%s | ${APP_NAME}`,
   },
   description: APP_DESCRIPTION,
-  generator: 'v0.app',
   manifest: '/manifest.webmanifest',
   icons: {
     icon: [
@@ -61,11 +61,20 @@ export const metadata: Metadata = {
     title: APP_NAME,
     description: APP_DESCRIPTION,
     url: 'https://nexify-studio.tech',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Nexify Studio',
+      },
+    ],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: APP_NAME,
     description: APP_DESCRIPTION,
+    images: ['/og-image.png'],
   },
 }
 
@@ -86,6 +95,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           {children}
+          <CookieConsent />
           <ServiceWorkerRegistrar />
           <AppToaster />
           <Analytics />
