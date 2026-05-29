@@ -14,7 +14,7 @@ export function ProviderWordmark({ provider }: ProviderWordmarkProps) {
       role="img"
       aria-label={provider.name}
       viewBox="0 0 260 48"
-      className="h-8 md:h-10 w-auto shrink-0 text-foreground/30 hover:text-foreground transition-colors duration-300"
+      className="h-10 md:h-[52px] w-auto shrink-0 text-foreground/30 hover:text-foreground transition-colors duration-300"
       fill="currentColor"
     >
       <text

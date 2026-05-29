@@ -8,36 +8,19 @@ import { companyLegal, legalRoutes } from "@/lib/legal/company";
 const footerLinks = {
   Služby: [
     { name: "Firemné weby", href: "/sluzby/firemne-weby" },
-    { name: "eCommerce", href: "/sluzby/ecommerce" },
+    { name: "eCommerce platformy", href: "/sluzby/ecommerce" },
     { name: "Mobilné aplikácie", href: "/sluzby/mobilne-aplikacie" },
-    { name: "AI riešenia", href: "/sluzby/ai-riesenia" },
-    { name: "SEO balíky", href: "/sluzby/seo" },
-  ],
-  Produkty: [
-    { name: "Celý katalóg", href: "/produkty" },
-    { name: "SEO balíky", href: "/produkty/seo-baliky" },
-    { name: "Firemná webová stránka", href: "/produkty/firemna-webova-stranka" },
-    { name: "eCommerce platforma", href: "/produkty/ecommerce-platforma" },
-    { name: "PWA aplikácia", href: "/produkty/pwa-aplikacia" },
+    { name: "Katalóg produktov", href: "/produkty" },
   ],
   Spoločnosť: [
     { name: "Ako to funguje", href: "/#how-it-works" },
-    { name: "Referencie", href: "/#testimonials" },
-    { name: "Cenník", href: "/#pricing" },
-    { name: "Kontakt", href: "/#contact" },
-  ],
-  Developer: [{ name: "d3v3loper", href: "https://d3v3loper.lovable.app" }],
-  Kontakt: [
-    { name: companyLegal.email, href: `mailto:${companyLegal.email}` },
-    { name: companyLegal.phoneDisplay, href: `tel:${companyLegal.phone}` },
-    { name: companyLegal.legalName, isCompanyInfo: true as const },
-    { name: companyLegal.address, isCompanyInfo: true as const },
-    { name: `IČO: ${companyLegal.ico}`, isCompanyInfo: true as const },
-    { name: `DIČ: ${companyLegal.dic}`, isCompanyInfo: true as const },
+    { name: "Naše referencie", href: "/#testimonials" },
+    { name: "Cenník služieb", href: "/#pricing" },
+    { name: "Kontaktujte nás", href: "/#contact" },
   ],
   Právne: [
     { name: "Ochrana súkromia", href: legalRoutes.privacy },
-    { name: "Podmienky", href: legalRoutes.terms },
+    { name: "Obchodné podmienky", href: legalRoutes.terms },
     { name: "Zásady cookies", href: legalRoutes.cookies },
   ],
 };
@@ -61,7 +44,7 @@ export function FooterSection() {
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="py-16 lg:py-24">
-          <div className="grid grid-cols-2 md:grid-cols-8 gap-12 lg:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-12 lg:gap-8">
             <div className="col-span-2">
               <Link href="/" className="inline-flex items-center gap-2 mb-6">
                 <span className="text-2xl font-display">{companyLegal.brandName}</span>
@@ -127,9 +110,11 @@ export function FooterSection() {
         </div>
 
         <div className="py-8 border-t border-foreground/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">
-            © 2026 {companyLegal.brandName}. Všetky práva vyhradené.
-          </p>
+          <div className="text-sm text-muted-foreground flex flex-col sm:flex-row items-center sm:items-start gap-1 sm:gap-4">
+            <p>© 2026 {companyLegal.brandName}. Všetky práva vyhradené.</p>
+            <span className="hidden sm:inline opacity-50">|</span>
+            <p>Prevádzkuje: {companyLegal.legalName}, IČO: {companyLegal.ico}</p>
+          </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-green-500" />

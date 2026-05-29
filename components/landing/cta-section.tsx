@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { companyLegal } from "@/lib/legal/company";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Mail, Phone } from "lucide-react";
 import { AnimatedTetrahedron } from "./animated-tetrahedron";
 
 export function CtaSection() {
@@ -196,9 +196,15 @@ export function CtaSection() {
                   </p>
                 )}
 
-                <p className="text-sm text-muted-foreground mt-8 font-mono">
-                  📧 {companyLegal.email} | 📞 {companyLegal.phoneDisplay}
-                </p>
+                <div className="flex items-center flex-wrap gap-4 text-sm text-muted-foreground mt-8 font-mono">
+                  <a href={`mailto:${companyLegal.email}`} className="flex items-center gap-2 hover:text-foreground transition-colors">
+                    <Mail className="w-4 h-4" /> {companyLegal.email}
+                  </a>
+                  <span className="opacity-50 hidden sm:inline">|</span>
+                  <a href={`tel:${companyLegal.phone}`} className="flex items-center gap-2 hover:text-foreground transition-colors">
+                    <Phone className="w-4 h-4" /> {companyLegal.phoneDisplay}
+                  </a>
+                </div>
               </div>
 
               {/* Right animation */}

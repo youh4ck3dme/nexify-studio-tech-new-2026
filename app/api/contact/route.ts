@@ -37,14 +37,23 @@ export async function POST(request: Request) {
   const resend = new Resend(resendApiKey);
 
   try {
-    await sendContactEmail(resend, parsed.data, {
+    const response = (await sendContactEmail(resend, parsed.data, {
       fromEmail,
       toEmail,
       copyEmail,
-    });
+    })) as { error?: { message: string } };
+
+    if (response && response.error) {
+      console.error("Resend API Error:", response.error);
+      return NextResponse.json(
+        { error: `Chyba odosielania: ${response.error.message}` },
+        { status: 400 }
+      );
+    }
 
     return NextResponse.json({ ok: true });
-  } catch {
+  } catch (err) {
+    console.error("Unexpected Error:", err);
     return NextResponse.json(
       { error: "Email sa nepodarilo odoslať." },
       { status: 502 }
