@@ -6,7 +6,7 @@ import { CookieConsent } from '@/components/legal/cookie-consent'
 import { RouteProgress } from '@/components/navigation/route-progress'
 import { AppToaster } from '@/components/pwa/app-toaster'
 import { ServiceWorkerRegistrar } from '@/components/pwa/service-worker-registrar'
-import { ThemeProvider } from '@/components/theme-provider'
+import { ThemeProvider, ThemeScript } from '@/components/theme-provider'
 import './globals.css'
 
 const instrumentSans = Instrument_Sans({ 
@@ -80,7 +80,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#000000',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#FCFCFC' },
+    { media: '(prefers-color-scheme: dark)', color: '#000000' },
+  ],
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
@@ -93,11 +96,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="sk" suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
       <body
         className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <RouteProgress />
           {children}
           <CookieConsent />
