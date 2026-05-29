@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { CookieConsent } from '@/components/legal/cookie-consent'
 import { RouteProgress } from '@/components/navigation/route-progress'
 import { AppToaster } from '@/components/pwa/app-toaster'
+import { CustomInstallPrompt } from '@/components/pwa/custom-install-prompt'
 import { ServiceWorkerRegistrar } from '@/components/pwa/service-worker-registrar'
 import { ThemeProvider, ThemeScript } from '@/components/theme-provider'
 import './globals.css'
@@ -99,7 +100,7 @@ export default function RootLayout({
         <ThemeScript />
       </head>
       <body
-        className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+        className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased min-h-screen pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] px-[env(safe-area-inset-left)]`}
         suppressHydrationWarning
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
@@ -108,6 +109,7 @@ export default function RootLayout({
           <CookieConsent />
           <ServiceWorkerRegistrar />
           <AppToaster />
+          <CustomInstallPrompt />
           <Analytics />
         </ThemeProvider>
       </body>
