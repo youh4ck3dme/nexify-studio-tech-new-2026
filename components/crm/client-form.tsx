@@ -100,84 +100,82 @@ export function ClientForm() {
       <h2 className="text-2xl font-display mb-6 text-white">Nový klient</h2>
 
       <form ref={formRef} action={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-white/80">Názov klienta / Firmy *</label>
-            <input
-              name="name"
-              required
-              className="w-full h-12 px-4 border border-white/10 bg-white/5 rounded-lg outline-none focus:ring-2 focus:ring-white/20 input-glow text-white"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-white/80">Kontaktná osoba</label>
-            <input
-              name="contactPerson"
-              className="w-full h-12 px-4 border border-white/10 bg-white/5 rounded-lg outline-none focus:ring-2 focus:ring-white/20 input-glow text-white"
-            />
-          </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-white/80">Názov klienta / Firmy *</label>
+          <input
+            name="name"
+            required
+            className="w-full h-12 px-4 border border-white/10 bg-white/5 rounded-lg outline-none focus:ring-2 focus:ring-white/20 input-glow text-white"
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-white/80">Kontaktná osoba</label>
+          <input
+            name="contactPerson"
+            className="w-full h-12 px-4 border border-white/10 bg-white/5 rounded-lg outline-none focus:ring-2 focus:ring-white/20 input-glow text-white"
+          />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-white/80">E-mail *</label>
-            <input
-              name="email"
-              type="email"
-              required
-              className="w-full h-12 px-4 border border-white/10 bg-white/5 rounded-lg outline-none focus:ring-2 focus:ring-white/20 input-glow text-white"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-white/80">Telefón</label>
-            <input
-              name="phone"
-              type="tel"
-              className="w-full h-12 px-4 border border-white/10 bg-white/5 rounded-lg outline-none focus:ring-2 focus:ring-white/20 input-glow text-white"
-            />
-          </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-white/80">E-mail *</label>
+          <input
+            name="email"
+            type="email"
+            required
+            className="w-full h-12 px-4 border border-white/10 bg-white/5 rounded-lg outline-none focus:ring-2 focus:ring-white/20 input-glow text-white"
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-white/80">Telefón</label>
+          <input
+            name="phone"
+            type="tel"
+            className="w-full h-12 px-4 border border-white/10 bg-white/5 rounded-lg outline-none focus:ring-2 focus:ring-white/20 input-glow text-white"
+          />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-white/80">Služba / Produkt</label>
-            <select
-              name="service"
-              required
-              className="w-full h-12 px-4 border border-white/10 bg-black/80 rounded-lg outline-none focus:ring-2 focus:ring-white/20 text-white"
-            >
-              <option value="Webstránka">Webstránka</option>
-              <option value="E-commerce">E-commerce</option>
-              <option value="PWA Aplikácia">PWA Aplikácia</option>
-              <option value="Branding">Branding</option>
-            </select>
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-white/80">Rozpočet</label>
-            <select
-              name="budget"
-              className="w-full h-12 px-4 border border-white/10 bg-black/80 rounded-lg outline-none focus:ring-2 focus:ring-white/20 text-white"
-            >
-              <option value="">Nevyplnené</option>
-              <option value="do 1000€">do 1000€</option>
-              <option value="1000-3000€">1000 - 3000€</option>
-              <option value="3000€+">3000€+</option>
-            </select>
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-white/80">Status</label>
-            <select
-              name="status"
-              required
-              className="w-full h-12 px-4 border border-white/10 bg-black/80 rounded-lg outline-none focus:ring-2 focus:ring-white/20 text-white"
-            >
-              <option value="Nový lead">Nový lead</option>
-              <option value="Nacenenie">Nacenenie</option>
-              <option value="Vo vývoji">Vo vývoji</option>
-              <option value="Dokončené">Dokončené</option>
-              <option value="Odmietnuté">Odmietnuté</option>
-            </select>
-          </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-white/80">Služba / Produkt</label>
+          <select
+            name="service"
+            required
+            className="w-full h-12 px-4 border border-white/10 bg-[#1D1D1F] rounded-lg outline-none focus:ring-2 focus:ring-white/20 text-white appearance-none"
+          >
+            <option value="Webstránka">Webstránka</option>
+            <option value="E-commerce">E-commerce</option>
+            <option value="PWA Aplikácia">PWA Aplikácia</option>
+            <option value="Branding">Branding</option>
+          </select>
+        </div>
+        
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-white/80">Rozpočet</label>
+          <select
+            name="budget"
+            className="w-full h-12 px-4 border border-white/10 bg-[#1D1D1F] rounded-lg outline-none focus:ring-2 focus:ring-white/20 text-white appearance-none"
+          >
+            <option value="">Nevyplnené</option>
+            <option value="do 1000€">do 1000€</option>
+            <option value="1000-3000€">1000 - 3000€</option>
+            <option value="3000€+">3000€+</option>
+          </select>
+        </div>
+        
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-white/80">Status</label>
+          <select
+            name="status"
+            required
+            className="w-full h-12 px-4 border border-white/10 bg-[#1D1D1F] rounded-lg outline-none focus:ring-2 focus:ring-white/20 text-white appearance-none"
+          >
+            <option value="Nový lead">Nový lead</option>
+            <option value="Nacenenie">Nacenenie</option>
+            <option value="Vo vývoji">Vo vývoji</option>
+            <option value="Dokončené">Dokončené</option>
+            <option value="Odmietnuté">Odmietnuté</option>
+          </select>
         </div>
 
         <div className="space-y-2">
