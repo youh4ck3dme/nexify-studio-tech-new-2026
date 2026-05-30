@@ -2,6 +2,13 @@ import Dexie, { type Table } from "dexie";
 import { useLiveQuery } from "dexie-react-hooks";
 
 // 1. Strict TypeScript Interfaces
+export interface ClientTask {
+  id: string;
+  text: string;
+  done: boolean;
+  createdAt: number;
+}
+
 export interface Client {
   id?: number;
   name: string;
@@ -12,6 +19,7 @@ export interface Client {
   budget?: string;
   status: string;
   notes?: string;
+  tasks?: ClientTask[];
   createdAt: number;
   updatedAt: number;
 }

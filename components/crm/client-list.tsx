@@ -102,6 +102,9 @@ export function ClientList() {
                 {/* Metadata & Actions */}
                 <div className="mt-2 text-white/40 text-xs flex justify-between items-center">
                   <span>Pridané: {format(client.createdAt, "dd.MM.yyyy HH:mm")}</span>
+                  <a href={`/crm/${client.id}`} className="text-white hover:text-white/80 transition-colors bg-white/10 px-3 py-1.5 rounded-md hover:bg-white/20">
+                    Zobraziť profil
+                  </a>
                 </div>
 
                 <button 
