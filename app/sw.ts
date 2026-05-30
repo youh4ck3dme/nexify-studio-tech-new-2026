@@ -97,3 +97,54 @@ const serwist = new Serwist({
 });
 
 serwist.addEventListeners();
+
+// --- Zabezpečenie Background Sync pre CRM ---
+import { db } from "../lib/db/core"; // Používame relatívnu cestu, keďže sw.ts je v /app a db.ts je v /lib
+
+interface SyncEvent extends ExtendableEvent {
+  lastChance: boolean;
+  tag: string;
+}
+
+self.addEventListener("sync", (event: any) => {
+  const syncEvent = event as SyncEvent;
+  if (syncEvent.tag === "sync-crm-data") {
+    console.log("[Service Worker] Zachytený sync event: sync-crm-data");
+    syncEvent.waitUntil(processOfflineQueue());
+  }
+});
+
+async function processOfflineQueue() {
+  try {
+    const queue = await db.offlineQueue.toArray();
+    if (queue.length === 0) return;
+
+    console.log(`[Service Worker] Spúšťam synchronizáciu ${queue.length} položiek na pozadí...`);
+
+    let successCount = 0;
+    for (const item of queue) {
+      try {
+        // Simulácia odoslania na server (rovnako ako v SyncManageri)
+        // await fetch('/api/clients', { method: 'POST', body: JSON.stringify(item.payload) });
+        await new Promise((res) => setTimeout(res, 500));
+
+        if (item.id) {
+          await db.offlineQueue.delete(item.id);
+          successCount++;
+        }
+      } catch (err) {
+        console.error("[Service Worker] Chyba pri synchronizácii položky:", err);
+      }
+    }
+
+    console.log(`[Service Worker] Synchronizácia úspešná! Záznamy: ${successCount}`);
+    
+    // Keďže sme v SW, vieme poslať správu klientom (otvoreným tabom)
+    const clients = await self.clients.matchAll();
+    clients.forEach((client) => {
+      client.postMessage({ type: "SYNC_COMPLETE", successCount });
+    });
+  } catch (error) {
+    console.error("[Service Worker] Zlyhalo spracovanie offline fronty:", error);
+  }
+}

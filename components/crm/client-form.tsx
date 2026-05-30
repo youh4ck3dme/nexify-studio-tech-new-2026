@@ -71,6 +71,17 @@ export function ClientForm() {
           createdAt: Date.now(),
           updatedAt: Date.now(),
         });
+        
+        // Registrácia Background Sync
+        if ("serviceWorker" in navigator && "SyncManager" in window) {
+          try {
+            const registration = await navigator.serviceWorker.ready;
+            // @ts-ignore - TypeScript zatiaľ nemá natívnu podporu pre sync v registrácii
+            await registration.sync.register("sync-crm-data");
+          } catch (err) {
+            console.error("Nepodarilo sa zaregistrovať Background Sync:", err);
+          }
+        }
       }
       formRef.current?.reset();
     } catch (e) {
