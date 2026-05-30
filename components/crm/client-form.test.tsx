@@ -25,7 +25,7 @@ describe("ClientForm Component", () => {
     const inputs = screen.getAllByRole("textbox");
     expect(inputs.length).toBeGreaterThanOrEqual(2);
     // Button
-    expect(screen.getByRole("button", { name: /Pridať klienta/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Uložiť klienta do CRM/i })).toBeInTheDocument();
   });
 
   it("by mal po vyplnení a stlačení uložiť dáta do Dexie (IndexedDB)", async () => {
@@ -40,7 +40,7 @@ describe("ClientForm Component", () => {
     await user.type(nameInput, "Jozef Mak");
     await user.type(emailInput, "jozef@mak.sk");
     
-    const submitBtn = screen.getByRole("button", { name: /Pridať klienta/i });
+    const submitBtn = screen.getByRole("button", { name: /Uložiť klienta do CRM/i });
     
     // Odoslanie formulára. Keďže používame natívny 'action', v JSDOM sa nespustí skutočný React 19 Action tak isto ako v reálnom prehliadači.
     // Ak máme implementáciu handleSubmit aspoň namapovanú na onClick, tak sa to spustí, ale action={} je nová vec.

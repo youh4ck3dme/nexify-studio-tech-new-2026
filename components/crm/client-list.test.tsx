@@ -22,6 +22,8 @@ describe("ClientList Component", () => {
     await db.clients.add({
       name: "Anna Nováková",
       email: "anna@novakova.sk",
+      service: "Webstránka",
+      status: "Nový lead",
       createdAt: Date.now(),
       updatedAt: Date.now(),
     });

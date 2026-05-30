@@ -5,8 +5,13 @@ import { useLiveQuery } from "dexie-react-hooks";
 export interface Client {
   id?: number;
   name: string;
+  contactPerson?: string;
   email: string;
   phone?: string;
+  service: string;
+  budget?: string;
+  status: string;
+  notes?: string;
   createdAt: number;
   updatedAt: number;
 }
@@ -32,6 +37,11 @@ export class NexifyDatabase extends Dexie {
     this.version(1).stores({
       clients: "++id, name, email, createdAt",
       offlineQueue: "++id, action, createdAt",
+    });
+
+    // Version 2: Pridanie nových polí a indexov pre vyhľadávanie/filtrovanie
+    this.version(2).stores({
+      clients: "++id, name, email, status, service, createdAt",
     });
   }
 }
