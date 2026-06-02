@@ -40,3 +40,31 @@ export async function loginAction(prevState: unknown, formData: FormData) {
   // Po úspešnej autentifikácii pustíme používateľa dnu
   redirect("/crm");
 }
+
+export async function loginWithGoogleAction(email: string) {
+  const secretString = process.env.JWT_SECRET;
+  if (!secretString) {
+    return { error: "Systémová chyba: Chýba podpisový kľúč." };
+  }
+
+  // Generujeme kryptografický JWT token pre Sentinel Engine
+  const secret = new TextEncoder().encode(secretString);
+  const token = await new SignJWT({ sub: email, role: "authenticated", provider: "google" })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("24h")
+    .sign(secret);
+
+  const cookieStore = await cookies();
+  cookieStore.set({
+    name: "sb-auth-token",
+    value: token,
+    httpOnly: true,
+    path: "/",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60 * 24, // 24 hodín
+    sameSite: "lax",
+  });
+
+  return { success: true };
+}

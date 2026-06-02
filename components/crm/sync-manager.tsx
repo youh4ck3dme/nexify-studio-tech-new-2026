@@ -2,20 +2,114 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useNetworkStatus } from "@/hooks/use-network-status";
-import { db, OfflineQueueItem } from "@/lib/db";
+import { db, OfflineQueueItem, Client, ClientActivity, ClientTask } from "@/lib/db";
 import { toast } from "sonner";
 import { WifiOff, RefreshCw, AlertCircle, CheckCircle2 } from "lucide-react";
 import { useLiveQuery } from "dexie-react-hooks";
+import { doc, setDoc, getDocs, collection } from "firebase/firestore";
+import { db as firestoreDb, isFirebaseConfigured } from "@/lib/firebase/config";
 
-const CRM_SIMULATED_SYNC = true;
+const CRM_SIMULATED_SYNC = !isFirebaseConfigured;
 
-async function syncToServer(_item: OfflineQueueItem): Promise<void> {
-  void _item;
-  if (CRM_SIMULATED_SYNC) {
+// Outbound: Sync local IndexedDB changes to Cloud Firestore
+async function syncToServer(item: OfflineQueueItem): Promise<void> {
+  if (CRM_SIMULATED_SYNC || !firestoreDb) {
     await new Promise((resolve) => setTimeout(resolve, 400));
     return;
   }
-  throw new Error("Real backend sync is not implemented yet.");
+
+  const entityIdStr = String(item.entityId);
+
+  if (item.entityType === "client") {
+    const docRef = doc(firestoreDb, "clients", entityIdStr);
+    if (item.action === "create" || item.action === "update") {
+      const payload = item.payload as Client;
+      await setDoc(docRef, {
+        ...payload,
+        updatedAt: Date.now(),
+      }, { merge: true });
+    } else if (item.action === "delete") {
+      const payload = item.payload as Client;
+      await setDoc(docRef, {
+        deletedAt: payload?.deletedAt || Date.now(),
+        updatedAt: Date.now()
+      }, { merge: true });
+    }
+  } else if (item.entityType === "activity") {
+    const docRef = doc(firestoreDb, "activities", entityIdStr);
+    if (item.action === "create" || item.action === "update") {
+      const payload = item.payload as ClientActivity;
+      await setDoc(docRef, {
+        ...payload,
+      }, { merge: true });
+    }
+  } else if (item.entityType === "task") {
+    const payload = item.payload as { clientId: number; tasks: ClientTask[] };
+    const clientIdStr = String(payload.clientId);
+    const clientDocRef = doc(firestoreDb, "clients", clientIdStr);
+    await setDoc(clientDocRef, {
+      tasks: payload.tasks,
+      updatedAt: Date.now()
+    }, { merge: true });
+  }
+}
+
+// Inbound: Pull new/updated data from Firestore and write it into Dexie
+async function pullFromFirestore(): Promise<void> {
+  if (CRM_SIMULATED_SYNC || !firestoreDb) return;
+
+  try {
+    // 1. Pull clients
+    const clientsSnap = await getDocs(collection(firestoreDb, "clients"));
+    for (const docObj of clientsSnap.docs) {
+      const data = docObj.data();
+      const id = parseInt(docObj.id, 10);
+      if (isNaN(id)) continue;
+
+      const localClient = await db.clients.get(id);
+      if (!localClient || (data.updatedAt && data.updatedAt > localClient.updatedAt)) {
+        await db.clients.put({
+          id,
+          companyName: data.companyName,
+          contactName: data.contactName || "",
+          email: data.email || "",
+          phone: data.phone || "",
+          website: data.website || "",
+          service: data.service,
+          status: data.status,
+          budget: data.budget || "",
+          notes: data.notes || "",
+          tasks: data.tasks || [],
+          createdAt: data.createdAt || Date.now(),
+          updatedAt: data.updatedAt || Date.now(),
+          deletedAt: data.deletedAt || null,
+          syncStatus: "synced",
+        });
+      }
+    }
+
+    // 2. Pull activities
+    const activitiesSnap = await getDocs(collection(firestoreDb, "activities"));
+    for (const docObj of activitiesSnap.docs) {
+      const data = docObj.data();
+      const id = parseInt(docObj.id, 10);
+      if (isNaN(id)) continue;
+
+      const localAct = await db.activities.get(id);
+      if (!localAct) {
+        await db.activities.put({
+          id,
+          clientId: data.clientId,
+          type: data.type,
+          title: data.title,
+          content: data.content || "",
+          createdAt: data.createdAt || Date.now(),
+        });
+      }
+    }
+  } catch (err) {
+    console.error("Error pulling from Firestore:", err);
+  }
 }
 
 export function SyncManager() {
@@ -88,8 +182,11 @@ export function SyncManager() {
     if (failCount > 0) {
       setHasError(true);
       toast.error(`Synchronizácia dokončená s chybami. Zlyhalo: ${failCount}`);
-    } else if (successCount > 0) {
-      toast.success(`Všetky zmeny boli úspešne zosynchronizované (${successCount} položiek).`);
+    } else {
+      await pullFromFirestore();
+      if (successCount > 0) {
+        toast.success(`Všetky zmeny boli úspešne zosynchronizované (${successCount} položiek).`);
+      }
     }
   }, [isOnline, isSyncing]);
 
@@ -99,6 +196,13 @@ export function SyncManager() {
       triggerSync();
     }
   }, [isOnline, pendingCount, isSyncing, triggerSync]);
+
+  // One-time pull on mount/reconnect
+  useEffect(() => {
+    if (isOnline) {
+      pullFromFirestore();
+    }
+  }, [isOnline]);
 
   // Determine sync status and theme
   let statusText = "Online a pripojené";
