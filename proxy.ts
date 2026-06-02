@@ -82,6 +82,9 @@ export async function proxy(request: NextRequest) {
   }
 
   // --- Krok 3: JWT Overovanie (Supabase Auth) ---
+  // TODO: Fáza 2/3 - Zabezpečiť užívateľský prístup (Role-Based Access Control / Supabase Auth Integration).
+  // Momentálne vyžaduje prítomnosť JWT tokenu pre prístup k /crm, no pre produkčný tímový multi-user cloud
+  // bude potrebné implementovať prísnejšie rolové matice (Admin, Editor, Viewer).
   const isProtectedRoute = path.startsWith('/crm') || path.startsWith('/dashboard');
   if (isProtectedRoute) {
     // Bypass for E2E tests

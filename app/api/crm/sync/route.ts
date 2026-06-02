@@ -1,3 +1,4 @@
+// SECURITY WARNING: This route is a 501 skeleton and DOES NOT store, log, or persist any incoming synchronization requests.
 import { NextResponse } from "next/server";
 
 export async function GET() {

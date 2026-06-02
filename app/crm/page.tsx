@@ -4,6 +4,10 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "CRM | Nexify Studio",
   description: "Interné offline-first CRM na správu klientov.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function CrmPage() {
