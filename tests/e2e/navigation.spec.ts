@@ -37,7 +37,7 @@ test.describe("Navigation", () => {
     await page.goto("/");
     await page
       .locator("footer")
-      .getByRole("link", { name: "Celý katalóg", exact: true })
+      .getByRole("link", { name: "Katalóg produktov", exact: true })
       .click();
     await expect(page).toHaveURL(/\/produkty$/);
   });

@@ -68,6 +68,14 @@ export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Helper function to handle menu closing via different triggers
+  const closeMenu = (isLinkClick = false) => {
+    setIsMobileMenuOpen(false);
+    if (!isLinkClick && typeof window !== "undefined" && window.history.state?.menuOpen) {
+      window.history.back();
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -80,7 +88,7 @@ export function Navigation() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setIsMobileMenuOpen(false);
+        closeMenu(false);
       }
     };
     if (isMobileMenuOpen) {
@@ -97,6 +105,7 @@ export function Navigation() {
     window.history.pushState(state, "");
 
     const handlePopState = () => {
+      // popstate was triggered (browser went back), just close the react state
       setIsMobileMenuOpen(false);
     };
 
@@ -104,9 +113,6 @@ export function Navigation() {
     
     return () => {
       window.removeEventListener("popstate", handlePopState);
-      if (window.history.state?.menuOpen) {
-        window.history.back();
-      }
     };
   }, [isMobileMenuOpen]);
 
@@ -164,7 +170,13 @@ export function Navigation() {
           {/* Mobile Menu Button */}
           <button
             type="button"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            onClick={() => {
+              if (isMobileMenuOpen) {
+                closeMenu(false);
+              } else {
+                setIsMobileMenuOpen(true);
+              }
+            }}
             className="md:hidden p-3 min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label={isMobileMenuOpen ? "Zavrieť menu" : "Otvoriť menu"}
             aria-expanded={isMobileMenuOpen}
@@ -183,62 +195,64 @@ export function Navigation() {
       <div
         className={`md:hidden fixed inset-0 bg-background z-40 transition-all duration-500 safe-top safe-bottom ${
           isMobileMenuOpen 
-            ? "opacity-100 pointer-events-auto" 
-            : "opacity-0 pointer-events-none"
+            ? "opacity-100 pointer-events-auto visible" 
+            : "opacity-0 pointer-events-none invisible"
         }`}
         style={{ top: 0 }}
       >
-        <div className="flex flex-col h-full px-6 sm:px-8 pt-24 pb-8 safe-bottom overflow-y-auto">
-          {/* Close / Back Indicator */}
-          <div className={`mb-6 flex items-center justify-between transition-all duration-500 ${
-            isMobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}>
-            <button
-              type="button"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="flex items-center gap-2 text-foreground/60 hover:text-foreground transition-colors py-2 min-h-[44px] min-w-[44px]"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span className="text-sm font-mono uppercase tracking-wider">Späť</span>
-            </button>
-            <ThemeToggle />
-          </div>
+        {isMobileMenuOpen && (
+          <div className="flex flex-col h-full px-6 sm:px-8 pt-24 pb-8 safe-bottom overflow-y-auto">
+            {/* Close / Back Indicator */}
+            <div className={`mb-6 flex items-center justify-between transition-all duration-500 ${
+              isMobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}>
+              <button
+                type="button"
+                onClick={() => closeMenu(false)}
+                className="flex items-center gap-2 text-foreground/60 hover:text-foreground transition-colors py-2 min-h-[44px] min-w-[44px]"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span className="text-sm font-mono uppercase tracking-wider">Späť</span>
+              </button>
+              <ThemeToggle />
+            </div>
 
-          {/* Navigation Links */}
-          <div className="flex-1 flex flex-col justify-center gap-6 my-auto">
-            {navLinks.map((link, i) => (
-              <NavLinkItem
-                key={link.name}
-                link={link}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`text-4xl sm:text-5xl font-display text-foreground hover:text-muted-foreground transition-all duration-500 min-h-[44px] flex items-center ${
-                  isMobileMenuOpen
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-4"
-                }`}
-                style={{ transitionDelay: isMobileMenuOpen ? `${i * 60}ms` : "0ms" }}
-              />
-            ))}
+            {/* Navigation Links */}
+            <div className="flex-1 flex flex-col justify-center gap-6 my-auto">
+              {navLinks.map((link, i) => (
+                <NavLinkItem
+                  key={link.name}
+                  link={link}
+                  onClick={() => closeMenu(true)}
+                  className={`text-4xl sm:text-5xl font-display text-foreground hover:text-muted-foreground transition-all duration-500 min-h-[44px] flex items-center ${
+                    isMobileMenuOpen
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-4"
+                  }`}
+                  style={{ transitionDelay: isMobileMenuOpen ? `${i * 60}ms` : "0ms" }}
+                />
+              ))}
+            </div>
+            
+            {/* Bottom CTAs */}
+            <div className="pb-6 md:hidden flex items-center justify-between gap-4">
+              <InstallPrompt />
+            </div>
+            <div className={`flex gap-4 pt-8 border-t border-foreground/10 transition-all duration-500 ${
+              isMobileMenuOpen 
+                ? "opacity-100 translate-y-0" 
+                : "opacity-0 translate-y-4"
+            }`}
+            style={{ transitionDelay: isMobileMenuOpen ? "300ms" : "0ms" }}
+            >
+              <Button className="flex-1 bg-foreground text-background rounded-full h-14 text-base" asChild>
+                <Link href="/#contact" onClick={() => closeMenu(true)}>
+                  Kontaktujte nás
+                </Link>
+              </Button>
+            </div>
           </div>
-          
-          {/* Bottom CTAs */}
-          <div className="pb-6 md:hidden flex items-center justify-between gap-4">
-            <InstallPrompt />
-          </div>
-          <div className={`flex gap-4 pt-8 border-t border-foreground/10 transition-all duration-500 ${
-            isMobileMenuOpen 
-              ? "opacity-100 translate-y-0" 
-              : "opacity-0 translate-y-4"
-          }`}
-          style={{ transitionDelay: isMobileMenuOpen ? "300ms" : "0ms" }}
-          >
-            <Button className="flex-1 bg-foreground text-background rounded-full h-14 text-base" asChild>
-              <Link href="/#contact" onClick={() => setIsMobileMenuOpen(false)}>
-                Kontaktujte nás
-              </Link>
-            </Button>
-          </div>
-        </div>
+        )}
       </div>
     </header>
   );
