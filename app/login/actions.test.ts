@@ -20,7 +20,7 @@ vi.mock("next/navigation", () => ({
 vi.mock("jose", () => {
   return {
     SignJWT: class {
-      constructor(payload: any) {}
+      constructor() {}
       setProtectedHeader() { return this; }
       setIssuedAt() { return this; }
       setExpirationTime() { return this; }

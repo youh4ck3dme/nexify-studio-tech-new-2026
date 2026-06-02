@@ -25,7 +25,7 @@ Object.defineProperty(window, 'matchMedia', {
 // Mockovanie Lucide React ikoniek (v JSDOM občas spôsobujú problémy so SVG)
 vi.mock("lucide-react", async (importOriginal) => {
   const actual = await importOriginal<typeof import("lucide-react")>();
-  const mocks: any = {};
+  const mocks: Record<string, () => string> = {};
   for (const key in actual) {
     mocks[key] = () => `<span data-testid="icon-${key}"></span>`;
   }

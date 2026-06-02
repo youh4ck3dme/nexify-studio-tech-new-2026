@@ -16,7 +16,7 @@ test.describe("PWA offline", () => {
   });
 
   test("manifest has standalone display and icons", async ({ request }) => {
-    const response = await request.get("/manifest.webmanifest");
+    const response = await request.get("/manifest.json");
     expect(response.ok()).toBeTruthy();
     const manifest = (await response.json()) as {
       display?: string;

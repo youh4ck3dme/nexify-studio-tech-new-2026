@@ -6,7 +6,7 @@ import { jwtVerify } from 'jose';
 export const config = {
   matcher: [
     // Vynechať statické súbory, _next, favicon atď.
-    '/((?!_next/static|_next/image|favicon.ico|manifest.webmanifest|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|manifest.json|manifest.webmanifest|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
 
@@ -105,7 +105,7 @@ export async function proxy(request: NextRequest) {
 
       const secret = new TextEncoder().encode(secretString);
       await jwtVerify(token, secret);
-    } catch (error) {
+    } catch {
       // Token je neplatný / expirovaný, alebo chýba secret
       const loginUrl = new URL('/login', request.url);
       loginUrl.searchParams.set('callbackUrl', path);

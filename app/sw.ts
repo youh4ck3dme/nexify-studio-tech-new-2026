@@ -106,7 +106,7 @@ interface SyncEvent extends ExtendableEvent {
   tag: string;
 }
 
-self.addEventListener("sync", (event: any) => {
+self.addEventListener("sync", (event: unknown) => {
   const syncEvent = event as SyncEvent;
   if (syncEvent.tag === "sync-crm-data") {
     console.log("[Service Worker] Zachytený sync event: sync-crm-data");

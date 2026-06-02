@@ -2,8 +2,13 @@ import { render, screen, act, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { CustomInstallPrompt } from "./custom-install-prompt";
 
+interface MockBeforeInstallPromptEvent extends Event {
+  prompt: ReturnType<typeof vi.fn>;
+  userChoice: Promise<{ outcome: string }>;
+}
+
 describe("CustomInstallPrompt Component", () => {
-  let originalMatchMedia: any;
+  let originalMatchMedia: typeof window.matchMedia;
   let originalUserAgent: string;
 
   beforeEach(() => {
@@ -83,7 +88,7 @@ describe("CustomInstallPrompt Component", () => {
     });
 
     // Skutočný inštalačný dialóg by sa mal spustiť
-    expect((promptEvent as any).prompt).toHaveBeenCalled();
+    expect((promptEvent as unknown as MockBeforeInstallPromptEvent).prompt).toHaveBeenCalled();
   });
 
   it("by mal skryť panel, keď používateľ klikne na Zavrieť (X)", () => {

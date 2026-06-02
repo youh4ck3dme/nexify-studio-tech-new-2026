@@ -4,24 +4,34 @@ import { useState, useEffect } from "react";
 import { Download, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: "accepted" | "dismissed";
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
+
 export function CustomInstallPrompt() {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
 
   useEffect(() => {
     // Check if already installed
-    const isPwa = window.matchMedia("(display-mode: standalone)").matches || (window.navigator as any).standalone === true;
+    const isPwa = window.matchMedia("(display-mode: standalone)").matches || 
+      ("standalone" in window.navigator && (window.navigator as Navigator & { standalone?: boolean }).standalone === true);
     setIsStandalone(isPwa);
 
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e);
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
       // Show prompt if not standalone
       if (!isPwa) setShowPrompt(true);
     };
 
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt as EventListener);
 
     // Fallback for iOS (Safari doesn't support beforeinstallprompt)
     const isIos = /ipad|iphone|ipod/.test(window.navigator.userAgent.toLowerCase());

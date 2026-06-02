@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { legalRoutes } from "@/lib/legal/company";
 
 const CONSENT_KEY = "nexify-cookie-consent-v1";
@@ -45,17 +44,18 @@ export function CookieConsent() {
           .
         </p>
         <div className="flex flex-wrap gap-3 shrink-0">
-          <Button
-            variant="outline"
-            size="sm"
-            className="rounded-full"
+          <button
+            className="h-10 rounded-full px-5 text-sm font-medium border border-foreground/25 text-foreground hover:bg-foreground/5 transition-colors cursor-pointer"
             onClick={() => save("essential")}
           >
             Len nevyhnutné
-          </Button>
-          <Button size="sm" className="rounded-full" onClick={() => save("all")}>
+          </button>
+          <button
+            className="h-10 rounded-full px-5 text-sm font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors cursor-pointer"
+            onClick={() => save("all")}
+          >
             Prijať všetko
-          </Button>
+          </button>
         </div>
       </div>
     </div>

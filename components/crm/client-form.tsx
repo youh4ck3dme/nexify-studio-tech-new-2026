@@ -76,8 +76,7 @@ export function ClientForm() {
         if ("serviceWorker" in navigator && "SyncManager" in window) {
           try {
             const registration = await navigator.serviceWorker.ready;
-            // @ts-ignore - TypeScript zatiaľ nemá natívnu podporu pre sync v registrácii
-            await registration.sync.register("sync-crm-data");
+            await (registration as unknown as { sync: { register: (tag: string) => Promise<void> } }).sync.register("sync-crm-data");
           } catch (err) {
             console.error("Nepodarilo sa zaregistrovať Background Sync:", err);
           }

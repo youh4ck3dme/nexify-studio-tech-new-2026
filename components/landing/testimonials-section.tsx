@@ -114,7 +114,7 @@ export function TestimonialsSection() {
             </div>
 
             {/* Navigation Dots */}
-            <div className="flex gap-2 mt-8">
+            <div className="flex items-center gap-1 mt-6 -ml-3">
               {testimonials.map((_, idx) => (
                 <button
                   key={idx}
@@ -125,12 +125,17 @@ export function TestimonialsSection() {
                       setIsAnimating(false);
                     }, 300);
                   }}
-                  className={`h-2 transition-all duration-300 ${
-                    idx === activeIndex
-                      ? "w-8 bg-foreground"
-                      : "w-2 bg-foreground/20 hover:bg-foreground/40"
-                  }`}
-                />
+                  aria-label={`Zobraziť referenciu ${idx + 1}`}
+                  className="w-12 h-12 flex items-center justify-center focus:outline-none group"
+                >
+                  <span
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      idx === activeIndex
+                        ? "w-8 bg-foreground"
+                        : "w-2 bg-foreground/20 group-hover:bg-foreground/40"
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           </div>

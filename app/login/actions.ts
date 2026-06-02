@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { SignJWT } from "jose";
 import { redirect } from "next/navigation";
 
-export async function loginAction(prevState: any, formData: FormData) {
+export async function loginAction(prevState: unknown, formData: FormData) {
   const password = formData.get("password");
 
   // Lokálny hardcoded bypass podľa požiadavky

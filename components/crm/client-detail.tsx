@@ -27,27 +27,27 @@ export function ClientDetail({ clientId }: ClientDetailProps) {
   const [loading, setLoading] = useState(true);
   const [newTaskText, setNewTaskText] = useState("");
 
-  const loadClient = async () => {
-    try {
-      const id = parseInt(clientId, 10);
-      if (isNaN(id)) throw new Error("Invalid ID");
-      const data = await db.clients.get(id);
-      if (!data) {
-        router.push("/crm");
-        return;
-      }
-      setClient(data);
-    } catch (e) {
-      console.error(e);
-      router.push("/crm");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const loadClient = async () => {
+      try {
+        const id = parseInt(clientId, 10);
+        if (isNaN(id)) throw new Error("Invalid ID");
+        const data = await db.clients.get(id);
+        if (!data) {
+          router.push("/crm");
+          return;
+        }
+        setClient(data);
+      } catch (e) {
+        console.error(e);
+        router.push("/crm");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     loadClient();
-  }, [clientId]);
+  }, [clientId, router]);
 
   const handleUpdateStatus = async (newStatus: string) => {
     if (!client?.id) return;
