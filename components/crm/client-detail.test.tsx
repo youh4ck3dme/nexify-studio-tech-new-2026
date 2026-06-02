@@ -21,13 +21,14 @@ describe("ClientDetail Component", () => {
 
     // Vytvorenie testovacieho klienta pred každým testom
     testClientId = await db.clients.add({
-      name: "Firma ABC",
+      companyName: "Firma ABC",
       email: "info@firma-abc.sk",
-      service: "PWA Aplikácia",
+      service: "PWA aplikácia",
       status: "Vo vývoji",
       budget: "3000€+",
       createdAt: Date.now(),
       updatedAt: Date.now(),
+      syncStatus: "synced",
       tasks: [],
     });
   });

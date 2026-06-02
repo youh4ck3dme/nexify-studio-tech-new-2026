@@ -26,14 +26,14 @@ describe("PWA", () => {
   });
 
   it("4/10 manifest obsahuje maskable ikonu", () => {
-    const maskable = manifest.icons.find(
+    const maskable = (manifest.icons || []).find(
       (icon) => icon.purpose?.includes("maskable")
     );
     expect(maskable).toBeDefined();
   });
 
   it("5/10 všetky ikony z manifestu existujú v public/", () => {
-    for (const icon of manifest.icons) {
+    for (const icon of manifest.icons || []) {
       expect(publicFileExists(icon.src)).toBe(true);
     }
   });

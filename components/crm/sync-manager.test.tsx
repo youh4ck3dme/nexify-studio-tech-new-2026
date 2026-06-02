@@ -33,10 +33,12 @@ describe("SyncManager Component", () => {
     
     // Pridáme dáta
     await db.offlineQueue.add({
-      action: "CREATE_CLIENT",
-      payload: { name: "Test" },
+      entityType: "client",
+      entityId: "test-id",
+      action: "create",
+      payload: { companyName: "Test" },
       createdAt: Date.now(),
-      updatedAt: Date.now(),
+      retryCount: 0,
     });
 
     render(<SyncManager />);

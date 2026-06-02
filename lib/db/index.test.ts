@@ -19,9 +19,12 @@ describe("NexifyDatabase (Dexie Offline DB)", () => {
     
     // Uloženie klienta do DB
     const id = await db.clients.add({
-      name: "Jozef Mak",
+      companyName: "Jozef Mak",
       email: "jozef@example.com",
       phone: "+421900111222",
+      service: "Iné",
+      status: "Lead",
+      syncStatus: "synced",
       createdAt: timestamp,
       updatedAt: timestamp,
     });
@@ -33,7 +36,7 @@ describe("NexifyDatabase (Dexie Offline DB)", () => {
     // Načítanie klienta späť pomocou ID
     const client = await db.clients.get(id);
     expect(client).toBeDefined();
-    expect(client?.name).toBe("Jozef Mak");
+    expect(client?.companyName).toBe("Jozef Mak");
     expect(client?.email).toBe("jozef@example.com");
   });
 
@@ -42,10 +45,12 @@ describe("NexifyDatabase (Dexie Offline DB)", () => {
     
     // Vytvorenie offline akcie napr. pri výpadku pripojenia
     const id = await db.offlineQueue.add({
-      action: "SEND_FORM",
+      entityType: "client",
+      entityId: "test-id",
+      action: "create",
       payload: { message: "Testovacia správa bez pripojenia" },
       createdAt: timestamp,
-      updatedAt: timestamp,
+      retryCount: 0,
     });
 
     expect(id).toBeDefined();
@@ -53,7 +58,7 @@ describe("NexifyDatabase (Dexie Offline DB)", () => {
     // Načítanie všetkých úloh z fronty
     const actions = await db.offlineQueue.toArray();
     expect(actions).toHaveLength(1);
-    expect(actions[0]?.action).toBe("SEND_FORM");
+    expect(actions[0]?.action).toBe("create");
     
     // Type casting kvôli 'unknown' typu z interface
     const payload = actions[0]?.payload as { message: string };

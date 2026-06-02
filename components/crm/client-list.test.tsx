@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { ClientList } from "./client-list";
 import { db } from "@/lib/db";
 
@@ -10,25 +10,26 @@ describe("ClientList Component", () => {
   });
 
   it("by mal zobraziť prázdny stav, ak nie sú žiadni klienti", async () => {
-    render(<ClientList />);
+    render(<ClientList onEditClient={vi.fn()} />);
     
     // Dexie live query potrebuje chvíľu na tick
     await waitFor(() => {
-      expect(screen.getByText(/Zatiaľ nemáte žiadnych klientov/i)).toBeInTheDocument();
+      expect(screen.getByText(/Žiadni klienti nezodpovedajú vybraným filtrom/i)).toBeInTheDocument();
     });
   });
 
   it("by mal zobraziť klientov vytiahnutých z lokálnej Dexie DB", async () => {
     await db.clients.add({
-      name: "Anna Nováková",
+      companyName: "Anna Nováková",
       email: "anna@novakova.sk",
-      service: "Webstránka",
-      status: "Nový lead",
+      service: "Web stránka",
+      status: "Lead",
+      syncStatus: "synced",
       createdAt: Date.now(),
       updatedAt: Date.now(),
     });
 
-    render(<ClientList />);
+    render(<ClientList onEditClient={vi.fn()} />);
 
     await waitFor(() => {
       expect(screen.getByText("Anna Nováková")).toBeInTheDocument();
@@ -38,13 +39,15 @@ describe("ClientList Component", () => {
 
   it("by mal varovať používateľa, ak vo fronte čakajú nesynchronizované offline dáta", async () => {
     await db.offlineQueue.add({
-      action: "CREATE_CLIENT",
-      payload: { name: "Offline Test" },
+      entityType: "client",
+      entityId: "temp-id",
+      action: "create",
+      payload: { companyName: "Offline Test" },
       createdAt: Date.now(),
-      updatedAt: Date.now(),
+      retryCount: 0,
     });
 
-    render(<ClientList />);
+    render(<ClientList onEditClient={vi.fn()} />);
 
     await waitFor(() => {
       expect(screen.getByText(/Čaká na sync:/i)).toBeInTheDocument();

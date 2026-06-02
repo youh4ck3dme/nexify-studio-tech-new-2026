@@ -1,6 +1,13 @@
 import { expect, test } from "@playwright/test";
 
-const productSlugs = [
+interface ProductSlug {
+  readonly slug: string;
+  readonly title: string;
+  readonly n: number;
+  readonly cta?: string;
+}
+
+const productSlugs: readonly ProductSlug[] = [
   { slug: "firemna-webova-stranka", title: "Firemná webová stránka", n: 14 },
   { slug: "ecommerce-platforma", title: "eCommerce Platforma", n: 15 },
   { slug: "pwa-aplikacia", title: "Progressive webová aplikácia", n: 16 },
@@ -9,7 +16,7 @@ const productSlugs = [
   { slug: "ai-generator-obsahu", title: "AI generátor obsahu", n: 19 },
   { slug: "penetracne-testovanie", title: "Penetračné testovanie", n: 20 },
   { slug: "seo-baliky", title: "SEO balíky", n: 21, cta: "Získať lokálnu dominanciu" },
-] as const;
+];
 
 for (const { slug, title, n, cta } of productSlugs) {
   test(`${n}/30 product detail ${slug}`, async ({ page }) => {
