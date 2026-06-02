@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowLeft } from "lucide-react";
 import { InstallPrompt } from "@/components/pwa/install-prompt";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -75,6 +75,40 @@ export function Navigation() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Escape key listener to close menu
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    if (isMobileMenuOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isMobileMenuOpen]);
+
+  // History popstate listener to make back-navigation close the menu
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    const state = { menuOpen: true };
+    window.history.pushState(state, "");
+
+    const handlePopState = () => {
+      setIsMobileMenuOpen(false);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+      if (window.history.state?.menuOpen) {
+        window.history.back();
+      }
+    };
+  }, [isMobileMenuOpen]);
 
   return (
     <header
@@ -154,9 +188,24 @@ export function Navigation() {
         }`}
         style={{ top: 0 }}
       >
-        <div className="flex flex-col h-full px-6 sm:px-8 pt-28 pb-8 safe-bottom">
+        <div className="flex flex-col h-full px-6 sm:px-8 pt-24 pb-8 safe-bottom overflow-y-auto">
+          {/* Close / Back Indicator */}
+          <div className={`mb-6 flex items-center justify-between transition-all duration-500 ${
+            isMobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}>
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center gap-2 text-foreground/60 hover:text-foreground transition-colors py-2 min-h-[44px] min-w-[44px]"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              <span className="text-sm font-mono uppercase tracking-wider">Späť</span>
+            </button>
+            <ThemeToggle />
+          </div>
+
           {/* Navigation Links */}
-          <div className="flex-1 flex flex-col justify-center gap-8">
+          <div className="flex-1 flex flex-col justify-center gap-6 my-auto">
             {navLinks.map((link, i) => (
               <NavLinkItem
                 key={link.name}
@@ -167,7 +216,7 @@ export function Navigation() {
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-4"
                 }`}
-                style={{ transitionDelay: isMobileMenuOpen ? `${i * 75}ms` : "0ms" }}
+                style={{ transitionDelay: isMobileMenuOpen ? `${i * 60}ms` : "0ms" }}
               />
             ))}
           </div>
@@ -175,7 +224,6 @@ export function Navigation() {
           {/* Bottom CTAs */}
           <div className="pb-6 md:hidden flex items-center justify-between gap-4">
             <InstallPrompt />
-            <ThemeToggle />
           </div>
           <div className={`flex gap-4 pt-8 border-t border-foreground/10 transition-all duration-500 ${
             isMobileMenuOpen 
