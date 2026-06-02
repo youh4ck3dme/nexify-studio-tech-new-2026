@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { loginAction } from "./actions";
+import { loginAction, logoutAction } from "./actions";
 
-const { mockSet, mockRedirect, mockSign } = vi.hoisted(() => ({
+const { mockSet, mockDelete, mockRedirect, mockSign } = vi.hoisted(() => ({
   mockSet: vi.fn(),
+  mockDelete: vi.fn(),
   mockRedirect: vi.fn(),
   mockSign: vi.fn().mockResolvedValue("mocked_jwt_token"),
 }));
@@ -10,6 +11,7 @@ const { mockSet, mockRedirect, mockSign } = vi.hoisted(() => ({
 vi.mock("next/headers", () => ({
   cookies: vi.fn(() => ({
     set: mockSet,
+    delete: mockDelete,
   })),
 }));
 
@@ -78,4 +80,12 @@ describe("Login Action (Bypass)", () => {
     // Skontroluje, či sme boli presmerovaní
     expect(mockRedirect).toHaveBeenCalledWith("/crm");
   });
+
+  it("by mal zmazať cookie a presmerovať na /login pri logoutAction", async () => {
+    await logoutAction();
+
+    expect(mockDelete).toHaveBeenCalledWith("sb-auth-token");
+    expect(mockRedirect).toHaveBeenCalledWith("/login");
+  });
 });
+

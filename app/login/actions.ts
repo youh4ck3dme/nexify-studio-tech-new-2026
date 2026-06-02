@@ -68,3 +68,10 @@ export async function loginWithGoogleAction(email: string) {
 
   return { success: true };
 }
+
+export async function logoutAction() {
+  const cookieStore = await cookies();
+  cookieStore.delete("sb-auth-token");
+  redirect("/login");
+}
+

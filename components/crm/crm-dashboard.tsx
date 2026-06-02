@@ -6,7 +6,9 @@ import { ClientForm } from "./client-form";
 import { ClientList } from "./client-list";
 import { SyncManager } from "./sync-manager";
 import { ExportImport } from "./export-import";
-import { Users, Briefcase, DollarSign, RefreshCw } from "lucide-react";
+import { Users, Briefcase, DollarSign, RefreshCw, LogOut } from "lucide-react";
+import { logoutAction } from "@/app/login/actions";
+
 
 // Budget parser helper
 export function parseBudget(budgetStr?: string): number {
@@ -71,7 +73,16 @@ export function CrmDashboard() {
       {/* Header section with Tools */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <h2 className="text-xl font-mono uppercase tracking-wider text-white/50">Prehľad &amp; Nástroje</h2>
-        <ExportImport />
+        <div className="flex items-center gap-3">
+          <ExportImport />
+          <button
+            onClick={() => logoutAction()}
+            className="flex items-center gap-2 px-4 h-10 border border-red-500/30 text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all rounded-lg text-sm font-medium cursor-pointer"
+          >
+            <LogOut className="w-4 h-4" />
+            Odhlásiť sa
+          </button>
+        </div>
       </div>
 
       {/* Top Stats Dashboard Grid */}
