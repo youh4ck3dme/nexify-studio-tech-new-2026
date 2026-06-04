@@ -19,6 +19,7 @@ const navLinks = [
   { name: "Developer", href: DEVELOPER_PORTAL_URL, external: true },
   { name: "Guard", href: "https://cyber-weave-craft.lovable.app", external: true },
   { name: "Kontakt", href: "/#contact" },
+  { name: "Interné CRM", href: "/login" },
 ] as const;
 
 const navLinkClassName =

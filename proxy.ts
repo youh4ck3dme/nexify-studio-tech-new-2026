@@ -73,7 +73,8 @@ export async function proxy(request: NextRequest) {
 
   // --- Krok 2: Rate Limiting pre API endpointy ---
   if (path.startsWith('/api/')) {
-    if (isRateLimited(ip)) {
+    const isLocalhost = ip === '127.0.0.1' || ip === '::1' || ip.includes('127.0.0.1');
+    if (!isLocalhost && isRateLimited(ip)) {
       return new NextResponse(
         JSON.stringify({ error: 'Too Many Requests' }),
         { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': '10' } }
@@ -87,11 +88,7 @@ export async function proxy(request: NextRequest) {
   // bude potrebné implementovať prísnejšie rolové matice (Admin, Editor, Viewer).
   const isProtectedRoute = path.startsWith('/crm') || path.startsWith('/dashboard');
   if (isProtectedRoute) {
-    // Bypass for E2E tests
-    if (request.cookies.get('e2e-bypass')?.value === 'true') {
-      // Continue without auth
-    } else {
-      // Snažíme sa nájsť nejaký prístupový token v cookies
+    // Vyžadujeme prítomnosť JWT tokenu v cookies
     const token = request.cookies.get('sb-auth-token')?.value || request.cookies.get('access_token')?.value;
 
     if (!token) {
@@ -101,10 +98,8 @@ export async function proxy(request: NextRequest) {
     }
 
     try {
-      // Pre produkciu vložte skutočný JWT Secret do ENV.
       const secretString = process.env.JWT_SECRET;
       
-      // Ak nemáme JWT_SECRET, nemôžeme bezpečne overiť podpis, presmerujeme
       if (!secretString) {
         console.warn("Chýba JWT_SECRET v prostredí.");
         throw new Error("Missing JWT Secret");
@@ -118,7 +113,6 @@ export async function proxy(request: NextRequest) {
       loginUrl.searchParams.set('callbackUrl', path);
       return NextResponse.redirect(loginUrl);
     }
-    }
   }
 
   // --- Krok 4: Zostavenie Response so Security Hlavičkami ---
@@ -129,6 +123,21 @@ export async function proxy(request: NextRequest) {
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   
+  // Content Security Policy
+  response.headers.set('Content-Security-Policy', [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://apis.google.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "img-src 'self' data: https://*.googleusercontent.com https://*.firebaseapp.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "connect-src 'self' https://*.firebaseio.com https://*.googleapis.com wss://*.firebaseio.com https://vitals.vercel-insights.com",
+    "frame-src 'self' https://*.firebaseapp.com",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+  ].join('; '));
+
   // Signatúra ochrany
   response.headers.set('X-Protected-By', 'Sentinel Engine');
 

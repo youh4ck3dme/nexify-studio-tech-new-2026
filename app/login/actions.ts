@@ -7,8 +7,10 @@ import { redirect } from "next/navigation";
 export async function loginAction(prevState: unknown, formData: FormData) {
   const password = formData.get("password");
 
-  // Lokálny hardcoded bypass podľa požiadavky
-  if (password !== "23513900") {
+  // Kód sa predvolene číta z .env.local, ak tam nie je, použije sa 23513900
+  const expectedPassword = process.env.ADMIN_PASSWORD || process.env.CRM_PASSWORD || "23513900";
+  
+  if (password !== expectedPassword) {
     return { error: "Nesprávny bezpečnostný kód" };
   }
 

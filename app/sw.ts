@@ -119,31 +119,38 @@ async function processOfflineQueue() {
     const queue = await db.offlineQueue.toArray();
     if (queue.length === 0) return;
 
-    console.log(`[Service Worker] Spúšťam synchronizáciu ${queue.length} položiek na pozadí...`);
+    console.log(`[Service Worker] Spúšťam synchronizáciu ${queue.length} položiek s Vercel Postgres na pozadí...`);
 
-    let successCount = 0;
-    for (const item of queue) {
-      try {
-        // Simulácia odoslania na server (rovnako ako v SyncManageri)
-        // await fetch('/api/clients', { method: 'POST', body: JSON.stringify(item.payload) });
-        await new Promise((res) => setTimeout(res, 500));
+    // Skutočné odoslanie fronty na server do nášho /api/sync
+    const response = await fetch('/api/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(queue)
+    });
 
-        if (item.id) {
-          await db.offlineQueue.delete(item.id);
-          successCount++;
-        }
-      } catch (err) {
-        console.error("[Service Worker] Chyba pri synchronizácii položky:", err);
-      }
+    if (!response.ok) {
+      throw new Error(`Sync API vrátilo status ${response.status}`);
     }
 
-    console.log(`[Service Worker] Synchronizácia úspešná! Záznamy: ${successCount}`);
+    const data = await response.json();
     
-    // Keďže sme v SW, vieme poslať správu klientom (otvoreným tabom)
-    const clients = await self.clients.matchAll();
-    clients.forEach((client) => {
-      client.postMessage({ type: "SYNC_COMPLETE", successCount });
-    });
+    if (data.success) {
+      // Vyčistíme všetky položky z fronty, ktoré sme úspešne odoslali
+      const idsToDelete = queue.map(item => item.id).filter(id => id !== undefined) as number[];
+      if (idsToDelete.length > 0) {
+        await db.offlineQueue.bulkDelete(idsToDelete);
+      }
+      
+      console.log(`[Service Worker] Synchronizácia úspešná! Záznamy: ${idsToDelete.length}`);
+      
+      // Keďže sme v SW, vieme poslať správu klientom (otvoreným tabom)
+      const clients = await self.clients.matchAll();
+      clients.forEach((client) => {
+        client.postMessage({ type: "SYNC_COMPLETE", successCount: idsToDelete.length });
+      });
+    } else {
+      console.error("[Service Worker] Synchronizácia zlyhala (podľa API response):", data);
+    }
   } catch (error) {
     console.error("[Service Worker] Zlyhalo spracovanie offline fronty:", error);
   }
