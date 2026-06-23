@@ -35,7 +35,8 @@ test.describe("CRM Module E2E", () => {
 
     // Perform login to obtain auth token
     await page.goto("/login");
-    await page.fill('input[name="password"]', '23513900');
+    const password = process.env.ADMIN_PASSWORD || process.env.CRM_PASSWORD || "23513900";
+    await page.fill('input[name="password"]', password);
     await page.click('button[type="submit"]');
     // Wait for navigation to CRM after successful login
     await page.waitForURL('**/crm');

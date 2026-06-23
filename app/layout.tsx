@@ -1,7 +1,6 @@
 import React from "react"
 import type { Metadata, Viewport } from 'next'
 import { Instrument_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 import { CookieConsent } from '@/components/legal/cookie-consent'
 import { RouteProgress } from '@/components/navigation/route-progress'
 import { AppToaster } from '@/components/pwa/app-toaster'
@@ -98,7 +97,6 @@ export default function RootLayout({
           <ServiceWorkerRegistrar />
           <AppToaster />
           <CustomInstallPrompt />
-          <Analytics />
         </ThemeProvider>
       </body>
     </html>

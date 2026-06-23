@@ -16,9 +16,14 @@ export function AnimatedTetrahedron() {
     const chars = "░▒▓█▀▄▌▐│─┤├┴┬╭╮╰╯";
     let time = 0;
 
+    let canvasWidth = 0;
+    let canvasHeight = 0;
+
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
+      canvasWidth = rect.width;
+      canvasHeight = rect.height;
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
       ctx.scale(dpr, dpr);
@@ -68,12 +73,11 @@ export function AnimatedTetrahedron() {
     });
 
     const render = () => {
-      const rect = canvas.getBoundingClientRect();
-      ctx.clearRect(0, 0, rect.width, rect.height);
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const scale = Math.min(rect.width, rect.height) * 0.7;
+      const centerX = canvasWidth / 2;
+      const centerY = canvasHeight / 2;
+      const scale = Math.min(canvasWidth, canvasHeight) * 0.7;
 
       ctx.font = "18px monospace";
       ctx.textAlign = "center";

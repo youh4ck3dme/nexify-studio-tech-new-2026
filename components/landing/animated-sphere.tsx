@@ -16,9 +16,14 @@ export function AnimatedSphere() {
     const chars = "░▒▓█▀▄▌▐│─┤├┴┬╭╮╰╯";
     let time = 0;
 
+    let canvasWidth = 0;
+    let canvasHeight = 0;
+
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
+      canvasWidth = rect.width;
+      canvasHeight = rect.height;
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
       ctx.scale(dpr, dpr);
@@ -28,12 +33,11 @@ export function AnimatedSphere() {
     window.addEventListener("resize", resize);
 
     const render = () => {
-      const rect = canvas.getBoundingClientRect();
-      ctx.clearRect(0, 0, rect.width, rect.height);
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const radius = Math.min(rect.width, rect.height) * 0.525;
+      const centerX = canvasWidth / 2;
+      const centerY = canvasHeight / 2;
+      const radius = Math.min(canvasWidth, canvasHeight) * 0.525;
 
       ctx.font = "12px monospace";
       ctx.textAlign = "center";

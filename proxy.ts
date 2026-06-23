@@ -130,7 +130,7 @@ export async function proxy(request: NextRequest) {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: https://*.googleusercontent.com https://*.firebaseapp.com",
     "font-src 'self' https://fonts.gstatic.com",
-    "connect-src 'self' https://*.firebaseio.com https://*.googleapis.com wss://*.firebaseio.com https://vitals.vercel-insights.com",
+    "connect-src 'self' https://*.firebaseio.com https://*.googleapis.com wss://*.firebaseio.com https://vitals.vercel-insights.com https://apis.google.com https://*.firebaseapp.com",
     "frame-src 'self' https://*.firebaseapp.com",
     "object-src 'none'",
     "base-uri 'self'",

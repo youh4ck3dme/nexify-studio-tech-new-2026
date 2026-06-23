@@ -17,6 +17,11 @@ describe("SyncManager Component", () => {
   beforeEach(async () => {
     await db.offlineQueue.clear();
     vi.clearAllMocks();
+    // Stub global fetch to prevent relative URL parsing errors in JSDOM environment
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ success: true })
+    }));
   });
 
   it("by nemal robiť nič (potichu bežať), ak je databáza prázdna", async () => {

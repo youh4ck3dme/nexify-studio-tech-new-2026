@@ -16,9 +16,14 @@ export function AnimatedWave() {
     const chars = "·∘○◯◌●◉";
     let time = 0;
 
+    let canvasWidth = 0;
+    let canvasHeight = 0;
+
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
+      canvasWidth = rect.width;
+      canvasHeight = rect.height;
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
       ctx.scale(dpr, dpr);
@@ -28,20 +33,19 @@ export function AnimatedWave() {
     window.addEventListener("resize", resize);
 
     const render = () => {
-      const rect = canvas.getBoundingClientRect();
-      ctx.clearRect(0, 0, rect.width, rect.height);
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
       ctx.font = "14px monospace";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
-      const cols = Math.floor(rect.width / 20);
-      const rows = Math.floor(rect.height / 20);
+      const cols = Math.floor(canvasWidth / 20);
+      const rows = Math.floor(canvasHeight / 20);
 
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
-          const px = (x + 0.5) * (rect.width / cols);
-          const py = (y + 0.5) * (rect.height / rows);
+          const px = (x + 0.5) * (canvasWidth / cols);
+          const py = (y + 0.5) * (canvasHeight / rows);
 
           // Multiple wave interference
           const wave1 = Math.sin(x * 0.2 + time * 2) * Math.cos(y * 0.15 + time);

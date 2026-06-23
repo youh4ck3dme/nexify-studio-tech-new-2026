@@ -36,9 +36,12 @@ describe("POST /api/contact", () => {
     process.env.CONTACT_TO_EMAIL = "to@example.com";
     process.env.CONTACT_FROM_EMAIL = "from@example.com";
     process.env.CONTACT_COPY_EMAIL = "copy@example.com";
+    // Potlačenie očakávaných console.error logov v testoch
+    vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
   afterEach(() => {
+    vi.restoreAllMocks();
     for (const [key, val] of Object.entries(originalEnv)) {
       if (val === undefined) {
         delete process.env[key];

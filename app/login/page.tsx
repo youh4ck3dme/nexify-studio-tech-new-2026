@@ -1,11 +1,11 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, useEffect } from "react";
 import { loginAction, loginWithGoogleAction } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Lock, ArrowRight } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, signInWithRedirect, getRedirectResult } from "firebase/auth";
 import { auth, googleProvider, isFirebaseConfigured } from "@/lib/firebase/config";
 import { toast } from "sonner";
 
@@ -24,30 +24,46 @@ export default function LoginPage() {
     setGoogleError(null);
 
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const email = result.user.email;
-
-      if (!email) {
-        throw new Error("Prihlásenie zlyhalo: Chýba e-mail v Google profile.");
-      }
-
-      const res = await loginWithGoogleAction(email);
-      if (res.error) {
-        setGoogleError(res.error);
-      } else if (res.success) {
-        toast.success("Prihlásenie úspešné!");
-        window.location.href = "/crm";
-      }
+      await signInWithPopup(auth, googleProvider);
     } catch (err) {
-      console.error("Google sign in error", err);
+      const { code } = err as { code?: string };
+      // If popup blocked or unsupported, fall back to redirect
+      if (code === "auth/popup-blocked" || code === "auth/operation-not-supported-in-this-environment") {
+        await signInWithRedirect(auth, googleProvider);
+        setIsGooglePending(false);
+        return; // redirect will reload the page
+      }
+      console.error("Google sign-in error (popup)", err);
       const firebaseError = err as { code?: string; message?: string };
       if (firebaseError.code !== "auth/popup-closed-by-user") {
-        setGoogleError(firebaseError.message || "Nepodarilo sa prihlásiť cez Google.");
+        setGoogleError(firebaseError.message || "Nebolo možné prihlásiť sa cez Google.");
       }
     } finally {
       setIsGooglePending(false);
     }
   };
+
+  // Handle redirect result (if any)
+  useEffect(() => {
+    if (!auth) return;
+    getRedirectResult(auth)
+      .then(async (result) => {
+        const email = result?.user?.email;
+        if (email) {
+          const res = await loginWithGoogleAction(email);
+          if (res.error) setGoogleError(res.error);
+          else {
+            toast.success("Prihlásenie úspešné!");
+            window.location.href = "/crm";
+          }
+        }
+      })
+      .catch((err) => {
+        console.error("Google sign-in error (redirect)", err);
+        const firebaseError = err as { code?: string; message?: string };
+        setGoogleError(firebaseError.message || "Prihlásenie zlyhalo.");
+      });
+  }, [auth]);
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 relative overflow-hidden">
