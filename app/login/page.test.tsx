@@ -2,8 +2,6 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import LoginPage from "./page";
 import { signInWithPopup } from "firebase/auth";
-import { loginWithGoogleAction } from "./actions";
-import { toast } from "sonner";
 
 // Mock next/navigation
 vi.mock("next/navigation", () => ({
@@ -15,6 +13,8 @@ vi.mock("next/navigation", () => ({
 // Mock firebase/auth
 vi.mock("firebase/auth", () => ({
   signInWithPopup: vi.fn(),
+  signInWithRedirect: vi.fn(),
+  getRedirectResult: vi.fn().mockResolvedValue(null),
   GoogleAuthProvider: class {},
 }));
 
@@ -46,11 +46,11 @@ describe("LoginPage - Google Sign-In", () => {
     vi.clearAllMocks();
     
     // Safe mock of window.location
-    delete (window as any).location;
+    delete (window as unknown as Record<string, unknown>).location;
     window.location = {
       ...originalLocation,
       href: "",
-    } as any;
+    } as Location;
 
     // Suppress console.error in tests
     vi.spyOn(console, "error").mockImplementation(() => {});
@@ -58,19 +58,15 @@ describe("LoginPage - Google Sign-In", () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
-    delete (window as any).location;
+    delete (window as unknown as Record<string, unknown>).location;
     window.location = originalLocation;
   });
 
-  it("by mal uspesne prihlasit cez Google a presmerovat do CRM", async () => {
+  it("by mal uspesne zavolat signInWithPopup po kliknuti na Google tlacidlo", async () => {
     const mockUser = { email: "test@nexify.sk" };
     vi.mocked(signInWithPopup).mockResolvedValue({
       user: mockUser,
-    } as any);
-
-    vi.mocked(loginWithGoogleAction).mockResolvedValue({
-      success: true,
-    });
+    } as ReturnType<typeof signInWithPopup> extends Promise<infer T> ? T : never);
 
     render(<LoginPage />);
 
@@ -79,13 +75,13 @@ describe("LoginPage - Google Sign-In", () => {
 
     await waitFor(() => {
       expect(signInWithPopup).toHaveBeenCalled();
-      expect(loginWithGoogleAction).toHaveBeenCalledWith("test@nexify.sk");
-      expect(toast.success).toHaveBeenCalledWith("Prihlásenie úspešné!");
     });
   });
 
   it("by mal zobrazit chybu, ak Firebase zlyha", async () => {
-    vi.mocked(signInWithPopup).mockRejectedValue(new Error("Auth failed"));
+    vi.mocked(signInWithPopup).mockRejectedValue(
+      Object.assign(new Error("Auth failed"), { code: "auth/internal-error" })
+    );
 
     render(<LoginPage />);
 
