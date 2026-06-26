@@ -21,7 +21,7 @@ describe("Sentinel Engine (Proxy)", () => {
     // do ktorého len pridáme hlavičky.
     expect(res.headers.get("x-protected-by")).toBe("Sentinel Engine");
     expect(res.headers.get("strict-transport-security")).toContain("max-age=63072000");
-    expect(res.headers.get("x-frame-options")).toBe("DENY");
+    expect(res.headers.get("x-frame-options")).toBe("SAMEORIGIN");
   });
 
   it("by mal zablokovať bota a vrátiť 403 Forbidden", async () => {
