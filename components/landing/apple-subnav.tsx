@@ -182,7 +182,7 @@ export function AppleSubnav() {
                   setIsMobileMenuOpen(true);
                 }
               }}
-              className="lg:hidden p-3 min-h-[44px] min-w-[44px] flex items-center justify-center text-foreground"
+              className="lg:hidden p-3 min-h-11 min-w-11 flex items-center justify-center text-foreground"
               aria-label={isMobileMenuOpen ? "Zavrieť menu" : "Otvoriť menu"}
               aria-expanded={isMobileMenuOpen}
             >
@@ -212,7 +212,7 @@ export function AppleSubnav() {
               <button
                 type="button"
                 onClick={() => closeMenu(false)}
-                className="flex items-center gap-2 text-foreground/60 hover:text-foreground transition-colors py-2 min-h-[44px] min-w-[44px]"
+                className="flex items-center gap-2 text-foreground/60 hover:text-foreground transition-colors py-2 min-h-11 min-w-11"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span className="text-sm font-mono uppercase tracking-wider">Späť</span>
@@ -236,7 +236,7 @@ export function AppleSubnav() {
                   key={item.id}
                   href={item.href}
                   onClick={() => closeMenu(true)}
-                  className="text-4xl sm:text-5xl font-display text-foreground hover:text-muted-foreground transition-all duration-500 min-h-[44px] flex items-center"
+                  className="text-4xl sm:text-5xl font-display text-foreground hover:text-muted-foreground transition-all duration-500 min-h-11 flex items-center"
                   style={{ transitionDelay: `${i * 60}ms` }}
                 >
                   {item.label}
