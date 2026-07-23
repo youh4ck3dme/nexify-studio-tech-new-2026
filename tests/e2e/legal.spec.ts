@@ -1,5 +1,11 @@
 import { expect, test } from "@playwright/test";
 
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("nexify-cookie-consent-v1", "all");
+  });
+});
+
 const legalPages = [
   { path: "/pravne/ochrana-sukromia", heading: "Ochrana súkromia" },
   { path: "/pravne/podmienky", heading: "Všeobecné obchodné podmienky" },

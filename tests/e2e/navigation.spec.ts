@@ -1,6 +1,12 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Navigation", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("nexify-cookie-consent-v1", "all");
+    });
+  });
+
   test("21/30 logo navigates home", async ({ page }) => {
     await page.goto("/produkty");
     await page.locator("header").getByRole("link", { name: "KEstudio" }).click();

@@ -9,7 +9,7 @@ test.describe("Homepage", () => {
   test("2/30 shows hero headline", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
-      "Zviditeľnite sa"
+      "Premeňte"
     );
   });
 

@@ -62,13 +62,13 @@ test.describe("Catalog", () => {
     await page.goto("/#produkty");
     await expect(page.locator("#produkty")).toBeVisible();
     await expect(
-      page.locator("#produkty").getByRole("heading", { name: /Jednoduché a transparentné/i })
+      page.locator("#produkty").getByRole("heading", { name: /Flexibilné/i })
     ).toBeVisible();
     await expect(
       page.getByRole("link", { name: "Kategória: Firemné weby" }).first()
     ).toHaveAttribute("href", "/sluzby/firemne-weby");
-    await page.locator("#produkty").getByRole("link", { name: "Zobraziť celý katalóg" }).scrollIntoViewIfNeeded();
-    await page.locator("#produkty").getByRole("link", { name: "Zobraziť celý katalóg" }).click();
+    await page.locator("#produkty").getByRole("link", { name: "Zobraziť cenník služieb" }).scrollIntoViewIfNeeded();
+    await page.locator("#produkty").getByRole("link", { name: "Zobraziť cenník služieb" }).click();
     await expect(page).toHaveURL(/\/produkty$/);
   });
 });
