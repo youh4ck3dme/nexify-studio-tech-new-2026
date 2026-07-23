@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { jwtVerify } from 'jose';
+import { verifySessionToken } from '@/lib/auth/jwt';
+import { SESSION_COOKIE_NAME, PROTECTED_PATH_PREFIXES } from '@/lib/auth/config';
 
 // Konfigurácia pre Edge Runtime
 export const config = {
@@ -73,8 +74,7 @@ export async function proxy(request: NextRequest) {
 
   // --- Krok 2: Rate Limiting pre API endpointy ---
   if (path.startsWith('/api/')) {
-    const isLocalhost = ip === '127.0.0.1' || ip === '::1' || ip.includes('127.0.0.1');
-    if (!isLocalhost && isRateLimited(ip)) {
+    if (isRateLimited(ip)) {
       return new NextResponse(
         JSON.stringify({ error: 'Too Many Requests' }),
         { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': '10' } }
@@ -82,33 +82,20 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  // --- Krok 3: JWT Overovanie (Supabase Auth) ---
-  // TODO: Fáza 2/3 - Zabezpečiť užívateľský prístup (Role-Based Access Control / Supabase Auth Integration).
-  // Momentálne vyžaduje prítomnosť JWT tokenu pre prístup k /crm, no pre produkčný tímový multi-user cloud
-  // bude potrebné implementovať prísnejšie rolové matice (Admin, Editor, Viewer).
-  const isProtectedRoute = path.startsWith('/crm') || path.startsWith('/dashboard');
+  // --- Krok 3: JWT Overovanie (Credentials Auth) ---
+  // Chránené routy: /crm, /dashboard, /admin, /api/private/*
+  const isProtectedRoute = PROTECTED_PATH_PREFIXES.some((prefix) => path.startsWith(prefix));
   if (isProtectedRoute) {
-    // Vyžadujeme prítomnosť JWT tokenu v cookies
-    const token = request.cookies.get('sb-auth-token')?.value || request.cookies.get('access_token')?.value;
+    const token = request.cookies.get(SESSION_COOKIE_NAME)?.value;
+    const session = token ? await verifySessionToken(token) : null;
 
-    if (!token) {
-      const loginUrl = new URL('/login', request.url);
-      loginUrl.searchParams.set('callbackUrl', path);
-      return NextResponse.redirect(loginUrl);
-    }
-
-    try {
-      const secretString = process.env.JWT_SECRET;
-      
-      if (!secretString) {
-        console.warn("Chýba JWT_SECRET v prostredí.");
-        throw new Error("Missing JWT Secret");
+    if (!session) {
+      if (path.startsWith('/api/')) {
+        return new NextResponse(
+          JSON.stringify({ error: 'Unauthorized' }),
+          { status: 401, headers: { 'Content-Type': 'application/json' } }
+        );
       }
-
-      const secret = new TextEncoder().encode(secretString);
-      await jwtVerify(token, secret);
-    } catch {
-      // Token je neplatný / expirovaný, alebo chýba secret
       const loginUrl = new URL('/login', request.url);
       loginUrl.searchParams.set('callbackUrl', path);
       return NextResponse.redirect(loginUrl);
@@ -125,12 +112,12 @@ export async function proxy(request: NextRequest) {
   // Content Security Policy
   response.headers.set('Content-Security-Policy', [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://apis.google.com",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "img-src 'self' data: https://*.googleusercontent.com https://*.firebaseapp.com",
+    "img-src 'self' data:",
     "font-src 'self' https://fonts.gstatic.com",
-    "connect-src 'self' https://*.firebaseio.com https://*.googleapis.com wss://*.firebaseio.com https://vitals.vercel-insights.com https://apis.google.com https://*.firebaseapp.com",
-    "frame-src 'self' https://*.firebaseapp.com http://localhost:5175 http://localhost:3000",
+    "connect-src 'self' https://vitals.vercel-insights.com",
+    "frame-src 'self' http://localhost:5175 http://localhost:3000",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

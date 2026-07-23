@@ -1,47 +1,68 @@
 import { expect, test } from "@playwright/test";
+import { loginAsAdmin, isolateLoginRateLimit } from "./utils/auth";
+
+test.setTimeout(60000);
 
 test.describe("Authorization Page E2E", () => {
-  test("should render authorization page with all elements", async ({ page }) => {
+  test("should render credentials login page with no Google login", async ({ page }) => {
     await page.goto("/login");
 
-    // Skontrolujeme nadpisy a texty
-    await expect(page.locator("h1")).toHaveText("Autorizácia");
-    await expect(page.locator("text=Vyberte spôsob prihlásenia pre prístup do internej zóny.")).toBeVisible();
+    await expect(page.locator("h1")).toHaveText("KEstudio");
 
-    // Skontrolujeme prítomnosť Google prihlasovacieho tlačidla
-    const googleButton = page.locator("button:has-text('Prihlásiť sa cez Google')");
-    await expect(googleButton).toBeVisible();
+    // Overíme, že Google prihlasovanie NIE JE prítomné
+    const googleButton = page.locator("button:has-text('Google')");
+    await expect(googleButton).not.toBeVisible();
 
-    // Skontrolujeme prítomnosť inputu pre kód a tlačidla
+    // Skontrolujeme prítomnosť polí pre email a heslo
+    const emailInput = page.locator("input[name='email']");
     const passwordInput = page.locator("input[name='password']");
+    await expect(emailInput).toBeVisible();
     await expect(passwordInput).toBeVisible();
-    await expect(page.locator("button[type='submit']")).toHaveText("Odomknúť prístup");
+    await expect(page.locator("button[type='submit']")).toContainText("Sign In");
   });
 
-  test("should show error on incorrect code", async ({ page }) => {
+  test("forgot password button should be disabled", async ({ page }) => {
     await page.goto("/login");
 
-    // Zadáme nesprávne heslo
+    const forgotButton = page.getByRole("button", { name: /Zabudnuté heslo/i });
+    await expect(forgotButton).toBeDisabled();
+  });
+
+  test("should redirect unauthenticated users away from /crm", async ({ page }) => {
+    await page.goto("/crm");
+    await page.waitForURL("**/login**");
+    await expect(page).toHaveURL(/\/login/);
+  });
+
+  test("should show generic error on incorrect credentials", async ({ page }) => {
+    await isolateLoginRateLimit(page);
+    await page.goto("/login");
+
+    await page.fill("input[name='email']", "admin@kestudio.sk");
     await page.fill("input[name='password']", "wrong-password-123");
     await page.click("button[type='submit']");
 
-    // Očakávame chybovú hlášku
-    const errorBox = page.locator("text=Nesprávny bezpečnostný kód");
+    const errorBox = page.locator("text=Invalid credentials.");
     await expect(errorBox).toBeVisible();
   });
 
-  test("should successfully login with correct code", async ({ page }) => {
+  test("should show generic error on unknown email (no user enumeration)", async ({ page }) => {
+    await isolateLoginRateLimit(page);
     await page.goto("/login");
 
-    // Získame heslo z premenných prostredia
-    const password = process.env.ADMIN_PASSWORD || process.env.CRM_PASSWORD || "23513900";
-    
-    // Prihlásime sa
-    await page.fill("input[name='password']", password);
+    await page.fill("input[name='email']", "not-the-admin@kestudio.sk");
+    await page.fill("input[name='password']", process.env.ADMIN_PASSWORD_PLAINTEXT || "2351900");
     await page.click("button[type='submit']");
 
-    // Očakávame presmerovanie do CRM
-    await page.waitForURL("**/crm");
-    await expect(page.locator("h1")).toContainText("Interné CRM");
+    const errorBox = page.locator("text=Invalid credentials.");
+    await expect(errorBox).toBeVisible();
   });
+
+  // 3x Smoke Test pre prihlásenie emailom + heslom
+  for (let run = 1; run <= 3; run++) {
+    test(`smoke test login attempt #${run}`, async ({ page }) => {
+      await loginAsAdmin(page);
+      await expect(page.locator("h1")).toContainText("Interné CRM");
+    });
+  }
 });

@@ -2,7 +2,7 @@ import { CrmDashboard } from "@/components/crm/crm-dashboard";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "CRM | Nexify Studio",
+  title: "CRM | KEstudio",
   description: "Interné offline-first CRM na správu klientov.",
   robots: {
     index: false,
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function CrmPage() {
   return (
-    <div className="min-h-screen bg-background pt-32 pb-24">
+    <div className="dark min-h-screen bg-background text-foreground pt-32 pb-24">
       <div className="max-w-[1200px] mx-auto px-6">
         <h1 className="text-4xl md:text-5xl font-display mb-4 text-white">Interné CRM</h1>
         <p className="text-muted-foreground mb-12 max-w-xl">

@@ -1,7 +1,6 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
 import LoginPage from "./page";
-import { signInWithPopup } from "firebase/auth";
 
 // Mock next/navigation
 vi.mock("next/navigation", () => ({
@@ -10,87 +9,32 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
-// Mock firebase/auth
-vi.mock("firebase/auth", () => ({
-  signInWithPopup: vi.fn(),
-  signInWithRedirect: vi.fn(),
-  getRedirectResult: vi.fn().mockResolvedValue(null),
-  GoogleAuthProvider: class {},
-}));
-
 // Mock actions
 vi.mock("./actions", () => ({
   loginAction: vi.fn(),
-  loginWithGoogleAction: vi.fn(),
 }));
 
-// Mock firebase config
-vi.mock("@/lib/firebase/config", () => ({
-  auth: {},
-  googleProvider: {},
-  isFirebaseConfigured: true,
-}));
-
-// Mock sonner
-vi.mock("sonner", () => ({
-  toast: {
-    success: vi.fn(),
-    error: vi.fn(),
-  },
-}));
-
-describe("LoginPage - Google Sign-In", () => {
-  const originalLocation = window.location;
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-    
-    // Safe mock of window.location
-    delete (window as unknown as Record<string, unknown>).location;
-    window.location = {
-      ...originalLocation,
-      href: "",
-    } as Location;
-
-    // Suppress console.error in tests
-    vi.spyOn(console, "error").mockImplementation(() => {});
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-    delete (window as unknown as Record<string, unknown>).location;
-    window.location = originalLocation;
-  });
-
-  it("by mal uspesne zavolat signInWithPopup po kliknuti na Google tlacidlo", async () => {
-    const mockUser = { email: "test@nexify.sk" };
-    vi.mocked(signInWithPopup).mockResolvedValue({
-      user: mockUser,
-    } as ReturnType<typeof signInWithPopup> extends Promise<infer T> ? T : never);
-
+describe("LoginPage - Credentials Authorization", () => {
+  it("vykreslí polia pre email a heslo a tlačidlo Sign In", () => {
     render(<LoginPage />);
 
-    const googleBtn = screen.getByRole("button", { name: /Prihlásiť sa cez Google/i });
-    fireEvent.click(googleBtn);
-
-    await waitFor(() => {
-      expect(signInWithPopup).toHaveBeenCalled();
-    });
+    expect(screen.getByLabelText(/^email$/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^heslo$/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Sign In/i })).toBeInTheDocument();
   });
 
-  it("by mal zobrazit chybu, ak Firebase zlyha", async () => {
-    vi.mocked(signInWithPopup).mockRejectedValue(
-      Object.assign(new Error("Auth failed"), { code: "auth/internal-error" })
-    );
-
+  it("nezobrazuje žiadne Google prihlasovacie tlačidlo", () => {
     render(<LoginPage />);
 
-    const googleBtn = screen.getByRole("button", { name: /Prihlásiť sa cez Google/i });
-    fireEvent.click(googleBtn);
+    expect(
+      screen.queryByRole("button", { name: /google/i })
+    ).not.toBeInTheDocument();
+  });
 
-    await waitFor(() => {
-      expect(signInWithPopup).toHaveBeenCalled();
-      expect(screen.getByText("Auth failed")).toBeInTheDocument();
-    });
+  it("má vypnuté tlačidlo Zabudnuté heslo", () => {
+    render(<LoginPage />);
+
+    const forgotButton = screen.getByRole("button", { name: /Zabudnuté heslo/i });
+    expect(forgotButton).toBeDisabled();
   });
 });

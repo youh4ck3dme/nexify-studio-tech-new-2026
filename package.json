@@ -18,7 +18,8 @@
     "test:all": "pnpm test:unit && pnpm test:integrity && pnpm test:e2e",
     "test:pwa": "vitest run lib/pwa/pwa.test.ts",
     "test:pwa:x10": "node scripts/run-pwa-tests-x10.mjs",
-    "test:contact:smoke": "node scripts/contact-smoke.mjs"
+    "test:contact:smoke": "node scripts/contact-smoke.mjs",
+    "auth:hash": "node scripts/generate-admin-hash.mjs"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "1.2.2",
@@ -59,7 +60,7 @@
     "dexie": "^4.4.3",
     "dexie-react-hooks": "^4.4.0",
     "embla-carousel-react": "8.5.1",
-    "firebase": "^12.14.0",
+    "bcryptjs": "^3.0.3",
     "input-otp": "1.4.1",
     "jose": "^6.2.3",
     "lucide-react": "^0.454.0",
@@ -75,7 +76,8 @@
     "sonner": "^1.7.4",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
-    "vaul": "^1.1.2"
+    "vaul": "^1.1.2",
+    "zod": "^4.4.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
@@ -89,7 +91,6 @@
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.6",
     "fake-indexeddb": "^6.2.5",
-    "firebase-tools": "^15.19.1",
     "jsdom": "^29.1.1",
     "postcss": "^8.5",
     "serwist": "^9.5.11",

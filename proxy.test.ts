@@ -1,13 +1,19 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
 import { proxy } from "./proxy";
 
 // Mock jose jwtVerify as we don't have a secret and we want to test logic
 vi.mock("jose", () => ({
-  jwtVerify: vi.fn().mockResolvedValue({ payload: { sub: "123" } }),
+  jwtVerify: vi.fn().mockResolvedValue({
+    payload: { sub: "admin@kestudio.sk", role: "admin" },
+  }),
 }));
 
 describe("Sentinel Engine (Proxy)", () => {
+  beforeEach(() => {
+    process.env.JWT_SECRET = "test_secret_key_1234567890_test_padding";
+  });
+
   it("by mal prepustiť bežný request a pridať bezpečnostné hlavičky", async () => {
     const req = new NextRequest("http://localhost/produkty", {
       headers: new Headers({
@@ -54,11 +60,40 @@ describe("Sentinel Engine (Proxy)", () => {
     });
 
     const res = await proxy(req);
-    
-    // Keďže nemáme 'sb-auth-token' cookie, má nasledovať redirect.
+
+    // Keďže nemáme 'session' cookie, má nasledovať redirect.
     // Next.js redirect vracia status 307
     expect(res.status).toBe(307);
     expect(res.headers.get("location")).toContain("/login?callbackUrl=%2Fcrm%2Fdashboard");
+  });
+
+  it("by mal prepustiť request do /crm s platnou session cookie", async () => {
+    const req = new NextRequest("http://localhost/crm", {
+      headers: new Headers({
+        "user-agent": "Mozilla/5.0",
+        cookie: "session=valid.jwt.token",
+      }),
+    });
+
+    const res = await proxy(req);
+
+    expect(res.status).not.toBe(307);
+    expect(res.headers.get("x-protected-by")).toBe("Sentinel Engine");
+  });
+
+  it("by mal vrátiť 401 pre chránené /api/private/* cesty bez session", async () => {
+    const req = new NextRequest("http://localhost/api/private/secret", {
+      headers: new Headers({
+        "user-agent": "Mozilla/5.0",
+        "x-forwarded-for": "10.0.0.9",
+      }),
+    });
+
+    const res = await proxy(req);
+
+    expect(res.status).toBe(401);
+    const body = await res.json();
+    expect(body.error).toBe("Unauthorized");
   });
 
   it("by mal uplatniť Rate Limit pre API cesty", async () => {

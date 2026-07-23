@@ -1,79 +1,64 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { SignJWT } from "jose";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { loginSchema } from "@/lib/auth/schema";
+import { verifyPassword } from "@/lib/auth/password";
+import { createSession, destroySession } from "@/lib/auth/session";
+import { isLoginRateLimited, resetLoginRateLimit } from "@/lib/auth/rate-limit";
+
+const GENERIC_ERROR = "Invalid credentials.";
+const RATE_LIMIT_ERROR = "Too many attempts. Please try again later.";
+
+async function getClientIp(): Promise<string> {
+  const headersList = await headers();
+  const forwardedFor = headersList.get("x-forwarded-for");
+  return forwardedFor?.split(",")[0]?.trim() || "unknown";
+}
 
 export async function loginAction(prevState: unknown, formData: FormData) {
-  const password = formData.get("password");
+  const ip = await getClientIp();
 
-  // Kód sa predvolene číta z .env.local, ak tam nie je, použije sa 23513900
-  const expectedPassword = process.env.ADMIN_PASSWORD || process.env.CRM_PASSWORD || "23513900";
-  
-  if (password !== expectedPassword) {
-    return { error: "Nesprávny bezpečnostný kód" };
+  if (isLoginRateLimited(ip)) {
+    return { error: RATE_LIMIT_ERROR };
   }
 
-  const secretString = process.env.JWT_SECRET;
-  if (!secretString) {
-    return { error: "Systémová chyba: Chýba podpisový kľúč." };
-  }
-
-  // Generujeme kryptografický JWT token, ktorý oklame Sentinel Engine
-  const secret = new TextEncoder().encode(secretString);
-  const token = await new SignJWT({ sub: "local-admin", role: "authenticated" })
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime("24h")
-    .sign(secret);
-
-  // Uložíme token do cookies s rovnakým menom, aké očakáva Sentinel (sb-auth-token)
-  const cookieStore = await cookies();
-  cookieStore.set({
-    name: "sb-auth-token",
-    value: token,
-    httpOnly: true,
-    path: "/",
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24, // 24 hodín
-    sameSite: "lax",
+  const parsed = loginSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
   });
 
-  // Po úspešnej autentifikácii pustíme používateľa dnu
+  if (!parsed.success) {
+    return { error: GENERIC_ERROR };
+  }
+
+  const { email, password } = parsed.data;
+
+  const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
+
+  if (!adminEmail || !adminPasswordHash) {
+    console.error(
+      "Chýbajú premenné prostredia ADMIN_EMAIL / ADMIN_PASSWORD_HASH."
+    );
+    return { error: GENERIC_ERROR };
+  }
+
+  // bcrypt.compare sa vždy vykoná (aj pri nesprávnom emaile), aby sme
+  // predišli časovému úniku informácie o tom, ktoré pole bolo nesprávne.
+  const isPasswordValid = await verifyPassword(password, adminPasswordHash);
+  const isEmailValid = email === adminEmail;
+
+  if (!isEmailValid || !isPasswordValid) {
+    return { error: GENERIC_ERROR };
+  }
+
+  resetLoginRateLimit(ip);
+  await createSession(email);
   redirect("/crm");
 }
 
-export async function loginWithGoogleAction(email: string) {
-  const secretString = process.env.JWT_SECRET;
-  if (!secretString) {
-    return { error: "Systémová chyba: Chýba podpisový kľúč." };
-  }
-
-  // Generujeme kryptografický JWT token pre Sentinel Engine
-  const secret = new TextEncoder().encode(secretString);
-  const token = await new SignJWT({ sub: email, role: "authenticated", provider: "google" })
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime("24h")
-    .sign(secret);
-
-  const cookieStore = await cookies();
-  cookieStore.set({
-    name: "sb-auth-token",
-    value: token,
-    httpOnly: true,
-    path: "/",
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24, // 24 hodín
-    sameSite: "lax",
-  });
-
-  return { success: true };
-}
-
 export async function logoutAction() {
-  const cookieStore = await cookies();
-  cookieStore.delete("sb-auth-token");
+  await destroySession();
   redirect("/login");
 }
-

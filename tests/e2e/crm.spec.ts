@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { loginAsAdmin } from "./utils/auth";
 
 test.describe("CRM Module E2E", () => {
   // Clear IndexedDB and PWA Service Worker/Cache before each test to ensure a clean state
@@ -33,13 +34,8 @@ test.describe("CRM Module E2E", () => {
     page.on("console", msg => console.log('BROWSER_CONSOLE:', msg.text()));
     page.on("pageerror", err => console.error('BROWSER_PAGEERROR:', err.message, err.stack));
 
-    // Perform login to obtain auth token
-    await page.goto("/login");
-    const password = process.env.ADMIN_PASSWORD || process.env.CRM_PASSWORD || "23513900";
-    await page.fill('input[name="password"]', password);
-    await page.click('button[type="submit"]');
-    // Wait for navigation to CRM after successful login
-    await page.waitForURL('**/crm');
+    // Perform login to obtain auth session
+    await loginAsAdmin(page);
 
 
     // Log page HTML for debugging

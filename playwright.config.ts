@@ -42,6 +42,46 @@ export default defineConfig({
       testIgnore: "**/responsive.spec.ts",
     },
     {
+      name: "iphone-17-standard",
+      use: {
+        ...devices["iPhone 14"],
+        browserName: "chromium",
+        viewport: { width: 393, height: 852 },
+        userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 19_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/19.0 Mobile/15E148 Safari/604.1",
+      },
+      testMatch: "**/responsive.spec.ts",
+    },
+    {
+      name: "iphone-17-slim",
+      use: {
+        ...devices["iPhone 14"],
+        browserName: "chromium",
+        viewport: { width: 390, height: 844 }, // predpokladaný tenší profil
+        userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 19_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/19.0 Mobile/15E148 Safari/604.1",
+      },
+      testMatch: "**/responsive.spec.ts",
+    },
+    {
+      name: "iphone-17-pro",
+      use: {
+        ...devices["iPhone 14 Pro"],
+        browserName: "chromium",
+        viewport: { width: 393, height: 852 },
+        userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 19_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/19.0 Mobile/15E148 Safari/604.1",
+      },
+      testMatch: "**/responsive.spec.ts",
+    },
+    {
+      name: "iphone-17-pro-max",
+      use: {
+        ...devices["iPhone 14 Pro Max"],
+        browserName: "chromium",
+        viewport: { width: 440, height: 956 }, // predpokladaný väčší displej
+        userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 19_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/19.0 Mobile/15E148 Safari/604.1",
+      },
+      testMatch: "**/responsive.spec.ts",
+    },
+    {
       name: "iphone-14",
       use: { ...devices["iPhone 14"] },
       testMatch: "**/responsive.spec.ts",

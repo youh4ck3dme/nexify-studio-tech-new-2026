@@ -18,8 +18,10 @@ export default async function ClientDetailPage({
   const resolvedParams = await params;
   
   return (
-    <div className="max-w-7xl mx-auto">
-      <ClientDetail clientId={resolvedParams.id} />
+    <div className="dark min-h-screen bg-background text-foreground">
+      <div className="max-w-7xl mx-auto">
+        <ClientDetail clientId={resolvedParams.id} />
+      </div>
     </div>
   );
 }
