@@ -5,7 +5,11 @@ export type TechProvider = {
 };
 
 export const techProviders: TechProvider[] = [
+  { id: "google-cloud", name: "Google Cloud", label: "Google Cloud" },
+  { id: "vercel", name: "Vercel", label: "Vercel" },
+  { id: "stripe", name: "Stripe", label: "Stripe" },
   { id: "github", name: "GitHub", label: "GitHub" },
+  { id: "openai", name: "OpenAI", label: "OpenAI" },
   { id: "chatgpt", name: "ChatGPT", label: "ChatGPT" },
   { id: "perplexity", name: "Perplexity", label: "Perplexity" },
   { id: "lovable", name: "Lovable", label: "Lovable" },

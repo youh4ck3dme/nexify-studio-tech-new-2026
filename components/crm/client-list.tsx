@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useOfflineData, db, Client } from "@/lib/db";
 import { format } from "date-fns";
-import { CloudOff, Trash2, Mail, Phone, User, Briefcase, FileText, Search, RotateCcw, Edit, ExternalLink, Globe } from "lucide-react";
+import { CloudOff, Trash2, Mail, Phone, User, Briefcase, FileText, Search, RotateCcw, Edit, ExternalLink, Globe, FileSpreadsheet } from "lucide-react";
 import { toast } from "sonner";
 import { parseBudget } from "./crm-dashboard";
+import { exportClientsToCsv } from "@/lib/crm/export-csv";
 
 interface ClientListProps {
   onEditClient: (client: Client) => void;
@@ -98,6 +99,21 @@ export function ClientList({ onEditClient }: ClientListProps) {
     }
   };
 
+  // CSV export handler
+  const handleExportCSV = async () => {
+    try {
+      const exportedCount = await exportClientsToCsv();
+      if (exportedCount === null) {
+        toast.info("Nemáte žiadnych aktívnych klientov na export.");
+        return;
+      }
+      toast.success(`Exportovaných ${exportedCount} kontaktov do CSV.`);
+    } catch (err) {
+      console.error(err);
+      toast.error("CSV export zlyhal.");
+    }
+  };
+
   if (isLoading) {
     return <div className="p-8 text-center text-muted-foreground">Načítavam klientov...</div>;
   }
@@ -157,16 +173,26 @@ export function ClientList({ onEditClient }: ClientListProps) {
   return (
     <div className="space-y-6">
       {/* Header and Queue Badge */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-2xl font-display text-white">
           {showRecycleBin ? "Odstránení klienti (Kôš)" : "Zoznam klientov"}
         </h2>
-        {offlineQueue.length > 0 && (
-          <div className="flex items-center gap-2 text-sm text-yellow-500 bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/20">
-            <CloudOff className="w-4 h-4" />
-            Čaká na sync: {offlineQueue.length}
-          </div>
-        )}
+        <div className="flex items-center gap-3">
+          {offlineQueue.length > 0 && (
+            <div className="flex items-center gap-2 text-sm text-yellow-500 bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/20">
+              <CloudOff className="w-4 h-4" />
+              Čaká na sync: {offlineQueue.length}
+            </div>
+          )}
+          <button
+            onClick={handleExportCSV}
+            className="flex items-center gap-2 h-10 px-4 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-white rounded-lg text-sm transition-all cursor-pointer"
+            title="Stiahnuť zoznam všetkých kontaktov/leadov v CSV formáte"
+          >
+            <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+            Export do CSV
+          </button>
+        </div>
       </div>
 
       {/* Filters Bar */}

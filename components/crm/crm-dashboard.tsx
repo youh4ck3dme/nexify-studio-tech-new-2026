@@ -6,6 +6,7 @@ import { ClientForm } from "./client-form";
 import { ClientList } from "./client-list";
 import { SyncManager } from "./sync-manager";
 import { ExportImport } from "./export-import";
+import { CrmAnalyticsDashboard } from "./lead-trend-chart";
 import { Users, Briefcase, DollarSign, RefreshCw, LogOut } from "lucide-react";
 import { logoutAction } from "@/app/login/actions";
 
@@ -139,6 +140,9 @@ export function CrmDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Lead Trend Analytics */}
+      <CrmAnalyticsDashboard clients={activeClients} />
 
       {/* Sync Manager and Main Layout */}
       <SyncManager />

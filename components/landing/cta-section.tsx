@@ -4,13 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { companyLegal } from "@/lib/legal/company";
-import { ArrowRight, Mail, Phone } from "lucide-react";
+import { ArrowRight, Envelope, Phone, Sparkle } from "@phosphor-icons/react";
 import { AnimatedTetrahedron } from "./animated-tetrahedron";
 
 export function CtaSection() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -32,14 +31,6 @@ export function CtaSection() {
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
-    });
-  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -72,7 +63,7 @@ export function CtaSection() {
         return;
       }
 
-      setSubmitSuccess("Správa bola odoslaná. Ozveme sa čo najskôr.");
+      setSubmitSuccess("Správa bola úspešne odoslaná. Ozveme sa vám čoskoro.");
       setFormData({ name: "", email: "", phone: "", message: "" });
     } catch {
       setSubmitError("Došlo k chybe siete. Skúste to znova.");
@@ -82,141 +73,117 @@ export function CtaSection() {
   };
 
   return (
-    <section ref={sectionRef} id="contact" className="relative py-24 lg:py-32 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+    <section ref={sectionRef} id="contact" className="relative py-24 lg:py-36 bg-background text-foreground overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
         <div
-          className={`relative border border-foreground transition-all duration-1000 ${
+          className={`apple-glass rounded-3xl p-8 lg:p-16 border border-foreground/10 relative overflow-hidden transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
-          onMouseMove={handleMouseMove}
         >
-          {/* Spotlight effect */}
-          <div 
-            className="absolute inset-0 opacity-10 pointer-events-none transition-opacity duration-300"
-            style={{
-              background: `radial-gradient(600px circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(0,0,0,0.15), transparent 40%)`
-            }}
-          />
-          
-          <div className="relative z-10 px-8 lg:px-16 py-16 lg:py-24">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-              {/* Left content */}
-              <div className="flex-1">
-                <h2 className="text-4xl lg:text-7xl font-display tracking-tight mb-8 leading-[0.95]">
-                  Nechajte nás zviditeľniť
-                  <br />
-                  váš business!
-                </h2>
+          {/* Ambient glow */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#2997FF]/10 rounded-full blur-3xl pointer-events-none" />
 
-                <p className="text-xl text-muted-foreground mb-12 leading-relaxed max-w-xl">
-                  Získajte bezplatnú konzultáciu už dnes. 
-                  Bez povinnosti, bez skrytých poplatkov.
-                </p>
+          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
+            {/* Left content */}
+            <div className="flex-1 max-w-2xl">
+              <span className="text-xs font-mono uppercase tracking-widest text-[#2997FF] mb-3 inline-flex items-center gap-2">
+                <Sparkle className="w-4 h-4" weight="fill" /> Začnite Hneď
+              </span>
+              <h2 className="text-4xl lg:text-6xl font-semibold tracking-[-0.03em] mb-6 apple-gradient-text">
+                Buďte súčasťou toho, čo príde.
+              </h2>
 
-                <form
-                  onSubmit={handleSubmit}
-                  className="w-full max-w-xl space-y-4"
-                  aria-busy={isSubmitting}
-                >
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <input
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      placeholder="Meno"
-                      autoComplete="name"
-                      className="w-full h-12 min-h-[44px] px-4 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none focus:border-foreground input-glow"
-                    />
-                    <input
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="Email"
-                      autoComplete="email"
-                      className="w-full h-12 min-h-[44px] px-4 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none focus:border-foreground input-glow"
-                    />
-                  </div>
+              <p className="text-lg text-foreground/70 mb-10 leading-relaxed">
+                Spojte sa s našimi špecialistami a zistite, ako môže Nexify naštartovať rast vašej značky.
+              </p>
+
+              <form onSubmit={handleSubmit} className="w-full space-y-4" aria-busy={isSubmitting}>
+                <div className="grid sm:grid-cols-2 gap-4">
                   <input
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
+                    name="name"
+                    value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="Telefón (voliteľné)"
-                    autoComplete="tel"
-                    className="w-full h-12 min-h-[44px] px-4 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none focus:border-foreground input-glow"
+                    placeholder="Vaše meno *"
+                    autoComplete="name"
+                    className="w-full h-12 px-4 border border-foreground/10 bg-foreground/5 text-foreground placeholder:text-foreground/40 rounded-xl outline-none focus:border-[#2997FF] transition-all"
                   />
-                  <textarea
-                    name="message"
-                    value={formData.message}
+                  <input
+                    name="email"
+                    type="email"
+                    value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="Vaša správa"
-                    rows={5}
-                    className="w-full px-4 py-3 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none resize-none focus:border-foreground input-glow"
+                    placeholder="Pracovný email *"
+                    autoComplete="email"
+                    className="w-full h-12 px-4 border border-foreground/10 bg-foreground/5 text-foreground placeholder:text-foreground/40 rounded-xl outline-none focus:border-[#2997FF] transition-all"
                   />
-
-                  <div className="flex flex-col sm:flex-row items-start gap-4">
-                    <Button
-                      type="submit"
-                      size="lg"
-                      disabled={isSubmitting}
-                      className="bg-brand-red hover:bg-brand-red/90 text-white px-8 h-14 min-h-[44px] text-base rounded-full group disabled:opacity-60 shadow-lg shadow-brand-red/25 hover:shadow-xl hover:shadow-brand-red/40 transition-all hover:-translate-y-0.5"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Spinner className="size-4 mr-2" />
-                          Odosielam…
-                        </>
-                      ) : (
-                        <>
-                          Kontaktujte nás
-                          <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                        </>
-                      )}
-                    </Button>
-                    <Button
-                      type="button"
-                      size="lg"
-                      variant="outline"
-                      className="h-14 px-8 text-base rounded-full border-foreground/20 hover:border-brand-red/50 hover:bg-brand-red/5 hover:text-brand-red transition-all"
-                    >
-                      Objednajte termín
-                    </Button>
-                  </div>
-                </form>
-
-                {submitError && (
-                  <p className="text-sm text-red-500 mt-4" role="alert" aria-live="polite">
-                    {submitError}
-                  </p>
-                )}
-                {submitSuccess && (
-                  <p className="text-sm text-green-600 mt-4" role="status" aria-live="polite">
-                    {submitSuccess}
-                  </p>
-                )}
-
-                <div className="flex items-center flex-wrap gap-4 text-sm text-muted-foreground mt-8 font-mono">
-                  <a href={`mailto:${companyLegal.email}`} className="flex items-center gap-2 hover:text-foreground transition-colors">
-                    <Mail className="w-4 h-4" /> {companyLegal.email}
-                  </a>
-                  <span className="opacity-50 hidden sm:inline">|</span>
-                  <a href={`tel:${companyLegal.phone}`} className="flex items-center gap-2 hover:text-foreground transition-colors">
-                    <Phone className="w-4 h-4" /> {companyLegal.phoneDisplay}
-                  </a>
                 </div>
-              </div>
+                <input
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  placeholder="Telefónne číslo (voliteľné)"
+                  autoComplete="tel"
+                  className="w-full h-12 px-4 border border-foreground/10 bg-foreground/5 text-foreground placeholder:text-foreground/40 rounded-xl outline-none focus:border-[#2997FF] transition-all"
+                />
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  placeholder="Ako vám môžeme pomôcť? *"
+                  rows={4}
+                  className="w-full px-4 py-3 border border-foreground/10 bg-foreground/5 text-foreground placeholder:text-foreground/40 rounded-xl outline-none resize-none focus:border-[#2997FF] transition-all"
+                />
 
-              {/* Right animation */}
-              <div className="hidden lg:flex items-center justify-center w-[500px] h-[500px] -mr-16">
-                <AnimatedTetrahedron />
+                <div className="flex flex-col sm:flex-row items-start gap-4 pt-2">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    disabled={isSubmitting}
+                    className="bg-[#2997FF] hover:bg-[#0071E3] text-white px-8 h-14 text-base font-semibold rounded-full disabled:opacity-60 shadow-xl shadow-[#2997FF]/25 transition-all hover:-translate-y-0.5"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Spinner className="size-4 mr-2" />
+                        Odosielam…
+                      </>
+                    ) : (
+                      <>
+                        Vyžiadať si Demo
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </form>
+
+              {submitError && (
+                <p className="text-sm text-red-400 mt-4 font-medium" role="alert">
+                  {submitError}
+                </p>
+              )}
+              {submitSuccess && (
+                <p className="text-sm text-emerald-400 mt-4 font-medium" role="status">
+                  {submitSuccess}
+                </p>
+              )}
+
+              <div className="flex items-center flex-wrap gap-4 text-xs text-foreground/50 mt-8 font-mono">
+                <a href={`mailto:${companyLegal.email}`} className="flex items-center gap-2 hover:text-foreground transition-colors">
+                  <Envelope className="w-4 h-4" weight="fill" /> {companyLegal.email}
+                </a>
+                <span className="opacity-30 hidden sm:inline">|</span>
+                <a href={`tel:${companyLegal.phone}`} className="flex items-center gap-2 hover:text-foreground transition-colors">
+                  <Phone className="w-4 h-4" weight="fill" /> {companyLegal.phoneDisplay}
+                </a>
               </div>
             </div>
-          </div>
 
-          {/* Decorative corner */}
-          <div className="absolute top-0 right-0 w-32 h-32 border-b border-l border-foreground/10" />
-          <div className="absolute bottom-0 left-0 w-32 h-32 border-t border-r border-foreground/10" />
+            {/* Right animation */}
+            <div className="hidden lg:flex items-center justify-center w-100 h-100">
+              <AnimatedTetrahedron />
+            </div>
+          </div>
         </div>
       </div>
     </section>

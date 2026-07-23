@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { motion } from "framer-motion";
 
 function AnimatedCounter({ end, suffix = "", prefix = "" }: { end: number; suffix?: string; prefix?: string }) {
   const [count, setCount] = useState(0);
@@ -37,107 +38,85 @@ function AnimatedCounter({ end, suffix = "", prefix = "" }: { end: number; suffi
   }, [end, hasAnimated]);
 
   return (
-    <div ref={ref} className="text-6xl lg:text-8xl font-display tracking-tight">
+    <div ref={ref} className="text-5xl sm:text-7xl lg:text-8xl font-semibold tracking-tight text-foreground font-mono">
       {prefix}{count.toLocaleString()}{suffix}
     </div>
   );
 }
 
 const metrics = [
-  { 
-    value: 300, 
-    suffix: "%", 
+  {
+    value: 300,
+    suffix: "%",
     prefix: "+",
-    label: "Zvýšenie návštevnosti",
+    label: "Zvýšenie návštevnosti & produkcie",
   },
-  { 
-    value: 1, 
-    suffix: "s", 
+  {
+    value: 1,
+    suffix: "s",
     prefix: "<",
-    label: "Rýchlosť načítania webu",
+    label: "Rýchlosť spracovania dát",
   },
-  { 
-    value: 98, 
-    suffix: "%", 
+  {
+    value: 98,
+    suffix: "%",
     prefix: "",
     label: "Spokojnosť klientov",
   },
-  { 
-    value: 7, 
-    suffix: "dní", 
+  {
+    value: 7,
+    suffix: " dní",
     prefix: "",
-    label: "Čas na spustenie webu",
+    label: "Čas na plné nasadenie platformy",
   },
 ];
 
 export function MetricsSection() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section id="studio" ref={sectionRef} className="relative py-24 lg:py-32 border-y border-foreground/10">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+    <section id="metrics" className="py-24 lg:py-36 bg-background text-foreground relative border-t border-foreground/10">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16 lg:mb-24">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
           <div>
-            <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
-              <span className="w-8 h-px bg-foreground/30" />
-              Výsledky našich klientov
+            <span className="text-xs font-mono uppercase tracking-widest text-[#2997FF] mb-3 block">
+              Preukázateľný Rast
             </span>
-            <h2
-              className={`text-4xl lg:text-6xl font-display tracking-tight transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
-            >
-              Výsledky, ktoré
-              <br />
-              môžete merať.
+            <h2 className="text-4xl lg:text-6xl font-semibold tracking-[-0.03em] apple-gradient-text">
+              Výsledky, ktoré môžete merať.
             </h2>
           </div>
-          <div className="flex items-center gap-4 font-mono text-sm text-muted-foreground">
+          <div className="flex items-center gap-4 font-mono text-xs text-foreground/50">
             <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              Overené
+              <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
+              Reálne Dáta
             </span>
-            <span className="text-foreground/30">|</span>
-            <span>Reálne dáta</span>
+            <span className="text-foreground/20">|</span>
+            <span>Overený Výkon</span>
           </div>
         </div>
-        
-        {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-foreground/10">
+
+        {/* Metrics Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {metrics.map((metric, index) => (
-            <div
+            <motion.div
               key={metric.label}
-              className={`bg-background p-8 lg:p-12 transition-all duration-700 group hover:bg-foreground/[0.02] ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="apple-glass-card rounded-3xl p-8 lg:p-12 flex flex-col justify-between"
             >
-              <div className="text-foreground group-hover:text-brand-red transition-colors duration-300">
-                <AnimatedCounter 
-                  end={typeof metric.value === 'number' ? metric.value : 0} 
-                  suffix={metric.suffix} 
+              <div className="text-[#2997FF] mb-4">
+                <AnimatedCounter
+                  end={typeof metric.value === "number" ? metric.value : 0}
+                  suffix={metric.suffix}
                   prefix={metric.prefix}
                 />
               </div>
-              <div className="mt-4 text-lg text-muted-foreground group-hover:text-foreground transition-colors flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-blue opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="text-lg text-foreground/70 font-medium">
                 {metric.label}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

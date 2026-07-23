@@ -81,24 +81,24 @@ export function CategoryMarqueeSection() {
           <div className="max-w-3xl">
             <span
               id="pricing"
-              className="font-mono text-xs tracking-widest text-muted-foreground uppercase block mb-6"
+              className="font-mono text-xs tracking-widest text-[#2997FF] uppercase block mb-6"
             >
-              Cenník
+              Cenník & Moduly
             </span>
             <h2 className="font-display text-5xl md:text-6xl lg:text-7xl tracking-tight text-foreground mb-6">
-              Jednoduché a transparentné
+              Flexibilné riešenia pre
               <br />
-              <span className="text-stroke">ceny</span>
+              <span className="text-[#2997FF]">moderné tímy</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-xl">
-              Bez skrytých poplatkov, bez prekvapení. Istota pre rast vášho biznisu.
+              Vyberte si model, ktorý vyhovuje vašim marketingovým a dátovým nárokom. Plná škálovateľnosť pre rastúce značky.
             </p>
           </div>
           <Link
             href="/produkty"
-            className="inline-flex items-center gap-2 text-sm font-medium border border-foreground/20 px-6 py-3 hover:border-foreground hover:bg-foreground/5 transition-colors group shrink-0"
+            className="inline-flex items-center gap-2 text-sm font-semibold border border-foreground/20 px-6 py-3 hover:border-foreground hover:bg-foreground/5 transition-colors group rounded-full shrink-0"
           >
-            Zobraziť celý katalóg
+            Zobraziť cenník služieb
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>

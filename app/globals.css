@@ -89,9 +89,9 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-instrument), 'Instrument Sans', system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
   --font-mono: var(--font-jetbrains), 'JetBrains Mono', monospace;
-  --font-display: var(--font-instrument-serif), 'Instrument Serif', Georgia, serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -420,5 +420,191 @@
       linear-gradient(var(--background), var(--background)) padding-box,
       linear-gradient(135deg, var(--foreground) 25%, transparent 25%, transparent 50%, var(--foreground) 50%, var(--foreground) 75%, transparent 75%) border-box;
     background-size: 100% 100%, 8px 8px;
+  }
+
+  .apple-glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+  :root:not(.dark) .apple-glass {
+    background: rgba(255, 255, 255, 0.86);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 18px 60px -34px rgba(29, 29, 31, 0.36);
+  }
+
+  .apple-glass-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  :root:not(.dark) .apple-glass-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(245, 245, 247, 0.76) 100%);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 18px 60px -38px rgba(29, 29, 31, 0.36);
+  }
+
+  .apple-glass-card:hover {
+    border-color: rgba(41, 151, 255, 0.4);
+    box-shadow: 0 12px 40px -10px rgba(41, 151, 255, 0.15);
+    transform: translateY(-3px);
+  }
+
+  :root:not(.dark) .apple-glass-card:hover {
+    border-color: rgba(0, 122, 255, 0.34);
+    box-shadow: 0 22px 70px -38px rgba(0, 122, 255, 0.38);
+  }
+
+  :root:not(.dark) main .text-foreground\/30 {
+    color: rgba(29, 29, 31, 0.5);
+  }
+
+  :root:not(.dark) main .text-foreground\/40 {
+    color: rgba(29, 29, 31, 0.58);
+  }
+
+  :root:not(.dark) main .text-foreground\/45 {
+    color: rgba(29, 29, 31, 0.62);
+  }
+
+  :root:not(.dark) main .text-foreground\/50 {
+    color: rgba(29, 29, 31, 0.66);
+  }
+
+  :root:not(.dark) main .text-foreground\/60 {
+    color: rgba(29, 29, 31, 0.72);
+  }
+
+  :root:not(.dark) main .text-foreground\/70 {
+    color: rgba(29, 29, 31, 0.78);
+  }
+
+  :root:not(.dark) main .bg-foreground\/5 {
+    background-color: rgba(29, 29, 31, 0.045);
+  }
+
+  :root:not(.dark) main .bg-foreground\/10 {
+    background-color: rgba(29, 29, 31, 0.07);
+  }
+
+  :root:not(.dark) main .border-foreground\/5 {
+    border-color: rgba(29, 29, 31, 0.09);
+  }
+
+  :root:not(.dark) main .border-foreground\/10 {
+    border-color: rgba(29, 29, 31, 0.12);
+  }
+
+  :root:not(.dark) .apple-glass-card .recharts-cartesian-grid line {
+    stroke: rgba(29, 29, 31, 0.16);
+  }
+
+  :root:not(.dark) .apple-glass-card .recharts-cartesian-axis-tick text {
+    fill: rgba(29, 29, 31, 0.62);
+  }
+
+  .apple-gradient-text {
+    background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.65) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  :root:not(.dark) .apple-gradient-text {
+    background: linear-gradient(180deg, #1D1D1F 0%, rgba(29, 29, 31, 0.65) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .apple-blue-glow {
+    box-shadow: 0 0 50px -12px rgba(41, 151, 255, 0.4);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    html.custom-cursor-enabled,
+    html.custom-cursor-enabled body,
+    html.custom-cursor-enabled a,
+    html.custom-cursor-enabled button,
+    html.custom-cursor-enabled [role="button"],
+    html.custom-cursor-enabled [data-cursor="magnetic"] {
+      cursor: none;
+    }
+
+    html.custom-cursor-enabled input,
+    html.custom-cursor-enabled textarea,
+    html.custom-cursor-enabled select {
+      cursor: auto;
+    }
+  }
+
+  .custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 80;
+    pointer-events: none;
+    translate: -50% -50%;
+    border: 1px solid color-mix(in oklch, var(--foreground) 24%, transparent);
+    background: color-mix(in oklch, var(--foreground) 9%, transparent);
+    box-shadow: 0 14px 50px -22px color-mix(in oklch, var(--foreground) 50%, transparent);
+    backdrop-filter: blur(18px) saturate(145%);
+    -webkit-backdrop-filter: blur(18px) saturate(145%);
+    opacity: 0;
+    transition:
+      opacity 0.18s ease,
+      background 0.24s ease,
+      border-color 0.24s ease,
+      box-shadow 0.24s ease;
+  }
+
+  .custom-cursor[data-visible="true"] {
+    opacity: 0.62;
+  }
+
+  .custom-cursor[data-mode="target"] {
+    border-color: color-mix(in oklch, var(--primary) 45%, var(--foreground) 10%);
+    background: color-mix(in oklch, var(--primary) 5%, transparent);
+    box-shadow: 0 20px 70px -24px color-mix(in oklch, var(--primary) 70%, transparent);
+    backdrop-filter: blur(6px) saturate(132%);
+    -webkit-backdrop-filter: blur(6px) saturate(132%);
+  }
+
+  .custom-cursor[data-mode="target"][data-visible="true"] {
+    opacity: 0.36;
+  }
+
+  .cursor-active-scale {
+    --cursor-active-scale: 1.018;
+    transform: scale(var(--cursor-active-scale));
+    transition:
+      transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.28s ease,
+      box-shadow 0.28s ease,
+      background-color 0.28s ease;
+    will-change: transform;
+  }
+
+  .cursor-active-press {
+    --cursor-active-scale: 0.985;
+  }
+
+  [data-cursor="magnetic"].cursor-active-scale {
+    --cursor-active-scale: 1.012;
+    transform: translateY(-3px) scale(var(--cursor-active-scale));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .custom-cursor {
+      display: none;
+    }
+
+    .cursor-active-scale,
+    [data-cursor="magnetic"].cursor-active-scale {
+      transform: none;
+    }
   }
 }

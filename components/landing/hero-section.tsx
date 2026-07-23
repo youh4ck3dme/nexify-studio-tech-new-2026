@@ -1,155 +1,224 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef, type PointerEvent as ReactPointerEvent } from "react";
 import Link from "next/link";
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import { AnimatedSphere } from "./animated-sphere";
+import { ArrowRight, Sparkle, Robot, Lightning, ChartLineUp, ShieldCheck, Play } from "@phosphor-icons/react";
 
 export function HeroSection() {
-  const [isVisible, setIsVisible] = useState(false);
-  const firstLine = "Zviditeľnite sa";
-  const secondLinePrefix = "a buďte";
-  const secondLineHighlight = "online";
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+  const mockupScale = useTransform(scrollYProgress, [0, 0.5], [0.92, 1]);
+  const mockupOpacity = useTransform(scrollYProgress, [0, 0.4], [0.8, 1]);
+  const scrollRotateX = useTransform(scrollYProgress, [0, 0.5], [12, 0]);
+  const pointerRotateX = useMotionValue(0);
+  const pointerRotateY = useMotionValue(0);
+  const springRotateX = useSpring(pointerRotateX, { stiffness: 160, damping: 24, mass: 0.6 });
+  const springRotateY = useSpring(pointerRotateY, { stiffness: 160, damping: 24, mass: 0.6 });
+  const combinedRotateX = useTransform(
+    [scrollRotateX, springRotateX],
+    ([s, p]) => (s as number) + (p as number)
+  );
+
+  const triggerHaptic = () => {
+    if (typeof window !== "undefined" && "vibrate" in navigator) {
+      navigator.vibrate(10);
+    }
+  };
+
+  const handlePointerMove = (event: ReactPointerEvent<HTMLElement>) => {
+    if (event.pointerType !== "mouse") return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+    pointerRotateX.set(Math.max(-8, Math.min(8, y * -16)));
+    pointerRotateY.set(Math.max(-8, Math.min(8, x * 16)));
+  };
+
+  const handlePointerLeave = () => {
+    pointerRotateX.set(0);
+    pointerRotateY.set(0);
+  };
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
-      {/* Animated sphere background */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[280px] h-[280px] sm:w-[400px] sm:h-[400px] lg:w-[800px] lg:h-[800px] opacity-30 sm:opacity-40 pointer-events-none hidden sm:block">
-        <AnimatedSphere />
-      </div>
-      
-      {/* Subtle grid lines */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={`h-${i}`}
-            className="absolute h-px bg-foreground/10"
-            style={{
-              top: `${12.5 * (i + 1)}%`,
-              left: 0,
-              right: 0,
-            }}
-          />
-        ))}
-        {[...Array(12)].map((_, i) => (
-          <div
-            key={`v-${i}`}
-            className="absolute w-px bg-foreground/10"
-            style={{
-              left: `${8.33 * (i + 1)}%`,
-              top: 0,
-              bottom: 0,
-            }}
-          />
-        ))}
-      </div>
-      
-      <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12 py-32 lg:py-40">
-        {/* Eyebrow */}
-        <div 
-          className={`mb-8 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
+    <section
+      ref={containerRef}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      className="relative pt-12 pb-24 lg:pt-20 lg:pb-36 overflow-hidden bg-background text-foreground"
+    >
+      {/* Ambient background glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-linear-to-tr from-[#0071E3]/20 via-[#2997FF]/15 to-purple-600/10 rounded-full blur-[140px] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+        {/* Top Eyebrow Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-foreground/5 border border-foreground/10 backdrop-blur-xl mb-8 shadow-inner"
         >
-          <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground">
-            <span className="w-8 h-px bg-foreground/30" />
-            Digitálne riešenia na jeden klik
+          <span className="w-2 h-2 rounded-full bg-[#2997FF] animate-pulse" />
+          <span className="text-xs font-semibold uppercase tracking-widest text-foreground/80">
+            AI Platforma Novej Generácie
           </span>
-        </div>
-        
-        {/* Main headline */}
-        <div className="mb-12">
-          <h1 
-            className={`text-[clamp(3rem,12vw,10rem)] font-display leading-[0.9] tracking-tight transition-all duration-1000 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+          <Sparkle className="w-4 h-4 text-[#2997FF]" weight="fill" />
+        </motion.div>
+
+        {/* Main Headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-[-0.035em] leading-[1.05] max-w-5xl mx-auto mb-8 apple-gradient-text"
+        >
+          Premeňte marketingovú zložitosť na inteligentnú akciu.
+        </motion.h1>
+
+        {/* Subheadline Description */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="text-lg sm:text-xl md:text-2xl text-foreground/70 font-normal max-w-3xl mx-auto leading-relaxed mb-12 tracking-tight"
+        >
+          Zjednodušte marketingovú komplexnosť na inteligentné kroky. Prepojte stratégiu, kreativitu, médiá, CRM a prediktívnu AI do jedného plynulého toku pre nekompromisný obchodný dopad.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+        >
+          <Button
+            size="lg"
+            onClick={triggerHaptic}
+            className="bg-[#2997FF] hover:bg-[#0071E3] text-white rounded-full px-9 h-14 text-base font-medium shadow-xl shadow-[#2997FF]/30 hover:shadow-2xl hover:shadow-[#2997FF]/50 transition-all hover:-translate-y-0.5"
+            asChild
           >
-            <span className="block">{firstLine}</span>
-            <span className="block">
-              {secondLinePrefix}{" "}
-              <span className="relative inline-block text-brand-red">
-                <span className="inline-block">{secondLineHighlight}</span>
-                <span className="absolute -bottom-2 left-0 right-0 h-1.5 bg-brand-red/40 rounded-full" />
-              </span>
-            </span>
-          </h1>
-        </div>
-        
-        {/* Description */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-end">
-          <p 
-            className={`text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-xl transition-all duration-700 delay-200 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}
+            <Link href="#contact">
+              Vyskúšať zadarmo
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={triggerHaptic}
+            className="h-14 px-8 text-base rounded-full border-foreground/20 bg-foreground/5 hover:bg-foreground/10 backdrop-blur-xl text-foreground transition-all"
+            asChild
           >
-            Od SEO a Google marketingu po custom weby, CMS a aplikácie – 
-            dodáme vám všetko, čo potrebujete na rast vášho biznisu.
-          </p>
-          
-          {/* CTAs */}
-          <div 
-            className={`flex flex-col sm:flex-row items-start gap-4 transition-all duration-700 delay-300 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}
+            <Link href="#bento" className="flex items-center gap-2">
+              Zistiť viac
+              <Play className="w-4 h-4 shrink-0" weight="fill" />
+            </Link>
+          </Button>
+        </motion.div>
+
+        {/* Apple 3D Workspace Glass Bezel Mockup */}
+        <div className="relative max-w-5xl mx-auto" style={{ perspective: "1200px" }}>
+          <motion.div
+            style={{
+              rotateX: combinedRotateX,
+              rotateY: springRotateY,
+              scale: mockupScale,
+              opacity: mockupOpacity,
+              transformStyle: "preserve-3d",
+            }}
+            className="relative rounded-3xl p-3 sm:p-4 bg-linear-to-b from-foreground/10 via-foreground/5 to-transparent border border-foreground/10 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.2)] dark:shadow-[0_25px_80px_-15px_rgba(0,0,0,0.9)] backdrop-blur-2xl will-change-transform"
           >
-            <Button
-              size="lg"
-              className="bg-brand-red hover:bg-brand-red/90 text-white rounded-full px-8 h-14 text-base font-medium shadow-lg shadow-brand-red/25 hover:shadow-xl hover:shadow-brand-red/40 transition-all hover:-translate-y-0.5"
-              asChild
-            >
-              <Link href="/#contact">
-                Chcem viac zákazníkov
-                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
-              asChild
-            >
-              <Link href="/#how-it-works">Ako to funguje?</Link>
-            </Button>
-          </div>
-        </div>
-        
-      </div>
-      
-      {/* Stats marquee - full width outside container */}
-      <div 
-        className={`absolute bottom-24 left-0 right-0 transition-all duration-700 delay-500 ${
-          isVisible ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <div className="flex gap-16 marquee whitespace-nowrap">
-          {[...Array(2)].map((_, i) => (
-            <div key={i} className="flex gap-16">
-              {[
-                { value: "+300%", label: "Zvýšenie návštevnosti", company: "Kaviareň" },
-                { value: "<1s", label: "Rýchlosť načítania", company: "E-shop" },
-                { value: "+150%", label: "Miera konverzie", company: "Fitness" },
-                { value: "98%", label: "Spokojnosť klientov", company: "KEstudio" },
-              ].map((stat) => (
-                <div key={`${stat.company}-${i}`} className="flex items-baseline gap-4">
-                  <span className="text-4xl lg:text-5xl font-display">{stat.value}</span>
-                  <span className="text-sm text-muted-foreground">
-                    {stat.label}
-                    <span className="block font-mono text-xs mt-1">{stat.company}</span>
-                  </span>
-                </div>
-              ))}
+          {/* Mockup Top Window Bar */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-foreground/10 bg-foreground/5 rounded-t-2xl">
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-red-500/80" />
+              <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
+              <span className="w-3 h-3 rounded-full bg-green-500/80" />
             </div>
-          ))}
+            <div className="text-xs font-mono text-foreground/45 tracking-wider">
+              nexify-ai-workspace.app
+            </div>
+            <div className="flex items-center gap-2 text-xs text-[#2997FF] dark:text-[#2997FF]">
+              <ShieldCheck className="w-4 h-4" weight="fill" />
+              <span className="hidden sm:inline">2.6 Mld Signal Connected</span>
+            </div>
+          </div>
+
+          {/* Mockup Inner Body */}
+          <div className="p-6 sm:p-10 bg-card text-card-foreground rounded-b-2xl grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+            {/* Live AI Agent Card */}
+            <div className="apple-glass rounded-2xl p-5 border border-foreground/10 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-[#2997FF]/20 border border-[#2997FF]/40 flex items-center justify-center text-[#2997FF]">
+                    <Robot className="w-5 h-5" weight="fill" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-foreground">Agent Orchestrator</h4>
+                    <p className="text-xs text-foreground/50">Autonómny výstup v reálnom čase</p>
+                  </div>
+                </div>
+                <div className="space-y-2 text-xs text-foreground/75">
+                  <div className="p-2.5 rounded-lg bg-foreground/5 border border-foreground/5 flex justify-between">
+                    <span>Generovanie vizuálu kampane</span>
+                    <span className="text-emerald-500 dark:text-emerald-400 font-mono">100% Hotovo</span>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-foreground/5 border border-foreground/5 flex justify-between">
+                    <span>Predikcia správania publika</span>
+                    <span className="text-[#2997FF] font-mono">Práve beží</span>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 pt-3 border-t border-foreground/10 text-xs text-foreground/45 flex items-center gap-1.5">
+                <Lightning className="w-3.5 h-3.5 text-amber-500" weight="fill" />
+                <span>3.4s celkový čas spracovania</span>
+              </div>
+            </div>
+
+            {/* Live Predictive Graph Mockup */}
+            <div className="apple-glass rounded-2xl p-5 border border-foreground/10 md:col-span-2 flex flex-col justify-between">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">Prediktívny Rast Tržieb (ROI)</h4>
+                  <p className="text-xs text-foreground/50">Vyhodnotenie 2.6 Mld identitných signálov</p>
+                </div>
+                <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                  +314% Nárast
+                </span>
+              </div>
+
+              {/* Simulated Chart Bars */}
+              <div className="h-32 flex items-end justify-between gap-3 px-2 pt-4">
+                {[35, 48, 62, 55, 78, 92, 115, 140, 165].map((height, i) => (
+                  <div key={i} className="w-full flex flex-col items-center gap-2">
+                    <div
+                      className="w-full rounded-t-md bg-linear-to-t from-[#0071E3] to-[#2997FF] transition-all duration-1000 shadow-[0_0_15px_rgba(41,151,255,0.4)]"
+                      style={{ height: `${height * 0.6}px` }}
+                    />
+                    <span className="text-[10px] font-mono text-foreground/40">Q{i + 1}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-foreground/10 text-xs text-foreground/50 flex justify-between items-center">
+                <span>Modelované scenáre v reálnom čase</span>
+                <span className="text-[#2997FF] font-medium flex items-center gap-1">
+                  <ChartLineUp className="w-4 h-4" /> Optimalizované
+                </span>
+              </div>
+            </div>
+          </div>
+          </motion.div>
         </div>
       </div>
-      
-      {/* Scroll indicator */}
-      
     </section>
   );
 }

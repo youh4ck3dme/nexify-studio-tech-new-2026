@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Navigation } from "@/components/landing/navigation";
+import { AppleSubnav } from "@/components/landing/apple-subnav";
 import { FooterSection } from "@/components/landing/footer-section";
 import { CatalogGrid } from "@/components/catalog/catalog-grid";
 import { parseCatalogCategoryParam } from "@/lib/catalog";
@@ -25,8 +25,8 @@ export default async function ProduktyPage({ searchParams }: PageProps) {
   const initialCategory = parseCatalogCategoryParam(kategoria);
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden noise-overlay">
-      <Navigation />
+    <main className="relative min-h-screen overflow-x-hidden bg-background text-foreground selection:bg-[#2997FF]/30 selection:text-white">
+      <AppleSubnav />
       <section className="relative pt-32 lg:pt-40 pb-24 lg:pb-32 border-b border-foreground/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <CatalogGrid initialCategory={initialCategory} />

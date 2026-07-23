@@ -5,32 +5,25 @@ import { TechProvidersMarquee } from "@/components/landing/tech-providers-marque
 
 const testimonials = [
   {
-    quote: "Návštevnosť nám stúpla o 400%! Dnes máme toľko klientov, že musíme otvárať novú pobočku. Ďakujeme KEstudio!",
-    author: "Marek K.",
-    role: "Majiteľ",
-    company: "Fitness Centrum",
-    metric: "+400% nárast návštevnosti",
+    quote: "Prechod na Nexify zmenil našu kreatívnu produkciu. Dokážeme vygenerovať a adaptovať stovky variácií kampaní za minúty, čo nám prinieslo dramatický nárast konverzií.",
+    author: "Miroslav H.",
+    role: "Chief Marketing Officer",
+    company: "AeroMedia Group",
+    metric: "+314% marketingové ROI",
   },
   {
-    quote: "Booking systém nám ušetril 20 hodín týždenne. Už nemusíme zdvíhať telefón – zákazníci si rezervujú sami.",
-    author: "Lucia P.",
-    role: "Majiteľka",
-    company: "Kaviareň",
-    metric: "20h/týždeň úspora",
+    quote: "Jednotná dátová chrbtica s 2.6 miliardami signálov nám poskytla neuveriteľnú jasnosť. Rozhodnutia o rozpočtoch už nerobíme na základe pocitov, ale presných predikcií.",
+    author: "Elena R.",
+    role: "Director of Growth",
+    company: "Velo Commerce",
+    metric: "-75% menej handoffov",
   },
   {
-    quote: "Web nám predáva, aj keď spíme. Miera konverzie sa zdvojnásobila!",
-    author: "Ján T.",
-    role: "Majiteľ",
-    company: "E-shop s doplnkami",
-    metric: "+200% konverzií",
-  },
-  {
-    quote: "Tím KEstudio bol profesionálny a rýchly. Web bol hotový za 7 dní a všetko funguje perfektne.",
-    author: "Anna S.",
-    role: "Majiteľka",
-    company: "Beauty Salon",
-    metric: "Hotovo za 7 dní",
+    quote: "Naši kreatívci konečne nestrácajú čas nudným resizovaním bannerov. Agentická AI Nexify to robí na pozadí, kým my sa sústredíme na nápady, ktoré hýbu trhom.",
+    author: "Peter V.",
+    role: "Creative Director",
+    company: "Studio Craft",
+    metric: "3.4x rýchlejší launch",
   },
 ];
 
@@ -45,22 +38,22 @@ export function TestimonialsSection() {
         setActiveIndex((prev) => (prev + 1) % testimonials.length);
         setIsAnimating(false);
       }, 300);
-    }, 5000);
+    }, 6000);
     return () => clearInterval(interval);
   }, []);
 
   const activeTestimonial = testimonials[activeIndex];
 
   return (
-    <section className="relative py-32 lg:py-40 border-t border-foreground/10 lg:pb-14">
+    <section id="testimonials" className="relative py-24 lg:py-36 bg-background text-foreground border-t border-foreground/10 lg:pb-14">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Section Label */}
         <div className="flex items-center gap-4 mb-16">
-          <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-            Referencie · ukážkové
+          <span className="font-mono text-xs tracking-widest text-[#2997FF] uppercase">
+            Hlasy Úspechu · Referencie
           </span>
           <div className="flex-1 h-px bg-foreground/10" />
-          <span className="font-mono text-xs text-muted-foreground">
+          <span className="font-mono text-xs text-foreground/50">
             {String(activeIndex + 1).padStart(2, "0")} / {String(testimonials.length).padStart(2, "0")}
           </span>
         </div>
@@ -73,7 +66,7 @@ export function TestimonialsSection() {
                 isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
               }`}
             >
-              <p className="font-display text-4xl md:text-5xl lg:text-6xl leading-[1.1] tracking-tight text-foreground">
+              <p className="font-display text-3xl sm:text-4xl lg:text-5xl leading-[1.15] tracking-tight text-foreground">
                 "{activeTestimonial.quote}"
               </p>
             </blockquote>
@@ -84,14 +77,14 @@ export function TestimonialsSection() {
                 isAnimating ? "opacity-0" : "opacity-100"
               }`}
             >
-              <div className="w-16 h-16 rounded-full bg-foreground/5 border border-foreground/10 flex items-center justify-center">
-                <span className="font-display text-2xl text-foreground">
+              <div className="w-14 h-14 rounded-full bg-foreground/5 border border-foreground/10 flex items-center justify-center">
+                <span className="font-display text-xl text-foreground">
                   {activeTestimonial.author.charAt(0)}
                 </span>
               </div>
               <div>
                 <p className="text-lg font-medium text-foreground">{activeTestimonial.author}</p>
-                <p className="text-muted-foreground">
+                <p className="text-sm text-foreground/60">
                   {activeTestimonial.role}, {activeTestimonial.company}
                 </p>
               </div>
@@ -101,14 +94,14 @@ export function TestimonialsSection() {
           {/* Metric Highlight */}
           <div className="lg:col-span-4 flex flex-col justify-center">
             <div
-              className={`p-8 border border-foreground/10 transition-all duration-300 ${
+              className={`p-8 border border-foreground/10 rounded-2xl bg-foreground/5 transition-all duration-300 ${
                 isAnimating ? "opacity-0 scale-95" : "opacity-100 scale-100"
               }`}
             >
-              <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase block mb-4">
-                Výsledok
+              <span className="font-mono text-xs tracking-widest text-[#2997FF] uppercase block mb-4">
+                Preukázateľný Výsledok
               </span>
-              <p className="font-display text-3xl md:text-4xl text-foreground">
+              <p className="font-display text-3xl md:text-4xl text-foreground font-semibold">
                 {activeTestimonial.metric}
               </p>
             </div>
@@ -129,10 +122,10 @@ export function TestimonialsSection() {
                   className="w-12 h-12 flex items-center justify-center focus:outline-none group"
                 >
                   <span
-                    className={`h-2 rounded-full transition-all duration-300 ${
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
                       idx === activeIndex
-                        ? "w-8 bg-foreground"
-                        : "w-2 bg-foreground/20 group-hover:bg-foreground/40"
+                        ? "w-6 bg-foreground"
+                        : "w-1.5 bg-foreground/20 group-hover:bg-foreground/45"
                     }`}
                   />
                 </button>
@@ -141,7 +134,9 @@ export function TestimonialsSection() {
           </div>
         </div>
 
-        <TechProvidersMarquee />
+        <div className="mt-20 pt-10 border-t border-foreground/10">
+          <TechProvidersMarquee />
+        </div>
       </div>
     </section>
   );

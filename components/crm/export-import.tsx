@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 import { db, Client, ClientActivity } from "@/lib/db";
+import { exportClientsToCsv } from "@/lib/crm/export-csv";
 import { Download, Upload, FileSpreadsheet } from "lucide-react";
 import { toast } from "sonner";
 
@@ -11,53 +12,11 @@ export function ExportImport() {
   // CSV Export
   const handleExportCSV = async () => {
     try {
-      const clients = await db.clients.toArray();
-      const activeClients = clients.filter(c => !c.deletedAt);
-
-      if (activeClients.length === 0) {
+      const exportedCount = await exportClientsToCsv();
+      if (exportedCount === null) {
         toast.info("Nemáte žiadnych aktívnych klientov na export.");
         return;
       }
-
-      const headers = [
-        "companyName",
-        "contactName",
-        "email",
-        "phone",
-        "website",
-        "service",
-        "status",
-        "budget",
-        "notes",
-        "createdAt",
-        "updatedAt"
-      ];
-
-      const csvRows = [
-        headers.join(","),
-        ...activeClients.map(c => [
-          `"${(c.companyName || "").replace(/"/g, '""')}"`,
-          `"${(c.contactName || "").replace(/"/g, '""')}"`,
-          `"${(c.email || "").replace(/"/g, '""')}"`,
-          `"${(c.phone || "").replace(/"/g, '""')}"`,
-          `"${(c.website || "").replace(/"/g, '""')}"`,
-          `"${(c.service || "").replace(/"/g, '""')}"`,
-          `"${(c.status || "").replace(/"/g, '""')}"`,
-          `"${(c.budget || "").replace(/"/g, '""')}"`,
-          `"${(c.notes || "").replace(/"/g, '""')}"`,
-          new Date(c.createdAt).toISOString(),
-          new Date(c.updatedAt).toISOString()
-        ].join(","))
-      ];
-
-      const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + csvRows.join("\n");
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", `nexify_crm_export_${Date.now()}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
       toast.success("CSV export stiahnutý úspešne!");
     } catch (err) {
       console.error(err);
