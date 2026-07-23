@@ -29,7 +29,10 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // Standard GitHub-hosted ubuntu-latest runners have 2-4 vCPUs; a small
+  // fixed worker count cuts serial e2e runtime substantially without
+  // risking resource contention from over-parallelizing.
+  workers: process.env.CI ? 2 : undefined,
   reporter: [["list"]],
   use: {
     baseURL,
