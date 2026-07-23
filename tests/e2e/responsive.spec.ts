@@ -47,9 +47,9 @@ for (const viewport of mobileViewports) {
         localStorage.setItem("nexify-cookie-consent-v1", "all");
       });
       await page.goto("/#contact");
-      await expect(page.getByPlaceholder("Meno")).toBeVisible();
-      await expect(page.getByPlaceholder("Email")).toBeVisible();
-      await expect(page.getByRole("button", { name: "Kontaktujte nás" })).toBeVisible();
+      await expect(page.getByPlaceholder("Vaše meno *")).toBeVisible();
+      await expect(page.getByPlaceholder("Pracovný email *")).toBeVisible();
+      await expect(page.getByRole("button", { name: "Vyžiadať si Demo" })).toBeVisible();
     });
 
     test("homepage has no low-contrast (invisible) text", async ({ page }) => {
