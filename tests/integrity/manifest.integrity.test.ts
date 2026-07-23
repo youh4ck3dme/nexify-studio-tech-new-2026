@@ -21,8 +21,8 @@ describe("integrity: manifest and PWA assets", () => {
     icons: Array<{ src: string; sizes: string; purpose?: string }>;
   };
 
-  it("23/40 manifest name is Nexify Studio", () => {
-    expect(manifest.name).toBe("Nexify Studio");
+  it("23/40 manifest name is KEstudio", () => {
+    expect(manifest.name).toBe("KEstudio");
   });
 
   it("24/40 manifest display is standalone", () => {

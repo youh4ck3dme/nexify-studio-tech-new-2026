@@ -9,8 +9,8 @@ describe("PWA", () => {
   const manifest = loadManifest();
 
   it("1/10 manifest má Nexify branding (name, short_name)", () => {
-    expect(manifest.name).toBe("Nexify Studio");
-    expect(manifest.short_name).toBe("Nexify");
+    expect(manifest.name).toBe("KEstudio");
+    expect(manifest.short_name).toBe("KEstudio");
   });
 
   it("2/10 manifest má polia pre inštaláciu (standalone, start_url, scope)", () => {

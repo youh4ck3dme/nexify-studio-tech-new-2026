@@ -1,5 +1,5 @@
 export const companyLegal = {
-  brandName: "Nexify Studio",
+  brandName: "KEstudio",
   legalName: "MA.GI.CA., s.r.o.",
   address: "Partizánska 101/45, 965 01 Žiar nad Hronom",
   ico: "31677517",
@@ -7,7 +7,7 @@ export const companyLegal = {
   email: "magicasro@hotmail.com",
   phone: "+421917488903",
   phoneDisplay: "+421 917 488 903",
-  website: "https://nexify-studio.tech",
+  website: "https://kestudio.sk",
   country: "Slovenská republika",
   dataProtectionEmail: "magicasro@hotmail.com",
   lastUpdated: "29. mája 2026",

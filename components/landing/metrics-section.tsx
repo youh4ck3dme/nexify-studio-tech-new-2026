@@ -121,17 +121,22 @@ export function MetricsSection() {
           {metrics.map((metric, index) => (
             <div
               key={metric.label}
-              className={`bg-background p-8 lg:p-12 transition-all duration-700 ${
+              className={`bg-background p-8 lg:p-12 transition-all duration-700 group hover:bg-foreground/[0.02] ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <AnimatedCounter 
-                end={typeof metric.value === 'number' ? metric.value : 0} 
-                suffix={metric.suffix} 
-                prefix={metric.prefix}
-              />
-              <div className="mt-4 text-lg text-muted-foreground">{metric.label}</div>
+              <div className="text-foreground group-hover:text-brand-red transition-colors duration-300">
+                <AnimatedCounter 
+                  end={typeof metric.value === 'number' ? metric.value : 0} 
+                  suffix={metric.suffix} 
+                  prefix={metric.prefix}
+                />
+              </div>
+              <div className="mt-4 text-lg text-muted-foreground group-hover:text-foreground transition-colors flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-blue opacity-0 group-hover:opacity-100 transition-opacity" />
+                {metric.label}
+              </div>
             </div>
           ))}
         </div>

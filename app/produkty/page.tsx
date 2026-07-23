@@ -7,12 +7,12 @@ import { parseCatalogCategoryParam } from "@/lib/catalog";
 export const metadata: Metadata = {
   title: "Produkty",
   description:
-    "Produktový katalóg Nexify Studio — weby, e-shopy, PWA, mobilné aplikácie, AI a bezpečnostné služby.",
+    "Produktový katalóg KEstudio — weby, e-shopy, PWA, mobilné aplikácie, AI a bezpečnostné služby.",
   openGraph: {
-    title: "Produkty | Nexify Studio",
+    title: "Produkty | KEstudio",
     description:
-      "Kompletný katalóg digitálnych produktov a služieb Nexify Studio.",
-    url: "https://nexify-studio.tech/produkty",
+      "Kompletný katalóg digitálnych produktov a služieb KEstudio.",
+    url: "https://kestudio.sk/produkty",
   },
 };
 

@@ -22,9 +22,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: product.name,
     description: product.shortDescription,
     openGraph: {
-      title: `${product.name} | Nexify Studio`,
+      title: `${product.name} | KEstudio`,
       description: product.shortDescription,
-      url: `https://nexify-studio.tech/produkty/${product.slug}`,
+      url: `https://kestudio.sk/produkty/${product.slug}`,
     },
   };
 }

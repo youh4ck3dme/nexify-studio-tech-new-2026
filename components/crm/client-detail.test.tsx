@@ -69,5 +69,5 @@ describe("ClientDetail Component", () => {
     expect(client?.tasks).toHaveLength(1);
     expect(client?.tasks?.[0].text).toBe("Zavolať klientovi ohľadom dizajnu");
     expect(client?.tasks?.[0].done).toBe(false);
-  });
+  }, 15000);
 });

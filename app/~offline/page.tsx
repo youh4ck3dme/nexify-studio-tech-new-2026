@@ -10,7 +10,7 @@ export default function OfflinePage() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 text-center gap-6">
       <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-        Nexify Studio
+        KEstudio
       </p>
       <h1 className="text-4xl font-display">Ste offline</h1>
       <p className="max-w-md text-muted-foreground">

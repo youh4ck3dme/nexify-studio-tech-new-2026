@@ -72,9 +72,9 @@ export function HeroSection() {
             <span className="block">{firstLine}</span>
             <span className="block">
               {secondLinePrefix}{" "}
-              <span className="relative inline-block">
+              <span className="relative inline-block text-brand-red">
                 <span className="inline-block">{secondLineHighlight}</span>
-                <span className="absolute -bottom-2 left-0 right-0 h-3 bg-foreground/10" />
+                <span className="absolute -bottom-2 left-0 right-0 h-1.5 bg-brand-red/40 rounded-full" />
               </span>
             </span>
           </h1>
@@ -99,7 +99,7 @@ export function HeroSection() {
           >
             <Button
               size="lg"
-              className="bg-foreground hover:bg-foreground/90 text-background px-8 h-14 text-base rounded-full group"
+              className="bg-brand-red hover:bg-brand-red/90 text-white rounded-full px-8 h-14 text-base font-medium shadow-lg shadow-brand-red/25 hover:shadow-xl hover:shadow-brand-red/40 transition-all hover:-translate-y-0.5"
               asChild
             >
               <Link href="/#contact">
@@ -133,7 +133,7 @@ export function HeroSection() {
                 { value: "+300%", label: "Zvýšenie návštevnosti", company: "Kaviareň" },
                 { value: "<1s", label: "Rýchlosť načítania", company: "E-shop" },
                 { value: "+150%", label: "Miera konverzie", company: "Fitness" },
-                { value: "98%", label: "Spokojnosť klientov", company: "Nexify" },
+                { value: "98%", label: "Spokojnosť klientov", company: "KEstudio" },
               ].map((stat) => (
                 <div key={`${stat.company}-${i}`} className="flex items-baseline gap-4">
                   <span className="text-4xl lg:text-5xl font-display">{stat.value}</span>

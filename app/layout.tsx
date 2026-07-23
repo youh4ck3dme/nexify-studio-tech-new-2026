@@ -25,12 +25,12 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-jetbrains'
 });
 
-const APP_NAME = "Nexify Studio";
+const APP_NAME = "KEstudio";
 const APP_DESCRIPTION =
   "Digitálne riešenia pre rast podnikania. Weby, značka a online prítomnosť.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nexify-studio.tech"),
+  metadataBase: new URL("https://kestudio.sk"),
   applicationName: APP_NAME,
   title: {
     default: APP_NAME,
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Nexify',
+    title: 'KEstudio',
   },
   formatDetection: {
     telephone: false,
@@ -51,13 +51,13 @@ export const metadata: Metadata = {
     siteName: APP_NAME,
     title: APP_NAME,
     description: APP_DESCRIPTION,
-    url: 'https://nexify-studio.tech',
+    url: 'https://kestudio.sk',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Nexify Studio',
+        alt: 'KEstudio',
       },
     ],
   },

@@ -139,9 +139,9 @@ export function Navigation() {
           }`}
         >
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="font-display tracking-tight text-xl">Nexify</span>
-            <span className="text-muted-foreground font-mono text-[10px] mt-0.5">Studio</span>
+          <Link href="/" className="flex items-center gap-1.5 group mr-8 lg:mr-12">
+            <span className="font-display font-semibold tracking-tight text-xl">KE<span className="text-brand-red">studio</span></span>
+            <span className="pulse-red-dot ml-0.5" />
           </Link>
 
           {/* Desktop Navigation */}

@@ -5,7 +5,7 @@ import { TechProvidersMarquee } from "@/components/landing/tech-providers-marque
 
 const testimonials = [
   {
-    quote: "Návštevnosť nám stúpla o 400%! Dnes máme toľko klientov, že musíme otvárať novú pobočku. Ďakujeme Nexify Studio!",
+    quote: "Návštevnosť nám stúpla o 400%! Dnes máme toľko klientov, že musíme otvárať novú pobočku. Ďakujeme KEstudio!",
     author: "Marek K.",
     role: "Majiteľ",
     company: "Fitness Centrum",
@@ -26,7 +26,7 @@ const testimonials = [
     metric: "+200% konverzií",
   },
   {
-    quote: "Tím Nexify bol profesionálny a rýchly. Web bol hotový za 7 dní a všetko funguje perfektne.",
+    quote: "Tím KEstudio bol profesionálny a rýchly. Web bol hotový za 7 dní a všetko funguje perfektne.",
     author: "Anna S.",
     role: "Majiteľka",
     company: "Beauty Salon",

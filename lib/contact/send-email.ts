@@ -115,7 +115,7 @@ export function buildContactEmailContent(data: ParsedContact) {
       <body>
         <div class="container">
           <div class="header">
-            <p class="logo">Nexify Studio</p>
+            <p class="logo">KEstudio</p>
             <h1 class="title">Nová správa z webu</h1>
           </div>
           
@@ -140,7 +140,7 @@ export function buildContactEmailContent(data: ParsedContact) {
           </div>
           
           <div class="footer">
-            Tento e-mail bol automaticky vygenerovaný z kontaktného formulára na webe Nexify Studio.
+            Tento e-mail bol automaticky vygenerovaný z kontaktného formulára na webe KEstudio.
           </div>
         </div>
       </body>

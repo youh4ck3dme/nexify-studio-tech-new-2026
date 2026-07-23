@@ -123,7 +123,7 @@ export function HowItWorksSection() {
                 }`}
               >
                 <div className="flex items-start gap-6">
-                  <span className="font-display text-3xl text-background/30">{step.number}</span>
+                  <span className={`font-display text-3xl transition-colors ${activeStep === index ? "text-brand-blue" : "text-background/30"}`}>{step.number}</span>
                   <div className="flex-1">
                     <h3 className="text-2xl lg:text-3xl font-display mb-3 group-hover:translate-x-2 transition-transform duration-300">
                       {step.title}
@@ -134,9 +134,9 @@ export function HowItWorksSection() {
                     
                     {/* Progress indicator */}
                     {activeStep === index && (
-                      <div className="mt-4 h-px bg-background/20 overflow-hidden">
+                      <div className="mt-4 h-[2px] bg-background/10 overflow-hidden">
                         <div 
-                          className="h-full bg-background w-0"
+                          className="h-full bg-brand-blue w-0"
                           style={{
                             animation: 'progress 5s linear forwards'
                           }}
@@ -153,13 +153,13 @@ export function HowItWorksSection() {
           <div className="lg:sticky lg:top-32 self-start">
             <div className="border border-background/10 overflow-hidden">
               {/* Window header */}
-              <div className="px-6 py-4 border-b border-background/10 flex items-center justify-between">
+              <div className="px-6 py-4 border-b border-background/10 flex items-center justify-between bg-white/5">
                 <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-background/20" />
-                  <div className="w-3 h-3 rounded-full bg-background/20" />
-                  <div className="w-3 h-3 rounded-full bg-background/20" />
+                  <div className="w-3 h-3 rounded-full bg-brand-red opacity-80" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-brand-blue opacity-80" />
                 </div>
-                <span className="text-xs font-mono text-background/40">workflow.ts</span>
+                <span className="text-xs font-mono text-brand-blue font-medium tracking-wide">workflow.ts</span>
               </div>
 
               {/* Code content */}

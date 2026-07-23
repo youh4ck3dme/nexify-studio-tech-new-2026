@@ -32,16 +32,16 @@ export function CategoryCard({ category, index }: CategoryCardProps) {
     <Link
       href={category.href}
       aria-label={`Kategória: ${category.name}`}
-      className="group shrink-0 min-w-[260px] sm:min-w-[280px] md:min-w-[320px] h-[280px] border border-foreground/10 bg-background p-6 sm:p-8 flex flex-col justify-between hover:border-foreground/30 hover:bg-foreground/2 transition-all duration-300 card-lift focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
+      className="group shrink-0 min-w-[260px] sm:min-w-[280px] md:min-w-[320px] h-[280px] border border-foreground/10 bg-background p-6 sm:p-8 flex flex-col justify-between blue-glow-hover transition-all duration-300 card-lift focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue/30"
     >
       <div>
         <div className="flex items-start justify-between mb-6">
-          <span className="font-mono text-xs text-muted-foreground">
+          <span className="font-mono text-xs text-muted-foreground font-medium">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <Icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+          <Icon className="w-5 h-5 text-muted-foreground group-hover:text-brand-blue transition-colors" />
         </div>
-        <h3 className="font-display text-2xl text-foreground mb-2">{category.name}</h3>
+        <h3 className="font-display text-2xl text-foreground mb-2 group-hover:text-brand-blue transition-colors">{category.name}</h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
           {category.description}
         </p>
@@ -56,7 +56,7 @@ export function CategoryCard({ category, index }: CategoryCardProps) {
             {formatPrice(category.priceFrom, category.pricePeriod)}
           </p>
         </div>
-        <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all" />
+        <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-brand-blue group-hover:translate-x-1 transition-all" />
       </div>
     </Link>
   );

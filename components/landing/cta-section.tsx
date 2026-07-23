@@ -125,7 +125,7 @@ export function CtaSection() {
                       onChange={handleInputChange}
                       placeholder="Meno"
                       autoComplete="name"
-                      className="h-12 min-h-[44px] px-4 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none focus:border-foreground input-glow"
+                      className="w-full h-12 min-h-[44px] px-4 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none focus:border-foreground input-glow"
                     />
                     <input
                       name="email"
@@ -134,7 +134,7 @@ export function CtaSection() {
                       onChange={handleInputChange}
                       placeholder="Email"
                       autoComplete="email"
-                      className="h-12 min-h-[44px] px-4 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none focus:border-foreground input-glow"
+                      className="w-full h-12 min-h-[44px] px-4 border border-foreground/20 bg-background/80 text-foreground rounded-md outline-none focus:border-foreground input-glow"
                     />
                   </div>
                   <input
@@ -160,7 +160,7 @@ export function CtaSection() {
                       type="submit"
                       size="lg"
                       disabled={isSubmitting}
-                      className="bg-foreground hover:bg-foreground/90 text-background px-8 h-14 min-h-[44px] text-base rounded-full group disabled:opacity-60 btn-micro"
+                      className="bg-brand-red hover:bg-brand-red/90 text-white px-8 h-14 min-h-[44px] text-base rounded-full group disabled:opacity-60 shadow-lg shadow-brand-red/25 hover:shadow-xl hover:shadow-brand-red/40 transition-all hover:-translate-y-0.5"
                     >
                       {isSubmitting ? (
                         <>
@@ -178,7 +178,7 @@ export function CtaSection() {
                       type="button"
                       size="lg"
                       variant="outline"
-                      className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
+                      className="h-14 px-8 text-base rounded-full border-foreground/20 hover:border-brand-red/50 hover:bg-brand-red/5 hover:text-brand-red transition-all"
                     >
                       Objednajte termín
                     </Button>
