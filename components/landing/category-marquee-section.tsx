@@ -86,7 +86,7 @@ export function CategoryMarqueeSection() {
               Cenník & Moduly
             </span>
             <h2 className="font-display text-5xl md:text-6xl lg:text-7xl tracking-tight text-foreground mb-6">
-              Flexibilné riešenia pre
+              Flexibilné ceny a riešenia pre
               <br />
               <span className="text-[#2997FF]">moderné tímy</span>
             </h2>

@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test.describe("Navigation", () => {
   test("21/30 logo navigates home", async ({ page }) => {
     await page.goto("/produkty");
-    await page.locator("header").getByRole("link", { name: "Nexify Studio" }).click();
+    await page.locator("header").getByRole("link", { name: "KEstudio" }).click();
     await expect(page).toHaveURL("/");
   });
 

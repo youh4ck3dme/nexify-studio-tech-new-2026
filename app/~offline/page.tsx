@@ -105,7 +105,7 @@ export default function OfflinePage() {
 
         {/* Back Home Button */}
         <Button asChild variant="outline" className="rounded-full px-8 mt-4 border-foreground/10 bg-foreground/5 hover:bg-foreground/10 text-xs">
-          <Link href="/">Skúsiť znova načítať</Link>
+          <Link href="/">Späť na úvod</Link>
         </Button>
       </div>
     </main>

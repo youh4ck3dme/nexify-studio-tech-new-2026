@@ -22,7 +22,7 @@ export function BentoFeatures() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section id="bento" className="py-24 lg:py-36 bg-background text-foreground relative">
+    <section id="services" className="py-24 lg:py-36 bg-background text-foreground relative">
       {/* Background radial gradient */}
       <div className="absolute top-1/2 right-0 w-125 h-125 bg-[#0071E3]/10 rounded-full blur-[150px] pointer-events-none" />
 

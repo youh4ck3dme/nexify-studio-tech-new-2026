@@ -9,6 +9,19 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      # CI-only credentials auth fixture (not a real secret - .env.local is
+      # gitignored and never present in CI, so without this every login
+      # attempt in the e2e suite fails with "Invalid credentials" and every
+      # waitForURL("**/crm") times out at 60s, which is what was actually
+      # driving the multi-hour CI runtimes). Matches the seed admin account:
+      # admin@kestudio.sk / 2351900 (bcrypt hash below, generate your own via
+      # `pnpm auth:hash "<password>"` if this fixture password ever changes).
+      JWT_SECRET: "ci_test_only_jwt_secret_not_used_in_production_00000000"
+      ADMIN_EMAIL: "admin@kestudio.sk"
+      ADMIN_PASSWORD_HASH: "$2b$12$0fSY4iX0qLDwhndw0vdHTe7i2r8m9D7Opj1uOKZlWzV7zguOuILI2"
+      ADMIN_PASSWORD_PLAINTEXT: "2351900"
+      NEXT_PUBLIC_BASE_URL: "http://127.0.0.1:3000"
     steps:
       - uses: actions/checkout@v4
 

@@ -1,9 +1,9 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Homepage", () => {
-  test("1/30 loads with Nexify Studio title", async ({ page }) => {
+  test("1/30 loads with KEstudio title", async ({ page }) => {
     await page.goto("/");
-    await expect(page).toHaveTitle(/Nexify Studio/i);
+    await expect(page).toHaveTitle(/KEstudio/i);
   });
 
   test("2/30 shows hero headline", async ({ page }) => {
